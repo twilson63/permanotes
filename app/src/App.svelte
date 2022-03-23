@@ -4,6 +4,7 @@
   import Home from "./home.svelte";
   import Learn from "./learn.svelte";
   import Connect from "./connect.svelte";
+  import Notes from "./notes.svelte";
 
   router.mode.hash();
 </script>
@@ -18,7 +19,7 @@
   <Connect />
 </Route>
 <Route path="/notes">
-  <p>TODO</p>
+  <Notes />
 </Route>
 <Route path="/notes/:id">
   <p>TODO</p>
