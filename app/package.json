@@ -17,5 +17,6 @@
     "tailwindcss": "^3.0.23",
     "tinro": "^0.6.12",
     "vite": "^2.8.0"
-  }
+  },
+  "dependencies": {}
 }
