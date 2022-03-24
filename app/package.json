@@ -21,7 +21,9 @@
     "vite": "^2.8.0"
   },
   "dependencies": {
+    "ardb": "^1.1.10",
     "arweave": "^1.10.23",
+    "arweave-account": "^1.0.0",
     "arweave-wallet-connector": "^0.0.26",
     "crocks": "^0.12.4",
     "ramda": "^0.28.0"

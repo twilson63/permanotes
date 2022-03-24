@@ -1,6 +1,6 @@
 <script>
   import { router } from "tinro";
-  import { address } from "../store.js";
+  import { address, account } from "../store.js";
   import * as R from "ramda";
 
   function disconnect() {
@@ -20,6 +20,8 @@
       {#if R.isEmpty($address)}
         <li><a href="/connect">Connect</a></li>
       {:else}
+        <li><a href="/notes">Notes</a></li>
+        <li><a href="/account">Account</a></li>
         <li>
           <button class="btn btn-ghost" on:click={disconnect}>Disconnect</button
           >

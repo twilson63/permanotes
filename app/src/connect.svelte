@@ -1,11 +1,15 @@
 <script>
-  import { connectApp } from "./services/arweave.js";
-  import { address } from "./store.js";
+  import { router } from "tinro";
+  import { connectApp, account as getAccount } from "./services/arweave.js";
+  import { address, account } from "./store.js";
   import Navbar from "./components/navbar.svelte";
 
   async function appConnect() {
     const walletAddress = await connectApp().catch((e) => "");
+    const a = await getAccount(walletAddress);
     address.set(walletAddress);
+    account.set(a);
+    router.goto("/account");
   }
 </script>
 

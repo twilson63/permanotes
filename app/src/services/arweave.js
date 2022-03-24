@@ -1,8 +1,11 @@
 import Arweave from 'arweave'
-import { ArweaveWebWallet } from "arweave-wallet-connector";
-import crocks from 'crocks'
+import Account from 'arweave-account'
 
-const { Async } = crocks;
+import { ArweaveWebWallet } from "arweave-wallet-connector";
+
+
+
+const arweaveAccount = new Account()
 
 export const arweave = new Arweave.init({
   host: 'arweave.net',
@@ -19,16 +22,6 @@ export const connectApp = () => {
   wallet.setUrl('https://arweave.app')
   return wallet.connect()
 }
-  // Async.of(
-  //   new ArweaveWebWallet({
-  //     name: 'permanotes',
-  //     logo: 'https://via.placeholder.com/200'
-  //   })
-  // )
-  //   .map(wallet => {
-  //     wallet.setUrl('https://arweave.app')
-  //     return wallet
-  //   })
-  //   .chain(wallet => Async.fromPromise(wallet.connect)())
-  //   .toPromise()
+
+export const account = (address) => arweaveAccount.get(address)
 
