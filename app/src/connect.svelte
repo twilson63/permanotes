@@ -1,17 +1,11 @@
 <script>
-  import { ArweaveWebWallet } from "arweave-wallet-connector";
+  import { connectApp } from "./services/arweave.js";
+  import { address } from "./store.js";
   import Navbar from "./components/navbar.svelte";
 
   async function appConnect() {
-    const wallet = new ArweaveWebWallet({
-      // optionally provide information about your app that will be displayed in the wallet provider interface
-      name: "permanotes",
-      logo: "https://via.placeholder.com/200",
-    });
-
-    wallet.setUrl("https://arweave.app");
-    const result = await wallet.connect(); //
-    console.log(result);
+    const walletAddress = await connectApp().catch((e) => "");
+    address.set(walletAddress);
   }
 </script>
 
