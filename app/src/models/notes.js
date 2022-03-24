@@ -9,6 +9,7 @@ const schema = z.object({
   description: z.string(),
   protocol: z.literal('PermaNote-0.1'),
   content: z.string(),
+  public: z.boolean(),
   tags: z.string().array()
 })
 
