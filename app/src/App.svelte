@@ -6,6 +6,8 @@
   import Connect from "./connect.svelte";
   import Notes from "./notes.svelte";
   import Account from "./account.svelte";
+  import Form from "./form.svelte";
+
   import * as R from "ramda";
 
   const { not, isEmpty } = R;
@@ -27,7 +29,7 @@
     <Notes />
   </Route>
   <Route path="/notes/new">
-    <p>NEW NOTE</p>
+    <Form />
   </Route>
   <Route path="/notes/:id/show">
     <p>TODO</p>
