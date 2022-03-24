@@ -1,5 +1,18 @@
 <script>
+  import { ArweaveWebWallet } from "arweave-wallet-connector";
   import Navbar from "./components/navbar.svelte";
+
+  async function appConnect() {
+    const wallet = new ArweaveWebWallet({
+      // optionally provide information about your app that will be displayed in the wallet provider interface
+      name: "permanotes",
+      logo: "https://via.placeholder.com/200",
+    });
+
+    wallet.setUrl("https://arweave.app");
+    const result = await wallet.connect(); //
+    console.log(result);
+  }
 </script>
 
 <Navbar />
@@ -10,8 +23,9 @@
         <h1 class="text-6xl">Connect Wallet</h1>
         <div class="mt-16 flex space-x-8">
           <div class="card bg-base-100 shadow-xl hover:border">
-            <figure class="px-10 pt-10">
+            <figure class="px-10 pt-10 bg-gray-400" style="height: 168px;">
               <img
+                height="128px"
                 src="https://bgwysvp67cg4wxfsvgktephcajni7ggdsa7kgpo5rl637avdlc2a.arweave.net/Ca2JVf74jctcsqmVMjziAlqPmMOQPqM93Yr9v4KjWLQ"
                 alt="arconnect logo"
                 class="rounded-xl"
@@ -21,8 +35,11 @@
               <h2 class="card-title">ArConnect</h2>
             </div>
           </div>
-          <div class="card bg-base-100 shadow-xl hover:border">
-            <figure class="px-10 pt-10">
+          <div
+            class="card bg-base-100 shadow-xl hover:border"
+            on:click={appConnect}
+          >
+            <figure class="px-10 pt-10 bg-gray-400" style="height: 168px;">
               <img
                 src="https://tgbcqufuppegmlhigt2zosiv2q55qty4t4rg2gebmfm4vpvf.arweave.net/mYIoULR7yGYs_6DT1_l0kV1DvYTxyfIm0YgWFZyr6l0"
                 alt="arweave logo"
