@@ -6,12 +6,15 @@
 
 <Navbar />
 <main>
-  <section>
-    <SearchForm />
-    <h1>Notes</h1>
-    <div class="flex">
-      <NoteCard tx="1" title="hello" description="A note about hello" />
-      <NoteCard tx="2" title="goodbye" description="A note about goodbye" />
+  <section class="hero bg-base-200">
+    <div class="hero-content flex-col">
+      <SearchForm />
+      <h1>Notes</h1>
+      <a href="/notes/new" class="btn btn-primary">New Note</a>
+      <div class="flex flex-col space-y-4">
+        <NoteCard tx="1" title="hello" description="A note about hello" />
+        <NoteCard tx="2" title="goodbye" description="A note about goodbye" />
+      </div>
     </div>
   </section>
 </main>

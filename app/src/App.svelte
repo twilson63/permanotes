@@ -26,7 +26,10 @@
   <Route path="/notes">
     <Notes />
   </Route>
-  <Route path="/notes/:id">
+  <Route path="/notes/new">
+    <p>NEW NOTE</p>
+  </Route>
+  <Route path="/notes/:id/show">
     <p>TODO</p>
   </Route>
   <Route path="/notes/:id/edit">
