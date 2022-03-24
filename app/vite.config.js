@@ -7,6 +7,9 @@ import tailwindConfig from './tailwind.config.js'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [svelte()],
+  optimizeDeps: {
+    exclude: ['tinro']
+  },
   server: {
     hmr: {
       clientPort: process.env.HMR_HOST ? 443 : 24678,
