@@ -7,6 +7,7 @@
   import Notes from "./notes.svelte";
   import Account from "./account.svelte";
   import Form from "./form.svelte";
+  import Show from "./show.svelte";
 
   import * as R from "ramda";
 
@@ -24,6 +25,9 @@
 <Route path="/connect">
   <Connect />
 </Route>
+<Route path="/notes/:id/show">
+  <Show />
+</Route>
 {#if not(isEmpty($address))}
   <Route path="/notes">
     <Notes />
@@ -31,9 +35,7 @@
   <Route path="/notes/new">
     <Form />
   </Route>
-  <Route path="/notes/:id/show">
-    <p>TODO</p>
-  </Route>
+
   <Route path="/notes/:id/edit">
     <p>TODO</p>
   </Route>
