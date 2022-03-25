@@ -7,7 +7,7 @@
   async function getNote(tx) {
     const result = await arweave.api.get(tx);
     const note = result.data;
-    console.log(new Uint8Array(Object.values(note.content)));
+    // console.log(new Uint8Array(Object.values(note.content)));
     const ctx = await arweave.crypto.decrypt(
       new Uint8Array(Object.values(note.content)),
       note.owner
