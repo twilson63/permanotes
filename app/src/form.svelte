@@ -3,16 +3,36 @@
   import { postTx } from "./services/arweave.js";
   import { createNote } from "./models/notes.js";
   import { address } from "./store.js";
+
+  import EasyMDE from "easymde";
+  import { onMount } from "svelte";
+
+  var easymde = null;
+
+  onMount(() => {
+    easymde = new EasyMDE();
+  });
+
   let note = { tags: [], public: false };
 
   async function submit() {
+    note.content = easymde.value();
+    console.log("CONTENT: ", note.content);
     note.owner = $address;
     const data = createNote(note);
     console.log("data", data);
-    const result = await postTx(data);
+    //const result = await postTx(data);
     console.log("result", result);
   }
 </script>
+
+<svelte:head>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/easymde/dist/easymde.min.css"
+  />
+  <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+</svelte:head>
 
 <Navbar />
 <main>
@@ -46,10 +66,9 @@
         <div class="form-control">
           <label for="content" class="label">Content(markdown)</label>
           <textarea
-            class="textarea textarea-bordered textarea-secondary"
+            class="textarea textarea-bordered textarea-secondary bg-white"
             id="content"
             name="content"
-            bind:value={note.content}
           />
         </div>
         <div class="form-control">
