@@ -38,29 +38,25 @@
 <main>
   <section class="hero bg-base-100 min-h-screen">
     <div class="hero-content flex-col">
-      <h2 class="text-6xl">Create a PermaNote</h2>
-      <p>
-        When you create a note, it will be posted on the permaweb, and can never
-        be removed, if you choose to keep it private it will be encrypted by
-        your wallet.
-      </p>
       <form class="w-full" on:submit|preventDefault={submit}>
         <div class="form-control">
           <label for="title" class="label">Title</label>
           <input
-            class="input input-bordered input-secondary"
+            class="input input-bordered"
             id="title"
             name="title"
             bind:value={note.title}
+            placeholder="Enter title of your note (max: 20 characters)"
           />
         </div>
         <div class="form-control">
           <label for="description" class="label">Description</label>
           <input
-            class="input input-bordered input-secondary"
+            class="input input-bordered"
             id="description"
             name="description"
             bind:value={note.description}
+            placeholder="Enter a 50 character description of your note."
           />
         </div>
         <div class="form-control">
@@ -72,17 +68,21 @@
           />
         </div>
         <div class="form-control">
-          <label for="tag" class="label">Tags</label>
+          <label for="topic" class="label">Topic</label>
           <input
             class="input input-bordered"
-            id="tags"
-            name="tags"
+            id="topic"
+            name="topic"
             bind:value={note.tags}
+            placeholder="Enter a topic for your note."
           />
         </div>
-        <div class="form-control">
+        <div class="mt-4 form-control">
           <label for="public" class="label cursor-pointer">
-            <span class="label-text">Public</span>
+            <span class="label-text"
+              >Public (if marked public the note will be unencrypted and
+              viewable by everyone.)</span
+            >
             <input
               type="checkbox"
               class="toggle toggle-secondary"
@@ -90,7 +90,12 @@
             />
           </label>
         </div>
-        <div>
+        <p class="mt-4 alert alert-info">
+          When you create a note, it will be posted on the permaweb, and can
+          never be removed, if you choose to keep it private it will be
+          encrypted by your wallet.
+        </p>
+        <div class="mt-8">
           <button type="submit" class="btn">Create Note</button>
           <a class="btn" href="/notes">Cancel</a>
         </div>
