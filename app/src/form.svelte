@@ -1,6 +1,7 @@
 <script>
+  import { router } from "tinro";
   import Navbar from "./components/navbar.svelte";
-  import { postTx } from "./services/arweave.js";
+  import { postTx, waitfor } from "./services/arweave.js";
   import { createNote } from "./models/notes.js";
   import { address } from "./store.js";
 
@@ -22,18 +23,12 @@
     note.owner = $address;
     const data = createNote(note);
     console.log("data", data);
-    //const result = await postTx(data);
-    console.log("result", result);
+    const id = await postTx(data);
+    window.scrollTo(0, 0);
+    await waitfor(id);
+    router.goto("/notes");
   }
 </script>
-
-<svelte:head>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/easymde/dist/easymde.min.css"
-  />
-  <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-</svelte:head>
 
 <Navbar />
 <main>
