@@ -8,11 +8,13 @@ test('ArWeave Init', async () => {
   assert.is(result.network, 'arweave.N.1')
 })
 
-test('ArWeave App Connect', async () =>
-  connectApp().catch(err => {
-    assert.is(err.message, 'window is not defined')
-  })
+// test('ArWeave App Connect', async () =>
+//   connectApp().catch(err => {
+//     assert.is(err.message, 'window is not defined')
+//   })
 
-)
+// )
+
+
 
 test.run()

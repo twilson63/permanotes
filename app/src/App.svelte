@@ -28,18 +28,27 @@
 <Route path="/notes/:id/show">
   <Show />
 </Route>
-{#if not(isEmpty($address))}
-  <Route path="/notes">
+<Route path="/notes">
+  {#if not(isEmpty($address))}
     <Notes />
-  </Route>
-  <Route path="/notes/new">
+  {:else}
+    <Connect />
+  {/if}
+</Route>
+<Route path="/notes/new">
+  {#if not(isEmpty($address))}
     <Form />
-  </Route>
-
-  <Route path="/notes/:id/edit">
-    <p>TODO</p>
-  </Route>
-  <Route path="/account">
+  {:else}
+    <Connect />
+  {/if}
+</Route>
+<Route path="/notes/:id/edit">
+  <p>TODO</p>
+</Route>
+<Route path="/account">
+  {#if not(isEmpty($address))}
     <Account />
-  </Route>
-{/if}
+  {:else}
+    <Connect />
+  {/if}
+</Route>

@@ -4,16 +4,17 @@
   import { createNote } from "./models/notes.js";
   import { address } from "./store.js";
 
-  import EasyMDE from "easymde";
+  //import EasyMDE from "easymde";
   import { onMount } from "svelte";
 
   var easymde = null;
+  let error = null;
 
   onMount(() => {
-    easymde = new EasyMDE();
+    easymde = new window.EasyMDE();
   });
 
-  let note = { tags: [], public: false };
+  let note = { public: false };
 
   async function submit() {
     note.content = easymde.value();
@@ -38,6 +39,11 @@
 <main>
   <section class="hero bg-base-100 min-h-screen">
     <div class="hero-content flex-col">
+      {#if error}
+        <div class="alert alert-error">
+          {error}
+        </div>
+      {/if}
       <form class="w-full" on:submit|preventDefault={submit}>
         <div class="form-control">
           <label for="title" class="label">Title</label>
@@ -45,6 +51,7 @@
             class="input input-bordered"
             id="title"
             name="title"
+            maxlength="20"
             bind:value={note.title}
             placeholder="Enter title of your note (max: 20 characters)"
           />
@@ -55,6 +62,7 @@
             class="input input-bordered"
             id="description"
             name="description"
+            maxlength="50"
             bind:value={note.description}
             placeholder="Enter a 50 character description of your note."
           />
@@ -73,8 +81,8 @@
             class="input input-bordered"
             id="topic"
             name="topic"
-            bind:value={note.tags}
-            placeholder="Enter a topic for your note."
+            bind:value={note.topic}
+            placeholder="(optional) Enter a topic for your note."
           />
         </div>
         <div class="mt-4 form-control">
