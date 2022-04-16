@@ -1,5 +1,5 @@
 <script>
-  export let tx, title, description, topic;
+  export let id, title, description, topic;
 </script>
 
 <div class="card bg-base-100 shadow-xl">
@@ -11,7 +11,7 @@
     <p>{description}</p>
     <div class="card-actions justify-end">
       <p class="mt-4">Created: Less than a minute</p>
-      <button class="btn btn-primary">View</button>
+      <a class="btn btn-primary" href="/notes/{id}/show">View</a>
     </div>
   </div>
 </div>

@@ -2,8 +2,15 @@
   import Navbar from "./components/navbar.svelte";
   import NoteCard from "./components/note-card.svelte";
   import SearchForm from "./components/search-form.svelte";
+  import { myNotes } from "./services/arweave.js";
+  import { txToNote } from "./models/notes.js";
+  import { map } from "ramda";
 
   let search = false;
+
+  async function listNotes() {
+    return map(txToNote, await myNotes());
+  }
 </script>
 
 <Navbar />
@@ -28,18 +35,24 @@
         </div>
       </div>
       <div class="flex flex-col space-y-4 w-full">
-        <NoteCard
-          tx="1"
-          title="hello"
-          description="A note about hello"
-          topic="personal"
-        />
+        {#await listNotes() then notes}
+          {#each notes as note}
+            <NoteCard
+              id={note.id}
+              title={note.title}
+              description={note.description}
+              topic={note.topic}
+            />
+          {/each}
+        {/await}
+        <!--
         <NoteCard
           tx="2"
           title="goodbye"
           description="A note about goodbye"
           topic="work"
         />
+        -->
       </div>
     </div>
   </section>

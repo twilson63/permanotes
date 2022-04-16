@@ -1,8 +1,7 @@
 import Arweave from 'arweave'
-import deepHash from 'arweave/node/lib/deepHash.js'
 import Account from 'arweave-account'
+import { path, pluck } from 'ramda'
 
-import ArweaveBundles from 'arweave-bundles'
 import { ArweaveWebWallet } from "arweave-wallet-connector";
 
 const arweaveAccount = new Account()
@@ -11,12 +10,6 @@ export const arweave = new Arweave.init({
   host: import.meta.env.VITE_ARWEAVE || 'arweave.net',
   port: '443',
   protocol: 'https'
-})
-
-const arBundles = ArweaveBundles({
-  utils: Arweave.utils,
-  crypto: Arweave.crypto,
-  deepHash
 })
 
 export const connectApp = () => {
@@ -31,15 +24,16 @@ export const connectApp = () => {
 export const account = (address) => arweaveAccount.get(address)
 
 export const postTx = async (note) => {
-  const enc = await arweave.crypto.encrypt(arweave.utils.stringToBuffer(note.content), note.owner)
+  const enc = await arweave.crypto.encrypt(new TextEncoder().encode(note.content), note.owner)
+  console.log('enc', enc)
   note.content = enc.toString()
+
+  note.content = enc
   console.log('note', note)
 
   const tx = await arweave.createTransaction({
     data: JSON.stringify(note)
   })
-  //const tx = await arBundles.createData({ data: JSON.stringify(note) })
-
 
   tx.addTag('Content-Type', 'application/json')
   tx.addTag('App-Name', 'PermaNotes')
@@ -49,20 +43,30 @@ export const postTx = async (note) => {
   tx.addTag('Note-Rev', note.rev)
 
   //note.tags.map((tag, i) => tx.addTag(`Tag${i}`, tag))
+  return await arweaveWallet.dispatch(tx)
 
-  await arweave.transactions.sign(tx)
-  await arweave.transactions.post(tx)
-  return tx.id
-  // const d = await arBundles.sign(tx)
-  // const bundle = await arBundles.bundleData([d])
-  // const bundleTx = await arweave.createTransaction({ data: bundle })
-  // bundleTx.addTag('Bundle-Format', 'json')
-  // bundleTx.addTag('Bundle-Version', '1.0.0')
-  // bundleTx.addTag('Content-Type', 'application/json')
-  // await arweave.transactions.sign(bundleTx)
-  // return await arweave.transactions.post(bundleTx)
+}
 
-
+export const myNotes = async () => {
+  const owner = await arweaveWallet.getActiveAddress()
+  const result = await arweave.api.post('graphql', {
+    query: `
+query {
+  transactions(owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNote-Test"]}) {
+    edges {
+      node {
+        id
+        tags {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+    `
+  })
+  return pluck('node', path(['data', 'data', 'transactions', 'edges'], result))
 }
 
 export const waitfor = async (txId) => {
@@ -81,7 +85,11 @@ query {
   }
 }
     `});
-    foundPost = result.data.data.transaction.id === txId;
+
+    if (result?.data?.data?.transaction) {
+      foundPost = result.data.data.transaction.id === txId;
+    }
+
     if (count > 10) {
       break; // could not find post
     }

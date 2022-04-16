@@ -23,9 +23,10 @@
     note.owner = $address;
     const data = createNote(note);
     console.log("data", data);
-    const id = await postTx(data);
+    const result = await postTx(data);
+    console.log(result);
     window.scrollTo(0, 0);
-    await waitfor(id);
+    await waitfor(result.id);
     router.goto("/notes");
   }
 </script>

@@ -7,12 +7,15 @@
   async function getNote(tx) {
     const result = await arweave.api.get(tx);
     const note = result.data;
-    // console.log(new Uint8Array(Object.values(note.content)));
-    const ctx = await arweave.crypto.decrypt(
-      new Uint8Array(Object.values(note.content)),
-      note.owner
+    // console.log("buffer", note.content);
+    // const ctx = await arweave.crypto
+    //   .decrypt(arweave.utils.stringToBuffer(note.content), note.owner)
+    //   .catch((e) => console.log(e));
+    //console.log("ctx", ctx);
+    const ctx = await arweaveWallet.decrypt(
+      arweave.utils.stringToBuffer(note.content)
     );
-    console.log("ctx", arweave.utils.bufferToString(ctx));
+    console.log("ctx", ctx);
     note.content = arweave.utils.bufferToString(ctx);
     return note;
   }
