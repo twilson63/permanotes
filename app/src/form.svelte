@@ -1,7 +1,7 @@
 <script>
   import { router } from "tinro";
   import Navbar from "./components/navbar.svelte";
-  import { postTx, waitfor } from "./services/arweave.js";
+  import { postTx, waitfor, payment } from "./services/arweave.js";
   import { createNote } from "./models/notes.js";
   import { address } from "./store.js";
 
@@ -27,6 +27,7 @@
     console.log(result);
     window.scrollTo(0, 0);
     await waitfor(result.id);
+    await payment();
     router.goto("/notes");
   }
 </script>

@@ -13,7 +13,7 @@
   }
 
   async function arConnect() {
-    if (!arweaveWallet) {
+    if (window.arweaveWallet === undefined) {
       window.location.href = "https://arconnect.io";
     }
     await arweaveWallet.connect(
@@ -43,7 +43,7 @@
     <div class="hero-content text-center">
       <div class="max-w-md">
         <h1 class="text-6xl">Connect Wallet</h1>
-        <div class="mt-16 flex space-x-8">
+        <div class="mt-16 flex">
           <div
             class="card bg-base-100 shadow-xl hover:border"
             on:click={arConnect}
@@ -60,6 +60,7 @@
               <h2 class="card-title">ArConnect</h2>
             </div>
           </div>
+          <!--
           <div
             class="card bg-base-100 shadow-xl hover:border"
             on:click={appConnect}
@@ -75,7 +76,9 @@
               <h2 class="card-title">ArWeave App</h2>
             </div>
           </div>
+          -->
         </div>
+
         <div class="mt-16">
           <p>Need help?</p>
           <p>

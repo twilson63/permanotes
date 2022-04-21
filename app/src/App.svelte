@@ -28,14 +28,7 @@
 <Route path="/connect">
   <Connect />
 </Route>
-<Route path="/notes">
-  {#if not(isEmpty($address))}
-    <Notes />
-  {:else}
-    <Connect />
-  {/if}
-</Route>
-<Route path="/notes/*">
+<Route path="/notes/*" firstmatch>
   <Route path="/new">
     {#if not(isEmpty($address))}
       <Form />
@@ -45,6 +38,13 @@
   </Route>
   <Route path="/:id">
     <Show />
+  </Route>
+  <Route fallback>
+    {#if not(isEmpty($address))}
+      <Notes />
+    {:else}
+      <Connect />
+    {/if}
   </Route>
 </Route>
 

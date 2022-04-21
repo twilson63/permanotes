@@ -3,6 +3,9 @@ import Account from 'arweave-account'
 import { path, pluck } from 'ramda'
 
 import { ArweaveWebWallet } from "arweave-wallet-connector";
+import { readContract, selectWeightedPstHolder } from 'smartweave'
+
+const CONTRACT_ID = 'cwElAMnBqu2fp-TUsV9lBIZJi-DRZ5tQJgJqxhFjqNY'
 
 const arweaveAccount = new Account()
 
@@ -53,6 +56,17 @@ export const postTx = async (note) => {
   //note.tags.map((tag, i) => tx.addTag(`Tag${i}`, tag))
   return await arweaveWallet.dispatch(tx)
 
+}
+
+export const payment = async () => {
+  const contractState = await readContract(arweave, CONTRACT_ID)
+  const holder = selectWeightedPstHolder(contractState.balances)
+  const fee = await arweave.createTransaction({
+    target: holder,
+    quantity: arweave.ar.arToWinston('.001')
+  })
+  await arweave.transactions.sign(fee)
+  return await arweave.transactions.post(fee)
 }
 
 export const myNotes = async () => {

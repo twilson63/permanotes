@@ -38,7 +38,7 @@
     {#await getNote(route.params.id) then note}
       <h1 class="text-3xl">Title: {note.title}</h1>
       <p class="mb-16">Description: {note.description}</p>
-      <div>{@html marked.parse(note.content)}</div>
+      <div class="prose prose-lg">{@html marked.parse(note.content)}</div>
     {/await}
   </section>
 </main>
