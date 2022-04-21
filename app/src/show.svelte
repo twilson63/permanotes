@@ -9,6 +9,7 @@
     console.log({ tx });
     const result = await arweave.api.get(tx);
     const note = result.data;
+    console.log("note", note);
     // console.log("buffer", note.content);
     // const ctx = await arweave.crypto
     //   .decrypt(arweave.utils.stringToBuffer(note.content), note.owner)
@@ -16,10 +17,14 @@
     //console.log("ctx", ctx);
     if (!note.public) {
       const ctx = await arweaveWallet.decrypt(
-        arweave.utils.stringToBuffer(note.content)
+        new Uint8Array(Object.values(note.content)),
+        {
+          algorithm: "RSA-OAEP",
+          hash: "SHA-256",
+        }
       );
       console.log("ctx", ctx);
-      note.content = arweave.utils.bufferToString(ctx);
+      note.content = ctx;
     }
     return note;
   }

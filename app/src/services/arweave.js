@@ -30,21 +30,23 @@ export const readNote = async (txId) => {
 
 export const postTx = async (note) => {
   if (!note.public) {
-    const enc = await arweave.crypto.encrypt(new TextEncoder().encode(note.content), note.owner)
+    const enc = await arweaveWallet.encrypt(note.content, {
+      algorithm: 'RSA-OAEP',
+      hash: 'SHA-256'
+    })
     console.log('enc', enc)
     note.content = enc
   }
 
   const tx = await arweave.createTransaction({
-    data: JSON.stringify(note),
-    target: 'x4PpVA-uhpIsUWNB8gLtMLMS3OClviGoMwJCndhPS3c',
-    quantity: arweave.ar.arToWinston('.002')
+    data: JSON.stringify(note)
   })
 
   tx.addTag('Content-Type', 'application/json')
   tx.addTag('App-Name', 'PermaNotes')
   tx.addTag('Protocol', note.protocol)
   tx.addTag('Note-Title', note.title)
+  tx.addTag('Description', note.description)
   tx.addTag('Note-Topic', note.topic)
   tx.addTag('Note-Rev', note.rev)
 

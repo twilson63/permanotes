@@ -8,7 +8,7 @@
       <h2 class="card-title flex-1">{title}</h2>
       <p class="flex-none">#{topic}</p>
     </div>
-    <p>{description}</p>
+    <p>{description || ""}</p>
     <div class="card-actions justify-end">
       <p class="mt-4">Created: Less than a minute</p>
       <a class="btn btn-primary" href="/notes/{id}">View</a>
