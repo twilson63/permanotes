@@ -11,6 +11,30 @@
     account.set(a);
     router.goto("/account");
   }
+
+  async function arConnect() {
+    if (!arweaveWallet) {
+      window.location.href = "https://arconnect.io";
+    }
+    await arweaveWallet.connect(
+      [
+        "ACCESS_ADDRESS",
+        "ACCESS_PUBLIC_KEY",
+        "SIGN_TRANSACTION",
+        "DISPATCH",
+        "ENCRYPT",
+        "DECRYPT",
+      ],
+      {
+        name: "PermaNotes",
+      }
+    );
+    const addr = await arweaveWallet.getActiveAddress();
+    const a = await getAccount(addr);
+    address.set(addr);
+    account.set(a);
+    router.goto("/account");
+  }
 </script>
 
 <Navbar />
@@ -20,7 +44,10 @@
       <div class="max-w-md">
         <h1 class="text-6xl">Connect Wallet</h1>
         <div class="mt-16 flex space-x-8">
-          <div class="card bg-base-100 shadow-xl hover:border">
+          <div
+            class="card bg-base-100 shadow-xl hover:border"
+            on:click={arConnect}
+          >
             <figure class="px-10 pt-10 bg-gray-400" style="height: 168px;">
               <img
                 height="128px"

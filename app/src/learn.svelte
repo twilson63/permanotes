@@ -31,9 +31,8 @@
         <div class="card-body">
           <h2 class="card-title">Sharability</h2>
           <p>
-            There are times you may want to share your notes with others, all
-            you need to do is add a `arweave-account` username or `wallet`
-            address to your note.
+            There are times you may want to share your notes with others. With
+            permanotes you can share any note, with any registered user.
           </p>
         </div>
       </div>
@@ -42,7 +41,7 @@
           <h2 class="card-title">Publishability</h2>
           <p>
             Want to share your thoughts with the world, publish your note and
-            create a public url to share in social media.
+            permanotes will create a public url for you to share.
           </p>
         </div>
       </div>
@@ -50,9 +49,16 @@
     <h3 class="mt-8 text-xl">Getting Started</h3>
     <p class="mt-8">How do I get started?</p>
     <p class="mt-4">
-      PermaNotes uses crypto technology for power, so in order to use this
-      platform, you need to get some `AR` coin. You can purchase `AR` from
-      several crypto exchanges, then you will want to create a wallet.
+      PermaNotes is a pay as you go platform, it is important to register, and
+      you will need a wallet `ArConnect` with some `AR`. The `AR` is the crypto
+      token native to the permaweb, and in order to use any application on the
+      permaweb, you need `AR`.
+    </p>
+    <p>
+      After you have your wallet and some AR, you need to <a href="/register"
+        >register</a
+      >. The registration process will connect your wallet to an account and
+      create a set of keys that will be used to encrypt and decrypt your notes.
     </p>
   </section>
 </main>

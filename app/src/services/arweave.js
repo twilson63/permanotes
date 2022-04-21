@@ -23,16 +23,22 @@ export const connectApp = () => {
 
 export const account = (address) => arweaveAccount.get(address)
 
-export const postTx = async (note) => {
-  const enc = await arweave.crypto.encrypt(new TextEncoder().encode(note.content), note.owner)
-  console.log('enc', enc)
-  note.content = enc.toString()
+export const readNote = async (txId) => {
+  const data = await arweave.getData(txId)
+  console.log(data)
+}
 
-  note.content = enc
-  console.log('note', note)
+export const postTx = async (note) => {
+  if (!note.public) {
+    const enc = await arweave.crypto.encrypt(new TextEncoder().encode(note.content), note.owner)
+    console.log('enc', enc)
+    note.content = enc
+  }
 
   const tx = await arweave.createTransaction({
-    data: JSON.stringify(note)
+    data: JSON.stringify(note),
+    target: 'x4PpVA-uhpIsUWNB8gLtMLMS3OClviGoMwJCndhPS3c',
+    quantity: arweave.ar.arToWinston('.002')
   })
 
   tx.addTag('Content-Type', 'application/json')

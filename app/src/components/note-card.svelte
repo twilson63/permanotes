@@ -11,7 +11,7 @@
     <p>{description}</p>
     <div class="card-actions justify-end">
       <p class="mt-4">Created: Less than a minute</p>
-      <a class="btn btn-primary" href="/notes/{id}/show">View</a>
+      <a class="btn btn-primary" href="/notes/{id}">View</a>
     </div>
   </div>
 </div>

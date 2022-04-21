@@ -29,6 +29,7 @@
     "arweave-wallet-connector": "^0.0.26",
     "crocks": "^0.12.4",
     "easymde": "^2.16.1",
+    "marked": "^4.0.14",
     "ramda": "^0.28.0",
     "simplemde": "^1.11.2",
     "zod": "^3.14.2"

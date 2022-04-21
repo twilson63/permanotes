@@ -1,6 +1,7 @@
 <script>
   import { Route, router } from "tinro";
   import { address } from "./store.js";
+  import Announcer from "./components/announcer.svelte";
   import Home from "./home.svelte";
   import Learn from "./learn.svelte";
   import Connect from "./connect.svelte";
@@ -14,8 +15,10 @@
   const { not, isEmpty } = R;
 
   router.mode.hash();
+  router.subscribe((_) => window.scrollTo(0, 0));
 </script>
 
+<Announcer />
 <Route path="/">
   <Home />
 </Route>
@@ -25,9 +28,6 @@
 <Route path="/connect">
   <Connect />
 </Route>
-<Route path="/notes/:id/show">
-  <Show />
-</Route>
 <Route path="/notes">
   {#if not(isEmpty($address))}
     <Notes />
@@ -35,13 +35,19 @@
     <Connect />
   {/if}
 </Route>
-<Route path="/notes/new">
-  {#if not(isEmpty($address))}
-    <Form />
-  {:else}
-    <Connect />
-  {/if}
+<Route path="/notes/*">
+  <Route path="/new">
+    {#if not(isEmpty($address))}
+      <Form />
+    {:else}
+      <Connect />
+    {/if}
+  </Route>
+  <Route path="/:id">
+    <Show />
+  </Route>
 </Route>
+
 <Route path="/notes/:id/edit">
   <p>TODO</p>
 </Route>

@@ -16,13 +16,9 @@
       </svg>
 
       <h1 class="text-6xl">
-        Welcome to <span class="uppercase">PermaNotes</span>
+        <span class="uppercase">PermaNotes</span>
       </h1>
-      <p>
-        PermaNotes is a note application that encrypts and stores your personal
-        notes on the permaweb, using an arweave wallet, you can keep your notes
-        forever. Pay a small fee one time and have access to your notes forever.
-      </p>
+      <p>Keep notes forever!</p>
       <div class="mt-16 space-x-8">
         <a href="/connect" class="btn btn-primary">Connect</a>
         <a href="/learn" class="btn">Learn More</a>
