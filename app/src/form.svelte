@@ -10,6 +10,7 @@
 
   var easymde = null;
   let error = null;
+  let submitting = false;
 
   onMount(() => {
     easymde = new window.EasyMDE();
@@ -18,6 +19,7 @@
   let note = { public: false };
 
   async function submit() {
+    submitting = true;
     note.content = easymde.value();
     console.log("CONTENT: ", note.content);
     note.owner = $address;
@@ -28,6 +30,7 @@
     window.scrollTo(0, 0);
     await waitfor(result.id);
     await payment();
+    submitting = false;
     router.goto("/notes");
   }
 </script>
@@ -108,3 +111,24 @@
     </div>
   </section>
 </main>
+
+<input
+  type="checkbox"
+  id="save-note"
+  bind:checked={submitting}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Saving Note to Arweave</h3>
+    <p class="py-4">
+      This should only take a few seconds to store your note on the Permaweb.
+      Once successfully stored, it will be stored forever.
+    </p>
+    <!--
+    <div class="modal-action">
+      <label for="save-note" class="btn">OK</label>
+    </div>
+    -->
+  </div>
+</div>

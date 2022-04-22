@@ -9,6 +9,7 @@
   import Account from "./account.svelte";
   import Form from "./form.svelte";
   import Show from "./show.svelte";
+  import Test from "./test.svelte";
 
   import * as R from "ramda";
 
@@ -57,4 +58,7 @@
   {:else}
     <Connect />
   {/if}
+</Route>
+<Route path="/test">
+  <Test />
 </Route>
