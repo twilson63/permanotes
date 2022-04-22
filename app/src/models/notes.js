@@ -12,7 +12,8 @@ const schema = z.object({
   protocol: z.literal('PermaNote-Test').default('PermaNote-Test'),
   content: z.string(),
   public: z.boolean(),
-  topic: z.string()
+  topic: z.string(),
+  timestamp: z.string()
 })
 
 const getTag = name => compose(
@@ -21,17 +22,20 @@ const getTag = name => compose(
 )
 
 export const createNote = (data) => {
+  data.timestamp = new Date().toISOString()
   return schema.parse(data)
 }
 
 export const txToNote = (tx) => {
-  console.log(tx)
+  const tsValue = getTag('Timestamp')(tx.tags)
+  const timestamp = tsValue ? tsValue : new Date().toISOString()
   const note = {
     id: tx.id,
     title: getTag('Note-Title')(tx.tags),
     description: getTag('Description')(tx.tags),
     topic: getTag('Note-Topic')(tx.tags),
     rev: getTag('Note-Rev')(tx.tags),
+    timestamp
   }
   return note
 }

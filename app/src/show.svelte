@@ -3,6 +3,7 @@
   import { meta } from "tinro";
   import { arweave } from "./services/arweave.js";
   import { marked } from "marked";
+  import { format } from "date-fns";
 
   const route = meta();
   async function getNote(tx) {
@@ -37,7 +38,13 @@
   >
     {#await getNote(route.params.id) then note}
       <h1 class="text-3xl">Title: {note.title}</h1>
-      <p class="mb-16">Description: {note.description}</p>
+      <p class="">Description: {note.description}</p>
+      <p class="mb-16">
+        Created: {format(
+          new Date(note.timestamp),
+          "MM-dd-yyyy HH:mm:ss.SSSxxx"
+        )}
+      </p>
       <div class="prose prose-lg">{@html marked.parse(note.content)}</div>
     {/await}
   </section>

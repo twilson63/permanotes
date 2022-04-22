@@ -42,6 +42,7 @@
               title={note.title}
               description={note.description}
               topic={note.topic}
+              timestamp={note.timestamp}
             />
           {/each}
         {/await}

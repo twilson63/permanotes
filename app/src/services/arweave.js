@@ -52,6 +52,7 @@ export const postTx = async (note) => {
   tx.addTag('Description', note.description)
   tx.addTag('Note-Topic', note.topic)
   tx.addTag('Note-Rev', note.rev)
+  tx.addTag('Timestamp', new Date().toISOString())
 
   //note.tags.map((tag, i) => tx.addTag(`Tag${i}`, tag))
   return await arweaveWallet.dispatch(tx)

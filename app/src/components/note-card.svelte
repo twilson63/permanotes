@@ -1,5 +1,7 @@
 <script>
-  export let id, title, description, topic;
+  import { formatDistance } from "date-fns";
+
+  export let id, title, description, topic, timestamp;
 </script>
 
 <div class="card bg-base-100 shadow-xl">
@@ -10,7 +12,9 @@
     </div>
     <p>{description || ""}</p>
     <div class="card-actions justify-end">
-      <p class="mt-4">Created: Less than a minute</p>
+      <p class="mt-4">
+        {formatDistance(new Date(timestamp), new Date(), { addSuffix: true })}
+      </p>
       <a class="btn btn-primary" href="/notes/{id}">View</a>
     </div>
   </div>
