@@ -4,12 +4,16 @@
   import SearchForm from "./components/search-form.svelte";
   import { myNotes } from "./services/arweave.js";
   import { txToNote } from "./models/notes.js";
-  import { map } from "ramda";
+  import { map, sortBy, prop, compose, reverse } from "ramda";
 
   let search = false;
 
   async function listNotes() {
-    return map(txToNote, await myNotes());
+    return compose(
+      reverse,
+      sortBy(prop("timestamp")),
+      map(txToNote)
+    )(await myNotes());
   }
 </script>
 
