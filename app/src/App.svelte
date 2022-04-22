@@ -2,6 +2,7 @@
   import { Route, router } from "tinro";
   import { address } from "./store.js";
   import Announcer from "./components/announcer.svelte";
+  import Transition from "./components/transition.svelte";
   import Home from "./home.svelte";
   import Learn from "./learn.svelte";
   import Connect from "./connect.svelte";
@@ -20,45 +21,47 @@
 </script>
 
 <Announcer />
-<Route path="/">
-  <Home />
-</Route>
-<Route path="/learn">
-  <Learn />
-</Route>
-<Route path="/connect">
-  <Connect />
-</Route>
-<Route path="/notes/*" firstmatch>
-  <Route path="/new">
-    {#if not(isEmpty($address))}
-      <Form />
-    {:else}
-      <Connect />
-    {/if}
+<Transition>
+  <Route path="/">
+    <Home />
   </Route>
-  <Route path="/:id">
-    <Show />
+  <Route path="/learn">
+    <Learn />
   </Route>
-  <Route fallback>
-    {#if not(isEmpty($address))}
-      <Notes />
-    {:else}
-      <Connect />
-    {/if}
-  </Route>
-</Route>
-
-<Route path="/notes/:id/edit">
-  <p>TODO</p>
-</Route>
-<Route path="/account">
-  {#if not(isEmpty($address))}
-    <Account />
-  {:else}
+  <Route path="/connect">
     <Connect />
-  {/if}
-</Route>
-<Route path="/test">
-  <Test />
-</Route>
+  </Route>
+  <Route path="/notes/*" firstmatch>
+    <Route path="/new">
+      {#if not(isEmpty($address))}
+        <Form />
+      {:else}
+        <Connect />
+      {/if}
+    </Route>
+    <Route path="/:id">
+      <Show />
+    </Route>
+    <Route fallback>
+      {#if not(isEmpty($address))}
+        <Notes />
+      {:else}
+        <Connect />
+      {/if}
+    </Route>
+  </Route>
+
+  <Route path="/notes/:id/edit">
+    <p>TODO</p>
+  </Route>
+  <Route path="/account">
+    {#if not(isEmpty($address))}
+      <Account />
+    {:else}
+      <Connect />
+    {/if}
+  </Route>
+  <Route path="/test">
+    <Test />
+  </Route>
+</Transition>
