@@ -13,7 +13,15 @@
   let submitting = false;
 
   onMount(() => {
-    easymde = new window.EasyMDE();
+    easymde = new window.EasyMDE({
+      autosave: {
+        enabled: true,
+        uniqueId: "new-permanote",
+      },
+      previewClass: "bg-base-200 p-4 prose prose-lg",
+      spellChecker: false,
+      nativeSpellcheck: false,
+    });
   });
 
   let note = { public: false };
@@ -21,16 +29,14 @@
   async function submit() {
     submitting = true;
     note.content = easymde.value();
-    console.log("CONTENT: ", note.content);
     note.owner = $address;
     const data = createNote(note);
-    console.log("data", data);
     const result = await postTx(data);
-    console.log(result);
-    window.scrollTo(0, 0);
     await waitfor(result.id);
     await payment();
     submitting = false;
+
+    window.scrollTo(0, 0);
     router.goto("/notes");
   }
 </script>
