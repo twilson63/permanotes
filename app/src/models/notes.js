@@ -9,10 +9,10 @@ const schema = z.object({
   contentType: z.literal('text/markdown').default('text/markdown'),
   title: z.string().max(20),
   description: z.string().max(50),
-  protocol: z.literal('PermaNote-Test').default('PermaNote-Test'),
+  protocol: z.literal('PermaNotes-v0.1').default('PermaNotes-v0.1'),
   content: z.string(),
-  public: z.boolean(),
-  topic: z.string(),
+  public: z.boolean().default(false),
+  topic: z.string().optional(),
   timestamp: z.string()
 })
 

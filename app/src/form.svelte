@@ -54,6 +54,7 @@
         <div class="form-control">
           <label for="title" class="label">Title</label>
           <input
+            required
             class="input input-bordered"
             id="title"
             name="title"
@@ -65,6 +66,7 @@
         <div class="form-control">
           <label for="description" class="label">Description</label>
           <input
+            required
             class="input input-bordered"
             id="description"
             name="description"

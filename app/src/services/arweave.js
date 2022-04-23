@@ -55,8 +55,10 @@ export const postTx = async (note) => {
   tx.addTag('Timestamp', new Date().toISOString())
 
   //note.tags.map((tag, i) => tx.addTag(`Tag${i}`, tag))
-  return await arweaveWallet.dispatch(tx)
-
+  //return await arweaveWallet.dispatch(tx)
+  await arweave.transactions.sign(tx)
+  await arweave.transactions.post(tx)
+  return tx
 }
 
 export const payment = async () => {
@@ -75,7 +77,7 @@ export const myNotes = async () => {
   const result = await arweave.api.post('graphql', {
     query: `
 query {
-  transactions(owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNote-Test"]}) {
+  transactions(owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1"]}) {
     edges {
       node {
         id
