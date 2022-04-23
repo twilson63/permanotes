@@ -1,7 +1,7 @@
 <script>
   import Navbar from "./components/navbar.svelte";
   import { Jumper } from "svelte-loading-spinners";
-  import { meta } from "tinro";
+  import { router, meta } from "tinro";
   import { account, load } from "./services/arweave.js";
   import { notes } from "./app.js";
   import { marked } from "marked";
@@ -11,13 +11,16 @@
 
   const route = meta();
   async function getNote(tx) {
-    loading = true;
-    const app = notes({ load, account });
-    const note = await app.get(tx);
-    console.log(note);
-    note.handle = await app.getHandle(note.owner);
-    loading = false;
-    return note;
+    try {
+      loading = true;
+      const app = notes({ load, account });
+      const note = await app.get(tx);
+      note.handle = await app.getHandle(note.owner);
+      loading = false;
+      return note;
+    } catch (e) {
+      router.goto("/404");
+    }
   }
 </script>
 

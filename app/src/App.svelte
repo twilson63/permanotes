@@ -10,6 +10,7 @@
   import Account from "./account.svelte";
   import Form from "./form.svelte";
   import Show from "./show.svelte";
+  import Notfound from "./404.svelte";
   import Test from "./test.svelte";
 
   import * as R from "ramda";
@@ -61,7 +62,7 @@
       <Connect />
     {/if}
   </Route>
-  <Route path="/test">
-    <Test />
+  <Route path="/404">
+    <Notfound />
   </Route>
 </Transition>
