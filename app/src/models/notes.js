@@ -31,6 +31,7 @@ export const txToNote = (tx) => {
   const timestamp = tsValue ? tsValue : new Date().toISOString()
   const note = {
     id: tx.id,
+    owner: tx.owner.address,
     title: getTag('Note-Title')(tx.tags),
     description: getTag('Description')(tx.tags),
     topic: getTag('Note-Topic')(tx.tags),
@@ -38,4 +39,9 @@ export const txToNote = (tx) => {
     timestamp
   }
   return note
+}
+
+export const validate = (data) => {
+  data.timestamp = new Date().toISOString()
+  return schema.parse(data)
 }
