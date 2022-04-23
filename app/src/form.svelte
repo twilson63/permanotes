@@ -43,6 +43,7 @@
     } catch (e) {
       window.scrollTo(0, 0);
       error = e.message;
+      submitting = false;
     }
   }
 </script>
@@ -84,7 +85,6 @@
         <div class="form-control">
           <label for="content" class="label">Content(markdown)</label>
           <textarea
-            required
             class="textarea textarea-bordered textarea-secondary bg-white"
             id="content"
             name="content"

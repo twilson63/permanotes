@@ -12,6 +12,8 @@
     router.goto("/account");
   }
 
+  async function fileUpload() {}
+
   async function arConnect() {
     if (window.arweaveWallet === undefined) {
       window.location.href = "https://arconnect.io";
@@ -60,6 +62,23 @@
               <h2 class="card-title">ArConnect</h2>
             </div>
           </div>
+          <div
+            class="card bg-base-100 shadow-xl hover:border ml-8"
+            on:click={fileUpload}
+          >
+            <figure class="px-10 pt-10 bg-gray-400" style="height: 168px;">
+              <img
+                height="128px"
+                src="https://via.placeholder.com/168?text=Upload%20Wallet"
+                alt="file upload"
+                class="rounded-xl"
+              />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">Upload Wallet</h2>
+            </div>
+          </div>
+
           <!--
           <div
             class="card bg-base-100 shadow-xl hover:border"
