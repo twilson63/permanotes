@@ -1,8 +1,9 @@
 <script>
   import { router } from "tinro";
   import Navbar from "./components/navbar.svelte";
-  import { postTx, waitfor, payment } from "./services/arweave.js";
-  import { createNote } from "./models/notes.js";
+  import { postTx, waitfor } from "./services/arweave.js";
+  import { Jumper } from "svelte-loading-spinners";
+  import { notes } from "./app.js";
   import { address } from "./store.js";
 
   //import EasyMDE from "easymde";
@@ -27,17 +28,22 @@
   let note = { public: false };
 
   async function submit() {
-    submitting = true;
-    note.content = easymde.value();
-    note.owner = $address;
-    const data = createNote(note);
-    const result = await postTx(data);
-    await waitfor(result.id);
-    await payment();
-    submitting = false;
+    try {
+      submitting = true;
 
-    window.scrollTo(0, 0);
-    router.goto("/notes");
+      note.content = easymde.value();
+      note.owner = $address;
+
+      await notes({ post: postTx, waitfor }).create(note);
+
+      submitting = false;
+
+      window.scrollTo(0, 0);
+      router.goto("/notes");
+    } catch (e) {
+      window.scrollTo(0, 0);
+      error = e.message;
+    }
   }
 </script>
 
@@ -78,6 +84,7 @@
         <div class="form-control">
           <label for="content" class="label">Content(markdown)</label>
           <textarea
+            required
             class="textarea textarea-bordered textarea-secondary bg-white"
             id="content"
             name="content"
@@ -133,6 +140,10 @@
       This should only take a few seconds to store your note on the Permaweb.
       Once successfully stored, it will be stored forever.
     </p>
+    <div class="flex items-center justify-center">
+      <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
+    </div>
+
     <!--
     <div class="modal-action">
       <label for="save-note" class="btn">OK</label>

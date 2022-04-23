@@ -24,25 +24,40 @@ export const connectApp = () => {
   return wallet.connect()
 }
 
-export const account = (address) => arweaveAccount.get(address)
+export const account = async (address) => await arweaveAccount.get(address)
 
-export const readNote = async (txId) => {
-  const data = await arweave.getData(txId)
-  console.log(data)
-}
+export const load = (id) => arweave.api.get(id)
+  .then(async res => {
+    if (!res.data.public) {
+      res.data.content = await arweaveWallet.decrypt(
+        new Uint8Array(Object.values(res.data.content)),
+        {
+          algorithm: "RSA-OAEP",
+          hash: "SHA-256",
+        }
+      )
+    }
+    return res.data
+  })
 
 export const postTx = async (note) => {
+
+  // encrypt content if private
   if (!note.public) {
-    const enc = await arweaveWallet.encrypt(note.content, {
+    note.content = await arweaveWallet.encrypt(note.content, {
       algorithm: 'RSA-OAEP',
       hash: 'SHA-256'
     })
-    console.log('enc', enc)
-    note.content = enc
   }
 
+  // get target wallet
+  const contractState = await readContract(arweave, CONTRACT_ID)
+  const holder = selectWeightedPstHolder(contractState.balances)
+
   const tx = await arweave.createTransaction({
-    data: JSON.stringify(note)
+    data: JSON.stringify(note),
+    target: holder,
+    quantity: arweave.ar.arToWinston('.001')
   })
 
   tx.addTag('Content-Type', 'application/json')
@@ -81,6 +96,9 @@ query {
     edges {
       node {
         id
+        owner {
+          address
+        }
         tags {
           name
           value
@@ -93,6 +111,8 @@ query {
   })
   return pluck('node', path(['data', 'data', 'transactions', 'edges'], result))
 }
+
+export const gql = (query) => arweave.api.post('graphql', { query })
 
 export const waitfor = async (txId) => {
   let count = 0;

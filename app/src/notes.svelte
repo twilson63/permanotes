@@ -2,18 +2,24 @@
   import Navbar from "./components/navbar.svelte";
   import NoteCard from "./components/note-card.svelte";
   import SearchForm from "./components/search-form.svelte";
-  import { myNotes } from "./services/arweave.js";
-  import { txToNote } from "./models/notes.js";
-  import { map, sortBy, prop, compose, reverse } from "ramda";
+  import { Jumper } from "svelte-loading-spinners";
+  import { address } from "./store.js";
+  import { gql } from "./services/arweave.js";
+  import { notes } from "./app.js";
 
   let search = false;
+  let loading = false;
 
   async function listNotes() {
-    return compose(
-      reverse,
-      sortBy(prop("timestamp")),
-      map(txToNote)
-    )(await myNotes());
+    try {
+      loading = true;
+      const results = await notes({ gql }).byOwner($address);
+      loading = false;
+      return results;
+    } catch (e) {
+      loading = false;
+      alert(e.message);
+    }
   }
 </script>
 
@@ -62,3 +68,18 @@
     </div>
   </section>
 </main>
+
+<input
+  type="checkbox"
+  id="save-note"
+  bind:checked={loading}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Loading Notes</h3>
+    <div class="flex items-center justify-center">
+      <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
+    </div>
+  </div>
+</div>

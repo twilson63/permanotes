@@ -1628,6 +1628,11 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+rambda@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/rambda/-/rambda-7.0.3.tgz#35730cb9ac24943c1231f74e6fddd46ae594d3c0"
+  integrity sha512-vRkFoukpx9PTmYyOjMZ6+anbDI9BrjaAepigsSOVQcgy7dZKMHM26m1/r8BvegeBCM8qBwr1m/+rufgNKRrofw==
+
 ramda@^0.28.0:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
@@ -1901,6 +1906,11 @@ svelte-hmr@^0.14.11:
   version "0.14.11"
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.14.11.tgz#63d532dc9c2c849ab708592f034765fa2502e568"
   integrity sha512-R9CVfX6DXxW1Kn45Jtmx+yUe+sPhrbYSUp7TkzbW0jI5fVPn6lsNG9NEs5dFg5qRhFNAoVdRw5qQDLALNKhwbQ==
+
+svelte-loading-spinners@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/svelte-loading-spinners/-/svelte-loading-spinners-0.1.7.tgz#3fa6fa0ef67ab635773bf20b07d0b071debbadaa"
+  integrity sha512-EKCId1DjVL2RSUVJJsvtNcqQHox03XIgh4xh/4p7r6ST7d8mut6INY9/LqK4A17PFU64+3quZmqiSfOlf480CA==
 
 svelte@^3.44.0:
   version "3.46.4"
