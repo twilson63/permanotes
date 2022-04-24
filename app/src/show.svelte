@@ -2,19 +2,33 @@
   import Navbar from "./components/navbar.svelte";
   import { Jumper } from "svelte-loading-spinners";
   import { router, meta } from "tinro";
-  import { account, load } from "./services/arweave.js";
+  import { arweave, account, load } from "./services/arweave.js";
   import { notes } from "./app.js";
   import { marked } from "marked";
   import { format } from "date-fns";
+  import { address } from "./store.js";
+  import { init as initLikes } from "./services/likes.js";
 
   let loading = false;
-
+  let likeContract = "";
+  const likes = initLikes(arweave);
+  const app = notes({ load, account, likes });
   const route = meta();
+
+  async function like() {
+    const result = await app.like(likeContract, $address);
+    console.log(result);
+  }
+
   async function getNote(tx) {
     try {
       loading = true;
-      const app = notes({ load, account });
+
       const note = await app.get(tx);
+      if (note.public) {
+        likeContract = note.likeContract;
+        note.likes = await app.getLikes(likeContract);
+      }
       note.handle = await app.getHandle(note.owner);
       loading = false;
       return note;
@@ -30,12 +44,14 @@
     class="mt-8 text-gray-700 relative w-full px-6 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28"
   >
     {#await getNote(route.params.id) then note}
-      <div class="float-right pr-8">
-        <button class="btn btn-ghost">
-          <img class="w-8" src="heart.svg" alt="like button" />
-        </button>
-        <div class="text-center">0</div>
-      </div>
+      {#if note.public}
+        <div class="float-right pr-8">
+          <button class="btn btn-ghost" on:click={like}>
+            <img class="w-8" src="heart.svg" alt="like button" />
+          </button>
+          <div class="text-center">{note.likes}</div>
+        </div>
+      {/if}
       <h1 class="text-3xl">{note.title}</h1>
       <p class="">Description: {note.description}</p>
       <p class="">By: {note.handle || note.owner}</p>

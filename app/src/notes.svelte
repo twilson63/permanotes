@@ -19,6 +19,7 @@
     } catch (e) {
       loading = false;
       alert(e.message);
+      return [];
     }
   }
 </script>

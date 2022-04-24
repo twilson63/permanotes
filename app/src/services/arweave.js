@@ -1,6 +1,8 @@
 import Arweave from 'arweave'
 import Account from 'arweave-account'
-import { path, pluck } from 'ramda'
+
+import path from 'ramda/src/path'
+import pluck from 'ramda/src/pluck'
 
 import { ArweaveWebWallet } from "arweave-wallet-connector";
 import { readContract, selectWeightedPstHolder } from 'smartweave'

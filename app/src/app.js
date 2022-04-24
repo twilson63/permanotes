@@ -1,6 +1,6 @@
 import { validate, txToNote } from './models/notes.js'
 import Async from 'crocks/Async/index.js'
-import { compose, pluck, path, reverse, sortBy, prop, map } from 'ramda'
+import { assoc, compose, pluck, path, reverse, sortBy, prop, map } from 'ramda'
 /** 
  * Permanotes application 
  * 
@@ -12,10 +12,23 @@ import { compose, pluck, path, reverse, sortBy, prop, map } from 'ramda'
  * - byTopic
  * - get
 */
-export function notes({ post, waitfor, gql, load, account }) {
+export function notes({ post, waitfor, gql, load, account, likes }) {
+  const buildLikes = Async.fromPromise(
+    async (tx) => tx.public ? assoc('likeContract', await likes.create(), tx) : tx
+  )
+  // const doPost = Async.fromPromise(async (tx) => await post(tx))
+  // const wait = Async.fromPromise(async (tx) => {
+  //   await waitfor(tx.id)
+  //   return tx
+  // })
+  //const runQuery = Async.fromPromise(gql)
+  //const loadData = Async.fromPromise(load)
+  //const getAccount = Async.fromPromise(account)
+
   async function create(note) {
     return Async.of(note)
       .chain(validate)
+      .chain(buildLikes)
       .chain(Async.fromPromise(post))
       .chain(tx => Async.fromPromise(waitfor)(tx.id))
       .toPromise()
@@ -52,12 +65,27 @@ export function notes({ post, waitfor, gql, load, account }) {
       .toPromise()
   }
 
+  function like(contract, address) {
+    return likes.like(contract, address)
+  }
+
+  function unlike(contract, address) {
+    return likes.unlike(contract, address)
+  }
+
+  function getLikes(contract) {
+    return likes.likes(contract)
+  }
+
   return {
     create,
     byOwner,
     byTopic,
     get,
-    getHandle
+    getHandle,
+    like,
+    unlike,
+    getLikes
   }
 }
 

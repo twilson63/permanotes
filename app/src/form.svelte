@@ -1,7 +1,8 @@
 <script>
   import { router } from "tinro";
   import Navbar from "./components/navbar.svelte";
-  import { postTx, waitfor } from "./services/arweave.js";
+  import { arweave, postTx, waitfor } from "./services/arweave.js";
+  import { init as initLikes } from "./services/likes.js";
   import { Jumper } from "svelte-loading-spinners";
   import { notes } from "./app.js";
   import { address } from "./store.js";
@@ -34,7 +35,9 @@
       note.content = easymde.value();
       note.owner = $address;
 
-      await notes({ post: postTx, waitfor }).create(note);
+      const likes = initLikes(arweave);
+      //createLikes: likes.create
+      await notes({ post: postTx, waitfor, likes }).create(note);
 
       submitting = false;
 

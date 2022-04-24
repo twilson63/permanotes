@@ -15,7 +15,8 @@ const schema = z.object({
   content: z.string(),
   public: z.boolean().default(false),
   topic: z.string().optional(),
-  timestamp: z.string()
+  timestamp: z.string(),
+  likeContract: z.string().optional()
 })
 
 const getTag = name => compose(
