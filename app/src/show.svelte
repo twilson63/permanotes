@@ -16,6 +16,8 @@
   const route = meta();
 
   async function like() {
+    alert("feature not implemented!");
+    return;
     const result = await app.like(likeContract, $address);
     console.log(result);
   }
@@ -25,10 +27,11 @@
       loading = true;
 
       const note = await app.get(tx);
-      if (note.public) {
-        likeContract = note.likeContract;
-        note.likes = await app.getLikes(likeContract);
-      }
+      // if (note.public) {
+      //   likeContract = note.likeContract;
+      //   note.likes = await app.getLikes(likeContract);
+      // }
+      note.likes = 0;
       note.handle = await app.getHandle(note.owner);
       loading = false;
       return note;

@@ -1,6 +1,14 @@
 import { validate, txToNote } from './models/notes.js'
 import Async from 'crocks/Async/index.js'
-import { assoc, compose, pluck, path, reverse, sortBy, prop, map } from 'ramda'
+//import { assoc, compose, pluck, path, reverse, sortBy, prop, map } from 'ramda'
+import assoc from 'ramda/src/assoc'
+import compose from 'ramda/src/compose'
+import pluck from 'ramda/src/pluck'
+import reverse from 'ramda/src/reverse'
+import sortBy from 'ramda/src/sortBy'
+import prop from 'ramda/src/prop'
+import map from 'ramda/src/map'
+import path from 'ramda/src/path'
 /** 
  * Permanotes application 
  * 
