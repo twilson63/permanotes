@@ -24,6 +24,16 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
   const buildLikes = Async.fromPromise(
     async (tx) => tx.public ? assoc('likeContract', await likes.create(), tx) : tx
   )
+  const getLikes = Async.fromPromise(
+    async (note) => {
+      try {
+        return note.public ? assoc('likes', await likes.likes(note.likeContract), note) : note
+      } catch (e) {
+        console.log('Error', e)
+        return note
+      }
+    }
+  )
   // const doPost = Async.fromPromise(async (tx) => await post(tx))
   // const wait = Async.fromPromise(async (tx) => {
   //   await waitfor(tx.id)
@@ -63,6 +73,8 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
   async function get(id) {
     return Async.of(id)
       .chain(Async.fromPromise(load))
+      .chain(getLikes)
+      .map(x => (console.log('likes', x.likes), x))
       .toPromise()
   }
 
@@ -81,9 +93,9 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
     return likes.unlike(contract, address)
   }
 
-  function getLikes(contract) {
-    return likes.likes(contract)
-  }
+  // function getLikes(contract) {
+  //   return likes.likes(contract)
+  // }
 
   return {
     create,
@@ -92,8 +104,7 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
     get,
     getHandle,
     like,
-    unlike,
-    getLikes
+    unlike
   }
 }
 

@@ -1,49 +1,80 @@
 //import { SmartWeaveWebFactory } from 'redstone-smartweave'
-const { SmartWeaveWebFactory } = rsdk
-const CONTRACT_SRC = 'ctyBbjOOd1sfJOiDvoNV-wT-8sAYYJ6pLe9bme35BAA'
+const { SmartWeaveWebFactory, LoggerFactory } = rsdk
+const CONTRACT_SRC = 'Hljxh8rYyXCb45BYULHb6KhUDnRkxc4ZUaUDCUkOP_w'
+
+LoggerFactory.INST.logLevel("fatal");
 
 export function init(arweave) {
   const smartweave = SmartWeaveWebFactory.memCachedBased(arweave)
-    .useRedStoneGateway()
+    .useRedStoneGateway({ notCorrupted: true })
     .build()
 
   function create() {
     return smartweave.createContract.deployFromSourceTx({
-      initState: JSON.stringify({ likes: [] }),
+      initState: JSON.stringify({ addresses: [] }),
       srcTxId: CONTRACT_SRC
     }, true)
   }
 
-  function like(contract, address) {
+  function like(contract = '', address = '') {
+    if (contract === '') {
+      throw new Error('contract can not be empty!')
+    }
+    if (address === '') {
+      throw new Error('address can not be empty!')
+    }
     return smartweave.contract(contract)
       .connect('use_wallet')
-      .writeInteraction({
+      .bundleInteraction({
         function: 'like',
-        address
+        transfer: {
+          target: address,
+          winstonQty: '1000000000'
+        }
+      })
+      .then(res => {
+        console.log(res)
+        return res
       })
   }
 
-  function unlike(contract, address) {
+  function unlike(contract = '', address = '') {
+    if (contract === '') {
+      throw new Error('contract can not be empty!')
+    }
+    if (address === '') {
+      throw new Error('address can not be empty!')
+    }
     return smartweave.contract(contract)
       .connect('use_wallet')
-      .writeInteraction({
+      .bundleInteraction({
         function: 'unlike',
-        address
+        transfer: {
+          target: address,
+          winstonQty: '1000000000'
+        }
       })
   }
 
   function likes(contract) {
     return smartweave.contract(contract)
       .connect('use_wallet')
-      .viewState({
-        function: 'likes'
-      }).then(res => res.result.likes)
+      .readState()
+      .then(({ state }) => state.addresses)
+  }
+
+  function liked(contract, address) {
+    return smartweave.contract(contract)
+      .connect('use_wallet')
+      .readState()
+      .then(({ state }) => state.addresses.includes(address))
   }
 
   return {
     create,
     like,
     unlike,
-    likes
+    likes,
+    liked
   }
 }
