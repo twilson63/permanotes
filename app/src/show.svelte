@@ -47,12 +47,17 @@
       loading = true;
 
       const note = await app.get(tx);
-      likeCount = note.public ? note.likes.length : 0;
-      likeContract = note.public ? note.likeContract : "";
-      liked =
-        window.arweaveWallet && note.public
-          ? note.likes.includes(await window.arweaveWallet.getActiveAddress())
-          : false;
+
+      try {
+        likeCount = note.public ? note.likes.length : 0;
+        likeContract = note.public ? note.likeContract : "";
+        liked =
+          window.arweaveWallet && note.public
+            ? note.likes.includes(await window.arweaveWallet.getActiveAddress())
+            : false;
+      } catch (e) {
+        console.log(e);
+      }
       note.handle = await app.getHandle(note.owner);
       owner = note.owner;
 
@@ -73,24 +78,31 @@
     {#await getNote(route.params.id) then note}
       {#if note.public}
         <div class="float-right pr-8">
-          {#if !liked}
-            <button
-              class="btn btn-ghost"
-              on:click={like}
-              disabled={disableLike}
+          {#if note.owner === $address}
+            <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
+              >Fork</a
             >
-              <img class="w-8" src="heart.svg" alt="like button" />
-            </button>
-          {:else}
-            <button
-              class="btn btn-ghost"
-              on:click={unlike}
-              disabled={disableUnlike}
-            >
-              <img class="w-8" src="fullheart.svg" alt="like button" />
-            </button>
           {/if}
-          <div class="text-center">{likeCount}</div>
+          <div class="flex flex-col">
+            {#if !liked}
+              <button
+                class="btn btn-ghost"
+                on:click={like}
+                disabled={disableLike}
+              >
+                <img class="w-8" src="heart.svg" alt="like button" />
+              </button>
+            {:else}
+              <button
+                class="btn btn-ghost"
+                on:click={unlike}
+                disabled={disableUnlike}
+              >
+                <img class="w-8" src="fullheart.svg" alt="like button" />
+              </button>
+            {/if}
+            <div class="text-center">{likeCount}</div>
+          </div>
         </div>
       {/if}
       <h1 class="text-3xl">{note.title}</h1>
