@@ -48,16 +48,13 @@
 
       const note = await app.get(tx);
 
-      try {
-        likeCount = note.public ? note.likes.length : 0;
-        likeContract = note.public ? note.likeContract : "";
-        liked =
-          window.arweaveWallet && note.public
-            ? note.likes.includes(await window.arweaveWallet.getActiveAddress())
-            : false;
-      } catch (e) {
-        console.log(e);
-      }
+      likeCount = note.public ? note.likes.length : 0;
+      likeContract = note.public ? note.likeContract : "";
+      liked =
+        window.arweaveWallet && note.public
+          ? note.likes.includes(await window.arweaveWallet.getActiveAddress())
+          : false;
+
       note.handle = await app.getHandle(note.owner);
       owner = note.owner;
 
