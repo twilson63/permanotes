@@ -74,7 +74,6 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
     return Async.of(id)
       .chain(Async.fromPromise(load))
       .chain(getLikes)
-      .map(x => (console.log('likes', x.likes), x))
       .toPromise()
   }
 

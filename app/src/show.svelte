@@ -50,10 +50,7 @@
 
       likeCount = note.public ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
-      liked =
-        window.arweaveWallet && note.public
-          ? note.likes.includes(await window.arweaveWallet.getActiveAddress())
-          : false;
+      liked = $address && note.public ? note.likes.includes($address) : false;
 
       note.handle = await app.getHandle(note.owner);
       owner = note.owner;
