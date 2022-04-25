@@ -1,7 +1,7 @@
 <script>
-  import { router } from "tinro";
+  import { router, meta } from "tinro";
   import Navbar from "./components/navbar.svelte";
-  import { arweave, postTx, waitfor } from "./services/arweave.js";
+  import { arweave, postTx, waitfor, load } from "./services/arweave.js";
   import { init as initLikes } from "./services/likes.js";
   import { Jumper } from "svelte-loading-spinners";
   import { notes } from "./app.js";
@@ -27,6 +27,19 @@
   });
 
   let note = { public: false };
+
+  if (meta().query.fork) {
+    // getNote from meta().query.fork
+    notes({ load })
+      .get(meta().query.fork)
+      .then((n) => {
+        note.title = n.title;
+        note.description = n.description;
+        easymde.value(n.content);
+        note.topic = n.topic;
+        note.public = n.public;
+      });
+  }
 
   async function submit() {
     try {
