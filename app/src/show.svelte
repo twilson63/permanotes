@@ -11,6 +11,7 @@
 
   let loading = false;
 
+  let likeModal = false;
   let likeContract = "";
 
   const likes = initLikes(arweave);
@@ -24,6 +25,10 @@
   let owner = "";
 
   async function like(e) {
+    if (!window.arweaveWallet) {
+      likeModal = true;
+      return;
+    }
     disableLike = true;
     await app.like(likeContract, owner);
     liked = true;
@@ -44,9 +49,10 @@
       const note = await app.get(tx);
       likeCount = note.public ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
-      liked = note.public
-        ? note.likes.includes(await arweaveWallet.getActiveAddress())
-        : false;
+      liked =
+        window.arweaveWallet && note.public
+          ? note.likes.includes(await window.arweaveWallet.getActiveAddress())
+          : false;
       note.handle = await app.getHandle(note.owner);
       owner = note.owner;
 
@@ -103,7 +109,7 @@
 
 <input
   type="checkbox"
-  id="save-note"
+  id="loading-note"
   bind:checked={loading}
   class="modal-toggle"
 />
@@ -112,6 +118,30 @@
     <h3 class="font-bold text-lg">Loading Note</h3>
     <div class="flex items-center justify-center">
       <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
+    </div>
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="like-note"
+  bind:checked={likeModal}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Liking a Note</h3>
+    <p class="py-4">
+      Thank you for wanting to like this note! Likes are small tips for the
+      content creator, in order to like the note, you must have an AR Wallet,
+      you can download and install an AR Wallet here:
+      <a class="underline" target="_blank" href="https://arconnect.io"
+        >https://arconnect.io</a
+      >
+    </p>
+
+    <div class="modal-action">
+      <label for="like-note" class="btn">OK</label>
     </div>
   </div>
 </div>
