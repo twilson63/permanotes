@@ -8,6 +8,13 @@ export function init(arweave) {
     .useRedStoneGateway({ notCorrupted: true })
     .build()
 
+  function create(owner) {
+    return smartweave.createContract.deployFromSourceTx({
+      initState: JSON.stringify({ owner, favorites: [] }),
+      srcTxId: CONTRACT_SRC
+    }, true)
+  }
+
   function add(contract, txId) {
     return smartweave.contract(contract).bundleInteraction({ function: 'add', tx: txId })
   }
@@ -21,6 +28,7 @@ export function init(arweave) {
   }
 
   return {
+    create,
     add,
     remove,
     list
