@@ -108,6 +108,7 @@
           "MM-dd-yyyy HH:mm:ss.SSSxxx"
         )}
       </p>
+      <p>Id: {route.params.id}</p>
       <div class="mt-16 prose prose-lg">{@html marked.parse(note.content)}</div>
     {/await}
   </section>
