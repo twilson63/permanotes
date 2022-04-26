@@ -10,7 +10,7 @@
   import { init as initLikes } from "./services/likes.js";
 
   let loading = false;
-
+  let toggleInfo = false;
   let likeModal = false;
   let likeContract = "";
 
@@ -99,16 +99,26 @@
           </div>
         </div>
       {/if}
-      <h1 class="text-3xl">{note.title}</h1>
-      <p class="">Description: {note.description}</p>
-      <p class="">By: {note.handle || note.owner}</p>
-      <p class="">
-        Created: {format(
-          new Date(note.timestamp),
-          "MM-dd-yyyy HH:mm:ss.SSSxxx"
-        )}
-      </p>
-      <p>Id: {route.params.id}</p>
+      <div class="">
+        <button
+          class="btn btn-outline"
+          on:click={() => (toggleInfo = !toggleInfo)}>info</button
+        >
+      </div>
+      {#if toggleInfo}
+        <div class="card p-4 shadow-xl">
+          <h1 class="text-3xl">{note.title}</h1>
+          <p class="">Description: {note.description}</p>
+          <p class="">By: {note.handle || note.owner}</p>
+          <p class="">
+            Created: {format(
+              new Date(note.timestamp),
+              "MM-dd-yyyy HH:mm:ss.SSSxxx"
+            )}
+          </p>
+          <p>Id: {route.params.id} <a class="underline" href="#">share</a></p>
+        </div>
+      {/if}
       <div class="mt-16 prose prose-lg">{@html marked.parse(note.content)}</div>
     {/await}
   </section>

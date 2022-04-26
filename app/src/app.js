@@ -9,6 +9,7 @@ import sortBy from 'ramda/src/sortBy'
 import prop from 'ramda/src/prop'
 import map from 'ramda/src/map'
 import path from 'ramda/src/path'
+
 /** 
  * Permanotes application 
  * 

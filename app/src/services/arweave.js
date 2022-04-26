@@ -8,7 +8,7 @@ import { ArweaveWebWallet } from "arweave-wallet-connector";
 import { readContract, selectWeightedPstHolder } from 'smartweave'
 
 const CONTRACT_ID = 'cwElAMnBqu2fp-TUsV9lBIZJi-DRZ5tQJgJqxhFjqNY'
-
+const FEE = '.004'
 const arweaveAccount = new Account()
 
 export const arweave = new Arweave.init({
@@ -59,7 +59,7 @@ export const postTx = async (note) => {
   const tx = await arweave.createTransaction({
     data: JSON.stringify(note),
     target: holder,
-    quantity: arweave.ar.arToWinston('.001')
+    quantity: arweave.ar.arToWinston(FEE)
   })
 
   tx.addTag('Content-Type', 'application/json')
