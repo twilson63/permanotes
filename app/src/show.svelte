@@ -62,6 +62,10 @@
       router.goto("/404");
     }
   }
+
+  function encodeText(...args) {
+    return encodeURI(args.join(" "));
+  }
 </script>
 
 <Navbar />
@@ -116,7 +120,17 @@
               "MM-dd-yyyy HH:mm:ss.SSSxxx"
             )}
           </p>
-          <p>Id: {route.params.id} <a class="underline" href="#">share</a></p>
+          <p>
+            Id: {route.params.id}
+            <a
+              class="underline"
+              target="_blank"
+              href="https://twitter.com/intent/tweet?text={encodeText(
+                note.title,
+                note.description
+              )}&url={window.location.href.replace('#', '%23')}">share</a
+            >
+          </p>
         </div>
       {/if}
       <div class="mt-16 prose prose-lg">{@html marked.parse(note.content)}</div>
