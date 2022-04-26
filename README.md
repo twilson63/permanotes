@@ -28,6 +28,7 @@
 
 ### Coming Soon
 
+* Search Notes - ability to search notes
 * Favorites - by liking a note, you can add it to your favorites list
 * Topics - you can organize notes by topics
 * Follow Users - you can follow users access public notes feed
@@ -36,6 +37,8 @@
 * Add Grammarly to note editing
 
 * _JSON RSS Feeds for public notes (using deno deploy) - Not 100% decentralized, but could be fun._
+* _Delete Note From App_
+
 
 ## Stack
 

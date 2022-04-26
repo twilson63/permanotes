@@ -16,7 +16,9 @@
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal p-0">
-      <li><a href="/learn">Learn</a></li>
+      <li>
+        <a href="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY">Learn</a>
+      </li>
       {#if R.isEmpty($address)}
         <li><a href="/connect">Connect</a></li>
       {:else}

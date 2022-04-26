@@ -8,7 +8,11 @@
   <div class="card-body">
     <div class="flex">
       <h2 class="card-title flex-1">{title}</h2>
-      <p class="flex-none">#{topic}</p>
+      <div class="flex-none">
+        <div class="flex">
+          <p class="">{topic.length > 0 ? `#${topic}` : ""}</p>
+        </div>
+      </div>
     </div>
     <p>{description || ""}</p>
     <div class="card-actions justify-end">

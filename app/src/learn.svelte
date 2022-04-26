@@ -7,9 +7,9 @@
   <section
     class="mt-8 text-gray-700 relative w-full px-6 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28"
   >
-    <h2 class="text-3xl">Learn More</h2>
+    <h2 class="text-3xl">About</h2>
     <p class="mt-8">
-      Perma-Notes is a responsive application that provides a permanent storage
+      PermaNotes is a responsive application that provides a permanent storage
       space for every note you can think of creating. This application focuses
       on simplicity and accessibility, so that you can quickly access notes that
       you have created over time.
