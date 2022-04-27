@@ -12,5 +12,6 @@ jobs:
         with:
           node-version: "16.x"
       - run: |
-          npm i -g arkb
-          arkb deploy ./app/public
+          cd app
+          yarn 
+          yarn build

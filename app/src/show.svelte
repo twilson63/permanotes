@@ -71,7 +71,7 @@
 <Navbar />
 <main>
   <section
-    class="mt-8 text-gray-700 relative w-full px-6 py-12 bg-white shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28"
+    class="mt-8 text-gray-700 relative w-full px-6 py-12 bg-base-200 shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28"
   >
     {#await getNote(route.params.id) then note}
       {#if note.public}
@@ -133,7 +133,9 @@
           </p>
         </div>
       {/if}
-      <div class="mt-16 prose prose-lg">{@html marked.parse(note.content)}</div>
+      <div class="mt-16 prose prose-lg bg-base-200">
+        {@html marked.parse(note.content)}
+      </div>
     {/await}
   </section>
 </main>
