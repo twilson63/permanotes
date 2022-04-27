@@ -2,10 +2,10 @@
   <div class="hero-content text-center">
     <div class="max-w-md">
       <figure class="flex items-center justify-center">
-        <img class="w-64" src="permanote.png" alt="logo" />
+        <img class="w-64 rounded-lg" src="permanote.png" alt="logo" />
       </figure>
 
-      <h1 class="text-5xl">
+      <h1 class="mt-8 text-5xl">
         <span class="uppercase text-primary">PermaNotes</span>
       </h1>
       <div class="flex mt-8 space-x-2">
