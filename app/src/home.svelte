@@ -22,4 +22,14 @@
       </div>
     </div>
   </div>
+  <div class="absolute bottom-8 left-8">
+    <figure>
+      <img
+        src={window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "ar-light.png"
+          : "ar-dark.png"}
+        alt="permanent"
+      />
+    </figure>
+  </div>
 </div>

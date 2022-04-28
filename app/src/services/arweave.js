@@ -17,11 +17,14 @@ export const arweave = new Arweave.init({
   protocol: 'https'
 })
 
+let wallet = null
+
 export const connectApp = () => {
-  const wallet = new ArweaveWebWallet({
+  wallet = new ArweaveWebWallet({
     name: 'permanotes',
     logo: 'https://via.placeholder.com/200'
   })
+
   wallet.setUrl('https://arweave.app')
   return wallet.connect()
 }
@@ -31,13 +34,24 @@ export const account = async (address) => await arweaveAccount.get(address)
 export const load = (id) => arweave.api.get(id)
   .then(async res => {
     if (!res.data.public) {
-      res.data.content = await arweaveWallet.decrypt(
-        new Uint8Array(Object.values(res.data.content)),
-        {
-          algorithm: "RSA-OAEP",
-          hash: "SHA-256",
-        }
-      )
+      if (wallet) {
+        const encryptedData = Object.values(res.data.content)
+        const symmetricKeyBytes = new Uint8Array(encryptedData.slice(0, 512))
+        const contentBytes = new Uint8Array(encryptedData.slice(512))
+        const symmetricKey = await decryptRSA(symmetricKeyBytes)
+        const decryptString = arweave.utils.bufferToString(
+          await arweave.crypto.decrypt(contentBytes, symmetricKey)
+        )
+        res.data.content = decryptString
+      } else {
+        res.data.content = await arweaveWallet.decrypt(
+          new Uint8Array(Object.values(res.data.content)),
+          {
+            algorithm: "RSA-OAEP",
+            hash: "SHA-256",
+          }
+        )
+      }
     }
     return res.data
   })
@@ -46,10 +60,23 @@ export const postTx = async (note) => {
 
   // encrypt content if private
   if (!note.public) {
-    note.content = await arweaveWallet.encrypt(note.content, {
-      algorithm: 'RSA-OAEP',
-      hash: 'SHA-256'
-    })
+    if (wallet) {
+      const contentEncoder = new TextEncoder()
+      const contentBuffer = contentEncoder.encode(note.content)
+      const keyBuffer = generateRandomBytes(256)
+      const encryptedContent = await arweave.crypto.encrypt(contentBuffer, keyBuffer)
+      const publicKey = await wallet.getPublicKey()
+      const jwk = await buildPublicKey(publicKey)
+      console.log(jwk)
+      const encryptedKey = await window.crypto.subtle.encrypt({ name: 'RSA-OAEP' }, jwk, keyBuffer)
+      note.content = arweave.utils.concatBuffers([encryptedKey, encryptedContent])
+    } else {
+      note.content = await arweaveWallet.encrypt(note.content, {
+        algorithm: 'RSA-OAEP',
+        hash: 'SHA-256'
+      })
+    }
+
   }
 
   // get target wallet
@@ -146,4 +173,42 @@ query {
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function decryptRSA(data) {
+  if (wallet != null) {
+    console.log(wallet)
+    // arweave.app Case
+    // =========================================================================
+    return await wallet.decrypt(data, { name: 'RSA-OAEP' });
+  } else {
+    // ArConnect Case
+    // =========================================================================
+    throw `Cannot perform RSA decryption with ArConnect`;
+  }
+}
+
+function generateRandomBytes() {
+  const array = new Uint8Array(256)
+  return crypto.getRandomValues(array)
+}
+
+export async function buildPublicKey(pk) {
+  console.log(pk)
+  const keyData = {
+    kty: 'RSA',
+    e: 'AQAB',
+    n: pk,
+    alg: 'RSA-OAEP-256',
+    ext: true,
+  };
+
+  const algo = {
+    name: 'RSA-OAEP',
+    hash: {
+      name: 'SHA-256',
+    },
+  };
+
+  return crypto.subtle.importKey('jwk', keyData, algo, false, ['encrypt']);
 }

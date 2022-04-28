@@ -12,7 +12,7 @@
 
 <div class="navbar bg-base-100">
   <div class="flex-1">
-    <a href="/" class="btn btn-ghost normal-case text-xl">PERMA-NOTES</a>
+    <a href="/" class="btn btn-ghost normal-case text-xl">PERMA NOTES</a>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal p-0">

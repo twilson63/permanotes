@@ -45,7 +45,7 @@
     <div class="hero-content text-center">
       <div class="max-w-md">
         <h1 class="text-6xl">Connect Wallet</h1>
-        <div class="mt-16 flex">
+        <div class="mt-16 flex space-x-4">
           <div
             class="card bg-base-100 shadow-xl hover:border"
             on:click={arConnect}
@@ -63,24 +63,6 @@
             </div>
           </div>
           <div
-            class="card bg-base-100 shadow-xl hover:border ml-8"
-            on:click={fileUpload}
-          >
-            <figure class="px-10 pt-10 bg-gray-400" style="height: 168px;">
-              <img
-                height="128px"
-                src="https://via.placeholder.com/168?text=Upload%20Wallet"
-                alt="file upload"
-                class="rounded-xl"
-              />
-            </figure>
-            <div class="card-body">
-              <h2 class="card-title">Upload Wallet</h2>
-            </div>
-          </div>
-
-          <!--
-          <div
             class="card bg-base-100 shadow-xl hover:border"
             on:click={appConnect}
           >
@@ -95,7 +77,6 @@
               <h2 class="card-title">ArWeave App</h2>
             </div>
           </div>
-          -->
         </div>
 
         <div class="mt-16">
