@@ -67,7 +67,6 @@ export const postTx = async (note) => {
       const encryptedContent = await arweave.crypto.encrypt(contentBuffer, keyBuffer)
       const publicKey = await wallet.getPublicKey()
       const jwk = await buildPublicKey(publicKey)
-      console.log(jwk)
       const encryptedKey = await window.crypto.subtle.encrypt({ name: 'RSA-OAEP' }, jwk, keyBuffer)
       note.content = arweave.utils.concatBuffers([encryptedKey, encryptedContent])
     } else {
