@@ -26,11 +26,16 @@
   <Route path="/">
     <Home />
   </Route>
-  <Route path="/learn">
-    <Learn />
-  </Route>
+  <Route
+    path="/learn"
+    redirect="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY"
+  />
   <Route path="/connect">
-    <Connect />
+    {#if not(isEmpty($address))}
+      <Home />
+    {:else}
+      <Connect />
+    {/if}
   </Route>
   <Route path="/notes/*" firstmatch>
     <Route path="/new">

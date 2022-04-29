@@ -4,12 +4,18 @@
   import { address, account } from "./store.js";
   import Navbar from "./components/navbar.svelte";
 
+  let error = null;
+
   async function appConnect() {
-    const walletAddress = await connectApp().catch((e) => "");
-    const a = await getAccount(walletAddress);
-    address.set(walletAddress);
-    account.set(a);
-    router.goto("/account");
+    try {
+      const walletAddress = await connectApp().catch((e) => "");
+      const a = await getAccount(walletAddress);
+      address.set(walletAddress);
+      account.set(a);
+      router.goto("/account");
+    } catch (e) {
+      error = e.message;
+    }
   }
 
   async function fileUpload() {}
@@ -29,6 +35,7 @@
       ],
       {
         name: "PermaNotes",
+        logo: `${window.location.origin}/permanote.png`,
       }
     );
     const addr = await arweaveWallet.getActiveAddress();
@@ -83,11 +90,28 @@
           <p>Need help?</p>
           <p>
             If you are new to ARWeave and don't understand what a wallet is? How
-            do I get a wallet? Etc? Click <a href="/learn">here</a> to learn more
-            about web3 and ArWeave
+            do I get a wallet? Etc? Click <a class="underline" href="/learn"
+              >here</a
+            > to learn more about web3 and Arweave
           </p>
         </div>
       </div>
     </div>
   </section>
 </main>
+
+<input
+  type="checkbox"
+  id="error-msg"
+  bind:checked={error}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box alert-error text-white">
+    <h3 class="font-bold text-lg mb-8">Error Trying to Connect</h3>
+    <div class="flex items-center justify-center my-4">
+      {error}
+    </div>
+    <label class="btn float-right" for="error-msg">Close</label>
+  </div>
+</div>

@@ -22,7 +22,7 @@ let wallet = null
 export const connectApp = () => {
   wallet = new ArweaveWebWallet({
     name: 'permanotes',
-    logo: 'https://via.placeholder.com/200'
+    logo: `${window.location.origin}/permanote.png`
   })
 
   wallet.setUrl('https://arweave.app')

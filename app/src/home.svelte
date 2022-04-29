@@ -1,3 +1,7 @@
+<script>
+  import { address } from "./store.js";
+</script>
+
 <div class="hero min-h-screen bg-base-200">
   <div class="hero-content text-center">
     <div class="max-w-md">
@@ -14,7 +18,11 @@
         <h2 class="text-3xl text-accent">🧠 SHARE</h2>
       </div>
       <div class="mt-16 space-x-4">
-        <a href="/connect" class="btn btn-primary">Connect</a>
+        {#if $address}
+          <a href="/notes" class="btn btn-primary">My Notes</a>
+        {:else}
+          <a href="/connect" class="btn btn-primary">Connect</a>
+        {/if}
         <a
           href="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY"
           class="btn btn-outline btn-secondary">Learn More</a
@@ -23,13 +31,13 @@
     </div>
   </div>
   <div class="absolute bottom-8 left-8">
-    <figure>
+    <a href="/notes/bZrzlz3F92yI7nmGIT2mxO8Gm6MnfnVNGiwYBCh5c2Q">
       <img
         src={window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "ar-light.png"
-          : "ar-dark.png"}
+          ? "ar-dark.png"
+          : "ar-light.png"}
         alt="permanent"
       />
-    </figure>
+    </a>
   </div>
 </div>

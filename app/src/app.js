@@ -126,7 +126,7 @@ function pluckNodes(results) {
 function buildOwnerQuery(owner) {
   return `
 query {
-  transactions(owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1"]}) {
+  transactions(first:100, owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1"]}) {
     edges {
       node {
         id
@@ -147,7 +147,7 @@ query {
 function buildTopicQuery(topic) {
   return `
 query {
-  transactions(tags: [
+  transactions(first: 100, tags: [
     { name: "Protocol", values: ["PermaNotes-v0.1"]},
     { name: "Note-Topic", values: ["${topic}"]}
   ]) {
