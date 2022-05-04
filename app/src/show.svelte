@@ -139,16 +139,6 @@
     {/await}
   </section>
 </main>
-<div class="absolute bottom-8 left-8">
-  <a href="/notes/bZrzlz3F92yI7nmGIT2mxO8Gm6MnfnVNGiwYBCh5c2Q">
-    <img
-      src={window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "ar-dark.png"
-        : "ar-light.png"}
-      alt="permanent"
-    />
-  </a>
-</div>
 
 <input
   type="checkbox"

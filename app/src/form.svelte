@@ -23,6 +23,8 @@
       previewClass: "bg-base-200 p-4 prose prose-lg",
       spellChecker: false,
       nativeSpellcheck: false,
+      //inputStyle: "contenteditable",
+      //forceSync: true,
     });
   });
 
@@ -36,6 +38,7 @@
         note.title = n.title;
         note.description = n.description;
         easymde.value(n.content);
+        note.content = n.content;
         note.topic = n.topic;
         note.public = n.public;
       });
@@ -104,6 +107,7 @@
             class="textarea textarea-bordered textarea-secondary bg-white"
             id="content"
             name="content"
+            bind:value={note.content}
           />
         </div>
         <div class="form-control">
