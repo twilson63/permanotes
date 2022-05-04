@@ -29,7 +29,7 @@ export function init(arweave) {
         function: 'like',
         transfer: {
           target: address,
-          winstonQty: '1000000000'
+          winstonQty: arweave.ar.arToWinston('.004')
         }
       })
       .then(res => {
