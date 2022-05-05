@@ -58,7 +58,7 @@
       <div class="flex w-full">
         <h1 class="text-2xl flex-1">Notes by Topic: #{topic}</h1>
         <div class="flex-none flex space-x-4">
-          <a href="/notes/new" class="btn btn-primary">New Note</a>
+          <button class="btn btn-primary">Subscribe</button>
         </div>
       </div>
       <div class="flex flex-col space-y-4 w-full">

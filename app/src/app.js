@@ -85,16 +85,18 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
 
   async function getProfile(h) {
     return Async.of(h)
-      .chain(Async.fromPromise(handle))
+      //.chain(Async.fromPromise(handle))
+      .map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
       .map(prop('profile'))
       .toPromise()
   }
 
   async function byProfile(h) {
     return Async.of(h)
-      .chain(Async.fromPromise(handle))
+      //.chain(Async.fromPromise(handle))
+      .map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
       .map(path(['profile', 'address']))
-      .chain(buildProfileQuery)
+      .map(buildProfileQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
       .map(formatNotes)
@@ -194,6 +196,7 @@ query {
 }
 
 function buildProfileQuery(address) {
+  console.log({ address })
   return `
 query {
   transactions(
