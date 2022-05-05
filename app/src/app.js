@@ -9,7 +9,7 @@ import sortBy from 'ramda/src/sortBy'
 import prop from 'ramda/src/prop'
 import map from 'ramda/src/map'
 import path from 'ramda/src/path'
-import propEq from 'ramda/src/propEq'
+//import propEq from 'ramda/src/propEq'
 
 /** 
  * Permanotes application 
@@ -20,9 +20,12 @@ import propEq from 'ramda/src/propEq'
  * - unlike
  * - byOwner
  * - byTopic
+ * - getProfile
+ * - byProfile 
+ * 
  * - get
 */
-export function notes({ post, waitfor, gql, load, account, likes }) {
+export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   const buildLikes = Async.fromPromise(
     async (tx) => tx.public ? assoc('likeContract', await likes.create(), tx) : tx
   )
@@ -80,6 +83,24 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
       .toPromise()
   }
 
+  async function getProfile(h) {
+    return Async.of(h)
+      .chain(Async.fromPromise(handle))
+      .map(prop('profile'))
+      .toPromise()
+  }
+
+  async function byProfile(h) {
+    return Async.of(h)
+      .chain(Async.fromPromise(handle))
+      .map(path(['profile', 'address']))
+      .chain(buildProfileQuery)
+      .chain(Async.fromPromise(gql))
+      .map(pluckNodes)
+      .map(formatNotes)
+      .toPromise()
+  }
+
   async function getHandle(address) {
     return Async.of(address)
       .chain(Async.fromPromise(account))
@@ -106,7 +127,9 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
     get,
     getHandle,
     like,
-    unlike
+    unlike,
+    getProfile,
+    byProfile
   }
 }
 
@@ -153,6 +176,34 @@ query {
     { name: "Protocol", values: ["PermaNotes-v0.1"]},
     { name: "Note-Topic", values: ["${topic}"]}
   ]) {
+    edges {
+      node {
+        id
+        owner {
+          address
+        }
+        tags {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+  `
+}
+
+function buildProfileQuery(address) {
+  return `
+query {
+  transactions(
+    first: 100, 
+    owners: ["${address}"],
+    tags: [
+      { name: "Protocol", values: ["PermaNotes-v0.1"]},
+      { name: "Note-Public", values: ["true"]}
+    ]
+  ) {
     edges {
       node {
         id

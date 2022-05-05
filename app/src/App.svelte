@@ -4,15 +4,15 @@
   import Announcer from "./components/announcer.svelte";
   import Transition from "./components/transition.svelte";
   import Home from "./home.svelte";
-  import Learn from "./learn.svelte";
   import Connect from "./connect.svelte";
   import Notes from "./notes.svelte";
   import Account from "./account.svelte";
   import Form from "./form.svelte";
   import Show from "./show.svelte";
   import Notfound from "./404.svelte";
-  import Test from "./test.svelte";
   import Topic from "./topic.svelte";
+  import Profile from "./profile.svelte";
+  import ProfileNotes from "./profile-notes.svelte";
 
   import * as R from "ramda";
 
@@ -67,6 +67,12 @@
     {:else}
       <Connect />
     {/if}
+  </Route>
+  <Route path="/profiles/:handle">
+    <Profile />
+  </Route>
+  <Route path="/profiles/:handle/notes">
+    <ProfileNotes />
   </Route>
   <Route path="/topics/:topic">
     <Topic />

@@ -277,10 +277,10 @@ articles@~0.2.1:
   resolved "https://registry.yarnpkg.com/articles/-/articles-0.2.2.tgz#cc6b429f8cfa811f41e7a08505abbb4e45503197"
   integrity sha512-S3Y4MPp+LD/l0HHm/4yrr6MoXhUkKT98ZdsV2tkTuBNywqUXEtvJT+NBO3KTSQEttc5EOwEJe2Xw8cZ9TI5Hrw==
 
-arweave-account@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/arweave-account/-/arweave-account-1.0.0.tgz#6940fdbcf2d1d7c7af56e365b38eb18727014696"
-  integrity sha512-P9OQTay9MgTEYphN9Ah24Dl/G102/hVE5kqU9iS4lMitfYY291N8vqYjoC4n8cCYMGhpRnfECn/h4DCUyJzrKQ==
+arweave-account@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/arweave-account/-/arweave-account-1.0.1.tgz#d1b19c9b9ba32e066fa4bb5c89b476047b1c2f06"
+  integrity sha512-zssry4mCw2RON0fn4FFVQupmB0te/5bMt6c+b6IrAeRAQi5iBAZ1DFwgeZeCCnte2CCgyYgMEulawVQ3nQz0Qw==
 
 arweave-bundles@^1.0.3:
   version "1.0.3"
