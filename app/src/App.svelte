@@ -12,6 +12,7 @@
   import Show from "./show.svelte";
   import Notfound from "./404.svelte";
   import Test from "./test.svelte";
+  import Topic from "./topic.svelte";
 
   import * as R from "ramda";
 
@@ -66,6 +67,9 @@
     {:else}
       <Connect />
     {/if}
+  </Route>
+  <Route path="/topics/:topic">
+    <Topic />
   </Route>
   <Route path="/404">
     <Notfound />

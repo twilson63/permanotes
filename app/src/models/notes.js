@@ -45,6 +45,7 @@ export const txToNote = (tx) => {
     description: getTag('Description')(tx.tags),
     topic: getTag('Note-Topic')(tx.tags),
     rev: getTag('Note-Rev')(tx.tags),
+    public: getTag('Note-Public')(tx.tags) === 'true' ? true : false,
     timestamp
   }
   return note

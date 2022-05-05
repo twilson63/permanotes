@@ -11,7 +11,8 @@ const CONTRACT_ID = 'cwElAMnBqu2fp-TUsV9lBIZJi-DRZ5tQJgJqxhFjqNY'
 const FEE = '.004'
 const arweaveAccount = new Account()
 
-export const arweave = new Arweave.init({
+export const arweave = Arweave.init({
+  // @ts-ignore
   host: import.meta.env.VITE_ARWEAVE || 'arweave.net',
   port: '443',
   protocol: 'https'
@@ -44,6 +45,8 @@ export const load = (id) => arweave.api.get(id)
         )
         res.data.content = decryptString
       } else {
+        // @ts-ignore
+        // eslint-disable-next-line no-undef
         res.data.content = await arweaveWallet.decrypt(
           new Uint8Array(Object.values(res.data.content)),
           {
@@ -63,13 +66,15 @@ export const postTx = async (note) => {
     if (wallet) {
       const contentEncoder = new TextEncoder()
       const contentBuffer = contentEncoder.encode(note.content)
-      const keyBuffer = generateRandomBytes(256)
+      const keyBuffer = generateRandomBytes()
       const encryptedContent = await arweave.crypto.encrypt(contentBuffer, keyBuffer)
       const publicKey = await wallet.getPublicKey()
       const jwk = await buildPublicKey(publicKey)
       const encryptedKey = await window.crypto.subtle.encrypt({ name: 'RSA-OAEP' }, jwk, keyBuffer)
       note.content = arweave.utils.concatBuffers([encryptedKey, encryptedContent])
     } else {
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
       note.content = await arweaveWallet.encrypt(note.content, {
         algorithm: 'RSA-OAEP',
         hash: 'SHA-256'
@@ -117,6 +122,8 @@ export const payment = async () => {
 }
 
 export const myNotes = async () => {
+  // @ts-ignore
+  // eslint-disable-next-line no-undef
   const owner = await arweaveWallet.getActiveAddress()
   const result = await arweave.api.post('graphql', {
     query: `

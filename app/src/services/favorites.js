@@ -1,3 +1,5 @@
+// @ts-ignore
+// eslint-disable-next-line no-undef
 const { SmartWeaveWebFactory, LoggerFactory } = rsdk
 
 LoggerFactory.INST.logLevel('fatal');

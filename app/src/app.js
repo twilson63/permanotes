@@ -9,6 +9,7 @@ import sortBy from 'ramda/src/sortBy'
 import prop from 'ramda/src/prop'
 import map from 'ramda/src/map'
 import path from 'ramda/src/path'
+import propEq from 'ramda/src/propEq'
 
 /** 
  * Permanotes application 
@@ -68,6 +69,7 @@ export function notes({ post, waitfor, gql, load, account, likes }) {
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
       .map(formatNotes)
+      //.map(map(propEq('public', false)))
       .toPromise()
   }
 

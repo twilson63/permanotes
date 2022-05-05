@@ -1,5 +1,8 @@
 //import { SmartWeaveWebFactory } from 'redstone-smartweave'
-const { SmartWeaveWebFactory, LoggerFactory } = rsdk
+// eslint-disable-next-line no-unused-vars
+/* global rsdk */
+// @ts-ignore
+const { SmartWeaveWebFactory, LoggerFactory } = window.rsdk
 const CONTRACT_SRC = 'Hljxh8rYyXCb45BYULHb6KhUDnRkxc4ZUaUDCUkOP_w'
 
 LoggerFactory.INST.logLevel("fatal");

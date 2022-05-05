@@ -10,7 +10,11 @@
       <h2 class="card-title flex-1">{title}</h2>
       <div class="flex-none">
         <div class="flex">
-          <p class="">{topic.length > 0 ? `#${topic}` : ""}</p>
+          <p class="">
+            <a class="underline" href={`/topics/${topic}`}
+              >{topic.length > 0 ? `#${topic}` : ""}</a
+            >
+          </p>
         </div>
       </div>
     </div>
