@@ -12,6 +12,7 @@
       <h1 class="mt-8 text-5xl">
         <span class="uppercase text-primary">PermaNotes</span>
       </h1>
+      <div class="badge badge-secondary">ALPHA</div>
       <div class="flex mt-8 space-x-2">
         <h2 class="text-3xl text-secondary">✨ CREATE</h2>
         <h2 class="text-3xl text-primary">🗄 STORE</h2>
@@ -31,7 +32,7 @@
     </div>
   </div>
   <div class="absolute bottom-8 left-8">
-    <a href="/notes/bZrzlz3F92yI7nmGIT2mxO8Gm6MnfnVNGiwYBCh5c2Q">
+    <a href="/about">
       <img
         src={window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "ar-dark.png"

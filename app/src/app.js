@@ -85,8 +85,8 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
 
   async function getProfile(h) {
     return Async.of(h)
-      //.chain(Async.fromPromise(handle))
-      .map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
+      .chain(Async.fromPromise(handle))
+      //.map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
       .map(prop('profile'))
       .toPromise()
   }
@@ -122,6 +122,13 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   //   return likes.likes(contract)
   // }
 
+  async function history() {
+    return Async.of()
+      .map(buildDeployHx)
+      .chain(Async.fromPromise(gql))
+      .map(pluckNodes)
+      .toPromise()
+  }
   return {
     create,
     byOwner,
@@ -131,7 +138,8 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
     like,
     unlike,
     getProfile,
-    byProfile
+    byProfile,
+    history
   }
 }
 
@@ -219,6 +227,20 @@ query {
         }
       }
     }
+  }
+}
+  `
+}
+
+function buildDeployHx() {
+  return `
+query {
+  transactions(first: 100, tags:{name:"DEPLOY", values:["permanotes"]}) {
+    edges {
+      node {
+        id
+      }
+    } 
   }
 }
   `

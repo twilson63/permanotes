@@ -32,7 +32,7 @@
             >
           </div>
         {:else}
-          <h1 class="text-6xl">{$address}</h1>
+          <h1 class="text-6xl">{profile.address}</h1>
           <p>Profile not found!</p>
           <p>
             Create a profile at <a

@@ -58,7 +58,10 @@
       <div class="flex w-full">
         <h1 class="text-2xl flex-1">Notes by Topic: #{topic}</h1>
         <div class="flex-none flex space-x-4">
-          <button class="btn btn-primary">Subscribe</button>
+          <button
+            class="btn btn-primary"
+            on:click={() => alert("Feature: Coming Soon!")}>Subscribe</button
+          >
         </div>
       </div>
       <div class="flex flex-col space-y-4 w-full">

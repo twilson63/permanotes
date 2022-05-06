@@ -13,6 +13,7 @@
 <div class="navbar bg-base-100">
   <div class="flex-1">
     <a href="/" class="btn btn-ghost normal-case text-xl">PERMA NOTES</a>
+    <div class="badge badge-secondary">ALPHA</div>
   </div>
   <div class="flex-none">
     <ul class="menu menu-horizontal p-0">

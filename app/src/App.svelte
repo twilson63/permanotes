@@ -13,6 +13,7 @@
   import Topic from "./topic.svelte";
   import Profile from "./profile.svelte";
   import ProfileNotes from "./profile-notes.svelte";
+  import About from "./about.svelte";
 
   import * as R from "ramda";
 
@@ -76,6 +77,9 @@
   </Route>
   <Route path="/topics/:topic">
     <Topic />
+  </Route>
+  <Route path="/about">
+    <About />
   </Route>
   <Route path="/404">
     <Notfound />
