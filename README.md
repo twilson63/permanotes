@@ -53,3 +53,25 @@ cd app
 yarn
 yarn dev
 ```
+
+## Deployment
+
+> create wallet.json
+
+```
+yarn build
+npm i -g arkb
+arkb deploy dist --use-bundler https://node1.bundlr.network --wallet ../mywallet.json --tag-name DEPLOY --tag-value permanotes
+```
+
+> NOTE: make sure you have a balance in bundler if not.
+
+```
+arkb fund-bundler 0.1 --use-bundler https://node1.bundlr.network --wallet ../mywallet.json
+```
+
+next update deploy
+
+https://dash.deno.com/projects/permanotes
+
+Add the new TxId

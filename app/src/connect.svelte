@@ -1,19 +1,25 @@
 <script>
   import { router } from "tinro";
+  import { Jumper } from "svelte-loading-spinners";
+
   import { connectApp, account as getAccount } from "./services/arweave.js";
   import { address, account } from "./store.js";
   import Navbar from "./components/navbar.svelte";
 
   let error = null;
+  let connecting = false;
 
   async function appConnect() {
     try {
+      connecting = true;
       const walletAddress = await connectApp().catch((e) => "");
       const a = await getAccount(walletAddress);
       address.set(walletAddress);
       account.set(a);
       router.goto("/account");
+      connecting = false;
     } catch (e) {
+      connecting = false;
       error = e.message;
     }
   }
@@ -24,25 +30,32 @@
     if (window.arweaveWallet === undefined) {
       window.location.href = "https://arconnect.io";
     }
-    await arweaveWallet.connect(
-      [
-        "ACCESS_ADDRESS",
-        "ACCESS_PUBLIC_KEY",
-        "SIGN_TRANSACTION",
-        "DISPATCH",
-        "ENCRYPT",
-        "DECRYPT",
-      ],
-      {
-        name: "PermaNotes",
-        logo: `${window.location.origin}/permanote.png`,
-      }
-    );
-    const addr = await arweaveWallet.getActiveAddress();
-    const a = await getAccount(addr);
-    address.set(addr);
-    account.set(a);
-    router.goto("/account");
+    try {
+      connecting = true;
+      await arweaveWallet.connect(
+        [
+          "ACCESS_ADDRESS",
+          "ACCESS_PUBLIC_KEY",
+          "SIGN_TRANSACTION",
+          "DISPATCH",
+          "ENCRYPT",
+          "DECRYPT",
+        ],
+        {
+          name: "PermaNotes",
+          logo: `${window.location.origin}/permanote.png`,
+        }
+      );
+      const addr = await arweaveWallet.getActiveAddress();
+      const a = await getAccount(addr);
+      address.set(addr);
+      account.set(a);
+      connecting = false;
+      router.goto("/account");
+    } catch (e) {
+      connecting = false;
+      error = e.message;
+    }
   }
 </script>
 
@@ -113,5 +126,20 @@
       {error}
     </div>
     <label class="btn float-right" for="error-msg">Close</label>
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="connecting"
+  bind:checked={connecting}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-8">Connecting to Permanotes!</h3>
+    <div class="flex items-center justify-center">
+      <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
+    </div>
   </div>
 </div>
