@@ -9,6 +9,7 @@ import sortBy from 'ramda/src/sortBy'
 import prop from 'ramda/src/prop'
 import map from 'ramda/src/map'
 import path from 'ramda/src/path'
+import head from 'ramda/src/head'
 //import propEq from 'ramda/src/propEq'
 
 /** 
@@ -86,16 +87,18 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   async function getProfile(h) {
     return Async.of(h)
       .chain(Async.fromPromise(handle))
+      .map(x => (console.log(x), x))
       //.map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
-      .map(prop('profile'))
+      .map(compose(prop('profile'), head))
       .toPromise()
   }
 
   async function byProfile(h) {
     return Async.of(h)
-      //.chain(Async.fromPromise(handle))
-      .map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
-      .map(path(['profile', 'address']))
+      .chain(Async.fromPromise(handle))
+      //.map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
+      .map(compose(path(['profile', 'addr']), head))
+      .map(x => (console.log(x), x))
       .map(buildProfileQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)

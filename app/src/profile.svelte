@@ -27,12 +27,12 @@
           <h1 class="text-6xl">{profile.name}</h1>
           <p>{profile.bio}</p>
           <div class="flex space-x-8">
-            <a href="/profiles/{profile.handle}" class="btn btn-primary"
+            <a href="/profiles/{profile.name}/notes" class="btn btn-primary"
               >View Notes</a
             >
           </div>
         {:else}
-          <h1 class="text-6xl">{profile.address}</h1>
+          <h1 class="text-6xl">{handle}</h1>
           <p>Profile not found!</p>
           <p>
             Create a profile at <a

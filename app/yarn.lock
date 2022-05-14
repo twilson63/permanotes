@@ -289,10 +289,13 @@ articles@~0.2.1:
   resolved "https://registry.yarnpkg.com/articles/-/articles-0.2.2.tgz#cc6b429f8cfa811f41e7a08505abbb4e45503197"
   integrity sha512-S3Y4MPp+LD/l0HHm/4yrr6MoXhUkKT98ZdsV2tkTuBNywqUXEtvJT+NBO3KTSQEttc5EOwEJe2Xw8cZ9TI5Hrw==
 
-arweave-account@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/arweave-account/-/arweave-account-1.0.1.tgz#d1b19c9b9ba32e066fa4bb5c89b476047b1c2f06"
-  integrity sha512-zssry4mCw2RON0fn4FFVQupmB0te/5bMt6c+b6IrAeRAQi5iBAZ1DFwgeZeCCnte2CCgyYgMEulawVQ3nQz0Qw==
+arweave-account@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/arweave-account/-/arweave-account-1.2.2.tgz#b67ee5bd8a7f33c78009b0cf73e379d0425432d2"
+  integrity sha512-2J6SYf2TRdYPB1qJlDlLnB/ehJBahGA/7et8BhY7L1v8229f4f4MsqykwYq50O4XffUQpTS182QP1yA8p2uOkA==
+  dependencies:
+    ardb "^1.1.10"
+    arweave "^1.10.23"
 
 arweave-bundles@^1.0.3:
   version "1.0.3"
