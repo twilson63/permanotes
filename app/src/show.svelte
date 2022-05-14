@@ -74,13 +74,13 @@
     class="mt-8 text-gray-700 relative w-full px-6 py-12 bg-base-200 shadow-xl shadow-slate-700/10 ring-1 ring-gray-900/5 md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pt-16 lg:pb-28"
   >
     {#await getNote(route.params.id) then note}
-      {#if note.public}
-        <div class="float-right pr-8">
-          {#if note.owner === $address}
-            <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
-              >Fork</a
-            >
-          {/if}
+      <div class="float-right pr-8">
+        {#if note.owner === $address}
+          <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
+            >Fork</a
+          >
+        {/if}
+        {#if note.public}
           <div class="flex flex-col">
             {#if !liked}
               <button
@@ -101,8 +101,9 @@
             {/if}
             <div class="text-center">{likeCount}</div>
           </div>
-        </div>
-      {/if}
+        {/if}
+      </div>
+
       <div class="">
         <button
           class="btn btn-outline"
@@ -113,7 +114,11 @@
         <div class="card p-4 shadow-xl">
           <h1 class="text-3xl">{note.title}</h1>
           <p class="">Description: {note.description}</p>
-          <p class="">By: {note.handle || note.owner}</p>
+          <p class="">
+            By: <a class="underline" href="/profiles/{note.handle}"
+              >{note.handle || note.owner}</a
+            >
+          </p>
           <p class="">
             Created: {format(
               new Date(note.timestamp),

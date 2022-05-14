@@ -36,7 +36,7 @@ export const handle = async (handle) => {
   return await arweaveAccount.search(handle)
 }
 
-export const load = (id) => arweave.api.get(id)
+export const load = (id) => arweave.api.get(id, { mode: 'no-cors' })
   .then(async res => {
     if (!res.data.public) {
       if (wallet) {
