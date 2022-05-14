@@ -96,9 +96,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   async function byProfile(h) {
     return Async.of(h)
       .chain(Async.fromPromise(handle))
-      //.map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
       .map(compose(path(['profile', 'addr']), head))
-      .map(x => (console.log(x), x))
       .map(buildProfileQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
@@ -187,7 +185,8 @@ function buildTopicQuery(topic) {
 query {
   transactions(first: 100, tags: [
     { name: "Protocol", values: ["PermaNotes-v0.1"]},
-    { name: "Note-Topic", values: ["${topic}"]}
+    { name: "Note-Topic", values: ["${topic}"]},
+    { name: "Note-Public", values: ["true"]}
   ]) {
     edges {
       node {

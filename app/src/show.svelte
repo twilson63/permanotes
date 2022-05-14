@@ -120,6 +120,11 @@
             >
           </p>
           <p class="">
+            Topic: <a class="underline" href="/topics/{note.topic}"
+              >{note.topic}</a
+            >
+          </p>
+          <p class="">
             Created: {format(
               new Date(note.timestamp),
               "MM-dd-yyyy HH:mm:ss.SSSxxx"
