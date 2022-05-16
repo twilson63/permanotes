@@ -48,11 +48,11 @@
 
       const note = await app.get(tx);
 
-      likeCount = note.public ? note.likes.length : 0;
+      likeCount = note.public && note.likes ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
       liked = $address && note.public ? note.likes.includes($address) : false;
 
-      note.handle = await app.getHandle(note.owner);
+      note.handle = await app.getHandle(note.owner).catch(() => note.owner);
       owner = note.owner;
 
       loading = false;

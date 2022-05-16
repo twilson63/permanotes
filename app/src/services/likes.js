@@ -64,6 +64,7 @@ export function init(arweave) {
       .connect('use_wallet')
       .readState()
       .then(({ state }) => state.addresses)
+
   }
 
   function liked(contract, address) {
