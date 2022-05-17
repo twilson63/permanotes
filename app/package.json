@@ -28,7 +28,7 @@
   "dependencies": {
     "ardb": "^1.1.10",
     "arweave": "^1.10.23",
-    "arweave-account": "^1.2.2",
+    "arweave-account": "^1.2.3",
     "arweave-bundles": "^1.0.3",
     "arweave-wallet-connector": "^0.0.26",
     "crocks": "^0.12.4",
