@@ -12,13 +12,10 @@
         <img src={`https://arweave.net/${profile.avatar}`} alt={profile.name} />
         <h1 class="text-6xl">{profile.name}</h1>
         <p>{profile.bio ? profile.bio : ""}</p>
-        <div class="flex space-x-8">
-          <a href="/notes" class="btn btn-primary">My Notes</a>
-          <a href="/notes/new" class="btn">New Note</a>
-        </div>
       {:else}
-        <h1 class="text-6xl">{$address}</h1>
+        <h1 class="text-6xl">Anonymous</h1>
         <p>Profile not found!</p>
+        <p>Do you want to create a profile?</p>
         <p>
           Create a profile at <a
             class="underline"
@@ -27,7 +24,12 @@
             >Arweave Account</a
           >
         </p>
+        <p>If not, you can still use PermaNotes...</p>
       {/if}
+      <div class="flex space-x-8">
+        <a href="/notes" class="btn btn-primary">My Notes</a>
+        <a href="/notes/new" class="btn">New Note</a>
+      </div>
     </div>
   </section>
 </main>
