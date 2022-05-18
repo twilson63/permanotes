@@ -237,12 +237,15 @@ query {
 function buildDeployHx() {
   return `
 query {
-  transactions(first: 100, tags:{name:"DEPLOY", values:["permanotes"]}) {
+  transactions(tags: [
+    {name:"DEPLOY", values:["permanotes"]},
+    {name:"Content-Type", values:["application/x.arweave-manifest+json"]}
+  ]) {
     edges {
       node {
         id
       }
-    } 
+    }
   }
 }
   `
