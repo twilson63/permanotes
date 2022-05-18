@@ -11,7 +11,7 @@
       {#if profile}
         <img src={`https://arweave.net/${profile.avatar}`} alt={profile.name} />
         <h1 class="text-6xl">{profile.name}</h1>
-        <p>{profile.bio}</p>
+        <p>{profile.bio ? profile.bio : ""}</p>
         <div class="flex space-x-8">
           <a href="/notes" class="btn btn-primary">My Notes</a>
           <a href="/notes/new" class="btn">New Note</a>
@@ -22,6 +22,7 @@
         <p>
           Create a profile at <a
             class="underline"
+            target="_blank"
             href="https://arweave.net/HOHBm7vNOoDds4uah2Du2jr7nsELJx9V0C0h54MYLes"
             >Arweave Account</a
           >

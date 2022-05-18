@@ -14,8 +14,14 @@
       connecting = true;
       const walletAddress = await connectApp().catch((e) => "");
       const a = await getAccount(walletAddress);
+      console.log("account", a);
+      if (a) {
+        account.set(a);
+      } else {
+        account.set({});
+      }
       address.set(walletAddress);
-      account.set(a);
+
       router.goto("/account");
       connecting = false;
     } catch (e) {
@@ -49,7 +55,11 @@
       const addr = await arweaveWallet.getActiveAddress();
       const a = await getAccount(addr);
       address.set(addr);
-      account.set(a);
+      if (a) {
+        account.set(a);
+      } else {
+        account.set({});
+      }
       connecting = false;
       router.goto("/account");
     } catch (e) {
