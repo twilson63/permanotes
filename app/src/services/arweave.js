@@ -133,8 +133,9 @@ export const postTx = async (note) => {
 
   const tx = await arweave.createTransaction({
     data: JSON.stringify(note),
-    target: holder,
-    quantity: arweave.ar.arToWinston(FEE)
+    // Free to create notes
+    // target: holder,
+    // quantity: arweave.ar.arToWinston(FEE)
   })
 
   tx.addTag('Content-Type', 'application/json')
