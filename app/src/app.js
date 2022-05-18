@@ -52,7 +52,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   async function create(note) {
     return Async.of(note)
       .chain(validate)
-      .chain(buildLikes)
+      //.chain(buildLikes)
       .chain(Async.fromPromise(post))
       .chain(tx => Async.fromPromise(waitfor)(tx.id))
       .toPromise()
@@ -162,7 +162,7 @@ function pluckNodes(results) {
 function buildOwnerQuery(owner) {
   return `
 query {
-  transactions(first:100, owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1"]}) {
+  transactions(first:100, owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.2"]}) {
     edges {
       node {
         id
@@ -184,7 +184,7 @@ function buildTopicQuery(topic) {
   return `
 query {
   transactions(first: 100, tags: [
-    { name: "Protocol", values: ["PermaNotes-v0.1"]},
+    { name: "Protocol", values: ["PermaNotes-v0.1","PermaNotes-v0.2"]},
     { name: "Note-Topic", values: ["${topic}"]},
     { name: "Note-Public", values: ["true"]}
   ]) {
@@ -213,7 +213,7 @@ query {
     first: 100, 
     owners: ["${address}"],
     tags: [
-      { name: "Protocol", values: ["PermaNotes-v0.1"]},
+      { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.2"]},
       { name: "Note-Public", values: ["true"]}
     ]
   ) {

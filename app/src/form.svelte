@@ -51,9 +51,9 @@
       note.content = easymde.value();
       note.owner = $address;
 
-      const likes = initLikes(arweave);
+      //const likes = initLikes(arweave);
       //createLikes: likes.create
-      await notes({ post: postTx, waitfor, likes }).create(note);
+      await notes({ post: postTx, waitfor }).create(note);
 
       submitting = false;
 

@@ -3,11 +3,16 @@ import Account from 'arweave-account'
 
 import path from 'ramda/src/path'
 import pluck from 'ramda/src/pluck'
+import map from 'ramda/src/map'
+import mergeAll from 'ramda/src/mergeAll'
+
 
 import { ArweaveWebWallet } from "arweave-wallet-connector";
 import { readContract, selectWeightedPstHolder } from 'smartweave'
 
-const CONTRACT_ID = 'cwElAMnBqu2fp-TUsV9lBIZJi-DRZ5tQJgJqxhFjqNY'
+// PST for permanotes
+const PERMANOTE_PST = 'cwElAMnBqu2fp-TUsV9lBIZJi-DRZ5tQJgJqxhFjqNY'
+const CONTRACT_SRC = '0hTokSQ7m3DQujuVisZ-RzcU6hOY3-Uz2ZIh4Aa0nKY'
 const FEE = '.004'
 const arweaveAccount = new Account()
 
@@ -36,32 +41,66 @@ export const handle = async (handle) => {
   return await arweaveAccount.search(handle)
 }
 
-export const load = (id) => arweave.api.get(id, { mode: 'no-cors' })
-  .then(async res => {
-    if (!res.data.public) {
-      if (wallet) {
-        const encryptedData = Object.values(res.data.content)
-        const symmetricKeyBytes = new Uint8Array(encryptedData.slice(0, 512))
-        const contentBytes = new Uint8Array(encryptedData.slice(512))
-        const symmetricKey = await decryptRSA(symmetricKeyBytes)
-        const decryptString = arweave.utils.bufferToString(
-          await arweave.crypto.decrypt(contentBytes, symmetricKey)
-        )
-        res.data.content = decryptString
-      } else {
-        // @ts-ignore
-        // eslint-disable-next-line no-undef
-        res.data.content = await arweaveWallet.decrypt(
-          new Uint8Array(Object.values(res.data.content)),
-          {
-            algorithm: "RSA-OAEP",
-            hash: "SHA-256",
-          }
-        )
-      }
+export const load = async (id) => {
+  // need to get headers
+  const headers = await arweave.api.post('graphql', {
+    query: `
+query {
+  transaction(id: "${id}") {
+    id
+    tags {
+      name
+      value
     }
-    return res.data
-  })
+  }
+}
+  `}).then(({ data }) => mergeAll(map(t => ({ [t.name]: t.value }), data.data.transaction.tags)))
+
+  // if protocol v0.2 then get text/markdown and decrypt if necessary
+
+  if (headers.Protocol === 'PermaNotes-v0.2') {
+    //res.data.content = decryptString
+    return {
+      title: headers['Note-Title'],
+      description: headers['Note-Description'],
+      public: Boolean(headers['Note-Public']),
+      likes: [],
+      owner: '',
+      content: 'This Version of permanotes is not supported'
+    }
+  }
+  // if protocol v0.1 then get app/json and decrypt if necessary
+
+  if (headers.Protocol === 'PermaNotes-v0.1') {
+    return arweave.api.get(id, { mode: 'no-cors' })
+      .then(async res => {
+        if (!res.data.public) {
+          if (wallet) {
+            const encryptedData = Object.values(res.data.content)
+            const symmetricKeyBytes = new Uint8Array(encryptedData.slice(0, 512))
+            const contentBytes = new Uint8Array(encryptedData.slice(512))
+            const symmetricKey = await decryptRSA(symmetricKeyBytes)
+            const decryptString = arweave.utils.bufferToString(
+              await arweave.crypto.decrypt(contentBytes, symmetricKey)
+            )
+            res.data.content = decryptString
+          } else {
+            // @ts-ignore
+            // eslint-disable-next-line no-undef
+            res.data.content = await arweaveWallet.decrypt(
+              new Uint8Array(Object.values(res.data.content)),
+              {
+                algorithm: "RSA-OAEP",
+                hash: "SHA-256",
+              }
+            )
+          }
+        }
+        return res.data
+      })
+  }
+
+}
 
 export const postTx = async (note) => {
 
@@ -88,7 +127,7 @@ export const postTx = async (note) => {
   }
 
   // get target wallet
-  const contractState = await readContract(arweave, CONTRACT_ID)
+  const contractState = await readContract(arweave, PERMANOTE_PST)
   const holder = selectWeightedPstHolder(contractState.balances)
 
   const tx = await arweave.createTransaction({
@@ -107,11 +146,12 @@ export const postTx = async (note) => {
   tx.addTag('Note-Public', note.public ? "true" : "false")
   tx.addTag('Timestamp', new Date().toISOString())
 
-  //note.tags.map((tag, i) => tx.addTag(`Tag${i}`, tag))
-  //return await arweaveWallet.dispatch(tx)
-  await arweave.transactions.sign(tx)
-  await arweave.transactions.post(tx)
-  return tx
+  const result = await arweaveWallet.dispatch(tx)
+
+  // await arweave.transactions.sign(tx)
+  // await arweave.transactions.post(tx)
+
+  return result
 }
 
 export const payment = async () => {
