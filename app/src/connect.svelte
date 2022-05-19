@@ -145,9 +145,9 @@
   bind:checked={connecting}
   class="modal-toggle"
 />
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg mb-8">Connecting to Permanotes!</h3>
+<div class="modal w-100">
+  <div class="modal-box w-full">
+    <h3 class="font-bold md:text-lg mb-8">Connecting to Permanotes!</h3>
     <div class="flex items-center justify-center">
       <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
     </div>

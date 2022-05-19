@@ -9,7 +9,13 @@
   <section class="hero min-h-screen bg-base-200">
     <div class="hero-content flex-col">
       {#if profile}
-        <img src={`https://arweave.net/${profile.avatar}`} alt={profile.name} />
+        <img
+          class="mask mask-squircle"
+          src={`https://arweave.net/${profile.avatar}`}
+          alt={profile.name}
+          width="94"
+          height="94"
+        />
         <h1 class="text-6xl">{profile.name}</h1>
         <p>{profile.bio ? profile.bio : ""}</p>
       {:else}

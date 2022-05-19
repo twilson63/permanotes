@@ -54,7 +54,7 @@ export function init(arweave) {
         function: 'unlike',
         transfer: {
           target: address,
-          winstonQty: '1000000000' //.001 winston
+          winstonQty: arweave.ar.arToWinston('.004') //.004 ar
         }
       })
   }

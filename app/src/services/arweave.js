@@ -148,12 +148,20 @@ export const postTx = async (note) => {
   tx.addTag('Note-Public', note.public ? "true" : "false")
   tx.addTag('Timestamp', new Date().toISOString())
 
-  const result = await arweaveWallet.dispatch(tx)
+  let result = tx
 
-  // await arweave.transactions.sign(tx)
-  // await arweave.transactions.post(tx)
+  try {
+    // try bundlr first
+    result = await arweaveWallet.dispatch(tx)
+    return result
+  } catch (e) {
+    // then arweave
+    await arweave.transactions.sign(tx)
+    await arweave.transactions.post(tx)
+  }
 
   return result
+
 }
 
 export const payment = async () => {
