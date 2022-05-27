@@ -155,6 +155,7 @@ export const postTx = async (note) => {
   try {
     // try bundlr first
     result = await arweaveWallet.dispatch(tx)
+
     return result
   } catch (e) {
     // then arweave

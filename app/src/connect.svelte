@@ -59,7 +59,10 @@
           logo: `${window.location.origin}/permanote.png`,
         }
       );
+
       const addr = await arweaveWallet.getActiveAddress();
+      topics.set(await getTopics.load(addr));
+
       const a = await getAccount(addr);
       address.set(addr);
       if (a) {

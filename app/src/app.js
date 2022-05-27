@@ -28,12 +28,12 @@ import head from 'ramda/src/head'
 */
 export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   const buildLikes = Async.fromPromise(
-    async (tx) => tx.public ? assoc('likeContract', await likes.create(), tx) : tx
+    async (tx) => tx.public ? assoc('likeContract', await likes.create().catch(_e => ''), tx) : tx
   )
   const getLikes = Async.fromPromise(
     async (note) => {
       try {
-        return note.public ? assoc('likes', await likes.likes(note.likeContract), note) : note
+        return (note.public && note.likeContract) ? assoc('likes', await likes.likes(note.likeContract), note) : note
       } catch (e) {
         console.log('Error', e)
         return note
@@ -52,7 +52,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   async function create(note) {
     return Async.of(note)
       .chain(validate)
-      .chain(buildLikes)
+      //.chain(buildLikes) SWC are not working consistently
       .chain(Async.fromPromise(post))
       .chain(tx => Async.fromPromise(waitfor)(tx.id))
       .toPromise()
@@ -112,10 +112,12 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   }
 
   function like(contract, address) {
+    if (!contract) { return }
     return likes.like(contract, address)
   }
 
   function unlike(contract, address) {
+    if (!contract) { return }
     return likes.unlike(contract, address)
   }
 
