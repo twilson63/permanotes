@@ -289,10 +289,10 @@ articles@~0.2.1:
   resolved "https://registry.yarnpkg.com/articles/-/articles-0.2.2.tgz#cc6b429f8cfa811f41e7a08505abbb4e45503197"
   integrity sha512-S3Y4MPp+LD/l0HHm/4yrr6MoXhUkKT98ZdsV2tkTuBNywqUXEtvJT+NBO3KTSQEttc5EOwEJe2Xw8cZ9TI5Hrw==
 
-arweave-account@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/arweave-account/-/arweave-account-1.2.3.tgz#ef3213d12ca63eacc0ab23af301d09e073809d93"
-  integrity sha512-+89TyfiqDxHY7dfJgo38HdpZxcjMao7i1wB0rLt0wDPtLhXFRm7r15wKEjO2r20SSYEXBJIqN35aoAYTtXHWyg==
+arweave-account@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/arweave-account/-/arweave-account-1.2.5.tgz#e6adcd14237b0e7ae97013b450787f82a166bad9"
+  integrity sha512-w9K/yziVC5AcHGd+pUJqQ+SAApTzlkQ4fEf5GMhMnPL4tsnEuTwvWd/NlxTrn1HnsvlM/NrKmsnJpDT6PBc3Vg==
   dependencies:
     ardb "^1.1.10"
     arweave "^1.10.23"
@@ -311,6 +311,15 @@ arweave-multihost@^0.1.0:
   dependencies:
     arweave "^1.10.15"
     axios "^0.21.1"
+
+arweave-topics@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/arweave-topics/-/arweave-topics-0.0.2.tgz#71d9fcd7811bdc6daf0a11f312279a03db15f062"
+  integrity sha512-+zuqXx3nYQN/piquC57ZrVKaOFndMREmlQyInLzKkOBY8xwj/AplqCgvQX1bCSQEx2+qOwt8uZPEymjyUg9XcA==
+  dependencies:
+    arweave "^1.10.23"
+    crocks "^0.12.4"
+    ramda "^0.28.0"
 
 arweave-wallet-connector@^0.0.26:
   version "0.0.26"

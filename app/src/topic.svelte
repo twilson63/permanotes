@@ -4,8 +4,8 @@
   import NoteCard from "./components/note-card.svelte";
   import SearchForm from "./components/search-form.svelte";
   import { Jumper } from "svelte-loading-spinners";
-  import { address } from "./store.js";
-  import { gql } from "./services/arweave.js";
+  import { address, topics } from "./store.js";
+  import { gql, topics as _topics } from "./services/arweave.js";
   import { notes } from "./app.js";
 
   let search = false;
@@ -58,10 +58,31 @@
       <div class="flex w-full">
         <h1 class="text-2xl flex-1">Notes by Topic: #{topic}</h1>
         <div class="flex-none flex space-x-4">
-          <button
-            class="btn btn-primary"
-            on:click={() => alert("Feature: Coming Soon!")}>Subscribe</button
-          >
+          {#if $topics.includes(topic)}
+            <button
+              class="btn btn-primary"
+              on:click={async () => {
+                try {
+                  await _topics.unsubscribe(topic);
+                  $topics = $topics.filter((t) => t !== topic);
+                } catch (e) {
+                  alert("Something went wrong trying to unsubscribe to topic");
+                }
+              }}>Unsubscribe</button
+            >
+          {:else}
+            <button
+              class="btn btn-primary"
+              on:click={async () => {
+                try {
+                  await _topics.subscribe(topic);
+                  $topics = [...$topics, topic];
+                } catch (e) {
+                  alert("Something went wrong trying to subscribe to topic");
+                }
+              }}>Subscribe</button
+            >
+          {/if}
         </div>
       </div>
       <div class="flex flex-col space-y-4 w-full">

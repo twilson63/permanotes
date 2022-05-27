@@ -1,5 +1,5 @@
 <script>
-  import { address, account } from "./store.js";
+  import { address, account, topics } from "./store.js";
   import Navbar from "./components/navbar.svelte";
   const profile = $account.profile;
 </script>
@@ -31,6 +31,14 @@
           >
         </p>
         <p>If not, you can still use PermaNotes...</p>
+      {/if}
+      {#if $topics.length > 0}
+        <div class="flex space-x-4">
+          <label>Topics: </label>
+          {#each $topics as topic}
+            <a class="underline" href="/topics/{topic}">{topic}</a>
+          {/each}
+        </div>
       {/if}
       <div class="flex space-x-8">
         <a href="/notes" class="btn btn-primary">My Notes</a>

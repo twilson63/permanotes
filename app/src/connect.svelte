@@ -2,8 +2,13 @@
   import { router } from "tinro";
   import { Jumper } from "svelte-loading-spinners";
 
-  import { connectApp, account as getAccount } from "./services/arweave.js";
-  import { address, account } from "./store.js";
+  import {
+    connectApp,
+    account as getAccount,
+    topics as getTopics,
+  } from "./services/arweave.js";
+
+  import { address, account, topics } from "./store.js";
   import Navbar from "./components/navbar.svelte";
 
   let error = null;
@@ -12,7 +17,9 @@
   async function appConnect() {
     try {
       connecting = true;
+      const tId = setTimeout(() => (connecting = false), 2000);
       const walletAddress = await connectApp().catch((e) => "");
+      topics.set(await getTopics.load(walletAddress));
       const a = await getAccount(walletAddress);
       console.log("account", a);
       if (a) {
@@ -21,7 +28,7 @@
         account.set({});
       }
       address.set(walletAddress);
-
+      clearTimeout(tId);
       router.goto("/account");
       connecting = false;
     } catch (e) {

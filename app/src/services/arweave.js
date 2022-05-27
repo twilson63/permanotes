@@ -1,11 +1,11 @@
 import Arweave from 'arweave'
 import Account from 'arweave-account'
+import Topics from 'arweave-topics'
 
 import path from 'ramda/src/path'
 import pluck from 'ramda/src/pluck'
 import map from 'ramda/src/map'
 import mergeAll from 'ramda/src/mergeAll'
-
 
 import { ArweaveWebWallet } from "arweave-wallet-connector";
 import { readContract, selectWeightedPstHolder } from 'smartweave'
@@ -22,6 +22,8 @@ export const arweave = Arweave.init({
   port: '443',
   protocol: 'https'
 })
+
+export const topics = Topics(arweave)
 
 let wallet = null
 
@@ -128,8 +130,8 @@ export const postTx = async (note) => {
   }
 
   // get target wallet
-  const contractState = await readContract(arweave, PERMANOTE_PST)
-  const holder = selectWeightedPstHolder(contractState.balances)
+  // const contractState = await readContract(arweave, PERMANOTE_PST)
+  // const holder = selectWeightedPstHolder(contractState.balances)
 
   const tx = await arweave.createTransaction({
     data: JSON.stringify(note),
