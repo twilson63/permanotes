@@ -12,7 +12,7 @@
       <h1 class="mt-8 text-5xl">
         <span class="uppercase text-primary">PermaNotes</span>
       </h1>
-      <div class="badge badge-secondary">ALPHA 3a</div>
+      <div class="badge badge-secondary">ALPHA 4a</div>
       <div class="flex mt-8 space-x-2">
         <h2 class="text-3xl text-secondary">✨ CREATE</h2>
         <h2 class="text-3xl text-primary">🗄 STORE</h2>
@@ -25,7 +25,7 @@
           <a href="/connect" class="btn btn-primary">Connect</a>
         {/if}
         <a
-          href="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY"
+          href="/notes/La7xUTN13SFI58-tVKSFQznRzHKY3QfVblYhV-6J-2A"
           class="btn btn-outline btn-secondary">Learn More</a
         >
       </div>

@@ -61,7 +61,7 @@ yarn dev
 ```
 yarn build
 npm i -g arkb
-arkb deploy dist --use-bundler https://node1.bundlr.network --wallet ../mywallet.json --tag-name DEPLOY --tag-value permanotes
+arkb deploy dist --use-bundler https://node2.bundlr.network --wallet ../mywallet.json --tag-name DEPLOY --tag-value permanotes
 ```
 
 > NOTE: make sure you have a balance in bundler if not.

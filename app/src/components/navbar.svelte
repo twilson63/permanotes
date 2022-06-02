@@ -35,7 +35,7 @@
       class="dropdown-content menu p-2 shadow bg-base-100 rounded-box md:w-52"
     >
       <li>
-        <a href="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY">Learn</a>
+        <a href="/notes/La7xUTN13SFI58-tVKSFQznRzHKY3QfVblYhV-6J-2A">Learn</a>
       </li>
       {#if R.isEmpty($address)}
         <li><a href="/connect">Connect</a></li>
@@ -52,7 +52,7 @@
   </div>
   <div class="flex-1">
     <a href="/" class="btn btn-ghost normal-case text-xl">PERMA NOTES</a>
-    <div class="badge badge-secondary">ALPHA 3a</div>
+    <div class="badge badge-secondary">ALPHA 4a</div>
   </div>
   <div class="flex-none">
     <ul class="hidden md:inline-flex menu menu-horizontal p-0">
