@@ -3,7 +3,7 @@
   import NoteCard from "./components/note-card.svelte";
   import SearchForm from "./components/search-form.svelte";
   import { Jumper } from "svelte-loading-spinners";
-  import { address } from "./store.js";
+  import { address, notecache } from "./store.js";
   import { gql } from "./services/arweave.js";
   import { notes } from "./app.js";
 

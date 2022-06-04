@@ -8,9 +8,7 @@ const CONTRACT_SRC = 'Hljxh8rYyXCb45BYULHb6KhUDnRkxc4ZUaUDCUkOP_w'
 LoggerFactory.INST.logLevel("fatal");
 
 export function init(arweave) {
-  const smartweave = SmartWeaveWebFactory.memCachedBased(arweave)
-    .useRedStoneGateway({ notCorrupted: true })
-    .build()
+  const smartweave = SmartWeaveWebFactory.memCached(arweave)
 
   function create() {
     return smartweave.createContract.deployFromSourceTx({

@@ -8,6 +8,9 @@ import tailwindConfig from './tailwind.config.js'
 export default defineConfig({
   base: '',
   plugins: [svelte()],
+  define: {
+    '__APP_VERSION__': JSON.stringify(process.env.npm_package_version)
+  },
   optimizeDeps: {
     exclude: ['tinro']
   },
