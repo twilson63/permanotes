@@ -3,6 +3,8 @@
   import { address, account } from "../store.js";
   import * as R from "ramda";
 
+  let version = __APP_VERSION__.split(".")[2];
+
   function disconnect() {
     if (window.arweaveWallet) window.arweaveWallet.disconnect();
     address.set("");
@@ -52,7 +54,7 @@
   </div>
   <div class="flex-1">
     <a href="/" class="btn btn-ghost normal-case text-xl">PERMA NOTES</a>
-    <div class="badge badge-secondary">ALPHA 4a</div>
+    <div class="badge badge-secondary">ALPHA {version}</div>
   </div>
   <div class="flex-none">
     <ul class="hidden md:inline-flex menu menu-horizontal p-0">

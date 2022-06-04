@@ -10,6 +10,8 @@ import prop from 'ramda/src/prop'
 import map from 'ramda/src/map'
 import path from 'ramda/src/path'
 import head from 'ramda/src/head'
+import toLower from 'ramda/src/toLower'
+import replace from 'ramda/src/replace'
 //import propEq from 'ramda/src/propEq'
 
 /** 
@@ -51,8 +53,9 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
 
   async function create(note) {
     return Async.of(note)
+      .map(slugify)
       .chain(validate)
-      //.chain(buildLikes) SWC are not working consistently
+      .chain(buildLikes) //SWC are not working consistently
       .chain(Async.fromPromise(post))
       .chain(tx => Async.fromPromise(waitfor)(tx.id))
       .toPromise()
@@ -146,6 +149,15 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
   }
 }
 
+function slugify(note) {
+  note.slug = compose(
+    toLower,
+    replace(/\s/g, '-'),
+    prop('title')
+  )(note)
+  return note
+}
+
 function formatNotes(nodes) {
   return compose(
     reverse,
@@ -164,7 +176,7 @@ function pluckNodes(results) {
 function buildOwnerQuery(owner) {
   return `
 query {
-  transactions(first:100, owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.2"]}) {
+  transactions(first:100, owners: ["${owner}"], tags: { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.3"]}) {
     edges {
       node {
         id
@@ -186,7 +198,7 @@ function buildTopicQuery(topic) {
   return `
 query {
   transactions(first: 100, tags: [
-    { name: "Protocol", values: ["PermaNotes-v0.1","PermaNotes-v0.2"]},
+    { name: "Protocol", values: ["PermaNotes-v0.1","PermaNotes-v0.3"]},
     { name: "Note-Topic", values: ["${topic}"]},
     { name: "Note-Public", values: ["true"]}
   ]) {
@@ -215,7 +227,7 @@ query {
     first: 100, 
     owners: ["${address}"],
     tags: [
-      { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.2"]},
+      { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.3"]},
       { name: "Note-Public", values: ["true"]}
     ]
   ) {

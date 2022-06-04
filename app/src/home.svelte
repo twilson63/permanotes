@@ -1,5 +1,6 @@
 <script>
   import { address } from "./store.js";
+  let version = __APP_VERSION__.split(".")[2];
 </script>
 
 <div class="hero min-h-screen bg-base-200">
@@ -12,7 +13,7 @@
       <h1 class="mt-8 text-5xl">
         <span class="uppercase text-primary">PermaNotes</span>
       </h1>
-      <div class="badge badge-secondary">ALPHA 4a</div>
+      <div class="badge badge-secondary">ALPHA {version}</div>
       <div class="flex mt-8 space-x-2">
         <h2 class="text-3xl text-secondary">✨ CREATE</h2>
         <h2 class="text-3xl text-primary">🗄 STORE</h2>

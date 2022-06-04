@@ -15,13 +15,9 @@ const PERMANOTE_PST = 'cwElAMnBqu2fp-TUsV9lBIZJi-DRZ5tQJgJqxhFjqNY'
 const CONTRACT_SRC = '0hTokSQ7m3DQujuVisZ-RzcU6hOY3-Uz2ZIh4Aa0nKY'
 const FEE = '.004'
 const arweaveAccount = new Account()
+const conn = import.meta.env.MODE === 'development' ? { host: 'arweave.net', port: 443, protocol: 'https' } : {}
 
-export const arweave = Arweave.init({
-  // @ts-ignore
-  host: import.meta.env.VITE_ARWEAVE || 'arweave.net',
-  port: '443',
-  protocol: 'https'
-})
+export const arweave = Arweave.init(conn)
 
 export const topics = Topics(arweave)
 
