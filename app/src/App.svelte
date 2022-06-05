@@ -14,6 +14,7 @@
   import Profile from "./profile.svelte";
   import ProfileNotes from "./profile-notes.svelte";
   import About from "./about.svelte";
+  import Favorites from "./favorites.svelte";
 
   import * as R from "ramda";
 
@@ -58,7 +59,6 @@
       {/if}
     </Route>
   </Route>
-
   <Route path="/notes/:id/edit">
     <p>TODO</p>
   </Route>
@@ -77,6 +77,9 @@
   </Route>
   <Route path="/topics/:topic">
     <Topic />
+  </Route>
+  <Route path="/favorites">
+    <Favorites />
   </Route>
   <Route path="/about">
     <About />

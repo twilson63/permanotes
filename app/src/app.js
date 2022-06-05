@@ -12,7 +12,8 @@ import path from 'ramda/src/path'
 import head from 'ramda/src/head'
 import toLower from 'ramda/src/toLower'
 import replace from 'ramda/src/replace'
-//import propEq from 'ramda/src/propEq'
+import propEq from 'ramda/src/propEq'
+import find from 'ramda/src/find'
 
 /** 
  * Permanotes application 
@@ -25,6 +26,7 @@ import replace from 'ramda/src/replace'
  * - byTopic
  * - getProfile
  * - byProfile 
+ * - favorites
  * 
  * - get
 */
@@ -132,6 +134,15 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
     ])
   }
 
+  async function favorites(account) {
+    return Async.of(account)
+      .map(buildFavoriteQuery)
+      .chain(Async.fromPromise(gql))
+      .map(pluckNodes)
+      .map(transformToFavorites)
+      .toPromise()
+  }
+
   // function getLikes(contract) {
   //   return likes.likes(contract)
   // }
@@ -153,7 +164,8 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
     unlike,
     getProfile,
     byProfile,
-    history
+    history,
+    favorites
   }
 }
 
@@ -271,4 +283,42 @@ query {
   }
 }
   `
+}
+
+function buildFavoriteQuery(account) {
+  return `
+query {
+  transactions(
+    first: 100,
+    owners: ["${account}"], 
+    tags: [
+      {name: "App-Name", values: ["SmartWeaveAction"]},
+      {name: "Type", values: ["note-like", "note-unlike"]}  
+    ]) {
+      edges {
+        node {
+          id
+          tags {
+            name
+            value
+          }
+        }
+      }
+    }
+}
+  `
+}
+
+function transformToFavorites(nodes) {
+  return map(
+    compose(
+      tags => ({
+        id: find(propEq('name', 'Note-Id'), tags),
+        title: find(propEq('name', 'Note-Title'), tags)
+      })
+      ,
+      prop('tags')
+    ),
+    nodes
+  )
 }

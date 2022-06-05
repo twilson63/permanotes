@@ -43,6 +43,7 @@
         <li><a href="/connect">Connect</a></li>
       {:else}
         <li><a href="/notes">Notes</a></li>
+        <li><a href="/favorites">Favorites</a></li>
         <li><a href="/account">Account</a></li>
         <li>
           <button class="btn-link" on:click|preventDefault={disconnect}
@@ -65,6 +66,7 @@
         <li><a href="/connect">Connect</a></li>
       {:else}
         <li><a href="/notes">Notes</a></li>
+        <li><a href="/favorites">Favorites</a></li>
         <li><a href="/account">Account</a></li>
         <li>
           <button class="btn-link" on:click={disconnect}>Disconnect</button>

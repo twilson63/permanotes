@@ -31,7 +31,6 @@
         return;
       }
       try {
-        console.log("like clicked");
         disableLike = true;
         note.id = route.params.id;
         await app.like(likeContract, owner, note);
