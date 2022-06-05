@@ -70,7 +70,7 @@ query {
   }
   // if protocol v0.1 then get app/json and decrypt if necessary
 
-  if (headers.Protocol === 'PermaNotes-v0.1') {
+  if (['PermaNotes-v0.1', 'PermaNotes-v0.3'].includes(headers.Protocol)) {
     return arweave.api.get(id, { mode: 'no-cors' })
       .then(async res => {
         if (!res.data.public) {

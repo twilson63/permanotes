@@ -17,13 +17,14 @@ export function init(arweave) {
     }, true)
   }
 
-  function like(contract = '', address = '') {
+  function like(contract = '', address = '', tags = []) {
     if (contract === '') {
       throw new Error('contract can not be empty!')
     }
     if (address === '') {
       throw new Error('address can not be empty!')
     }
+    console.log(tags)
     return smartweave.contract(contract)
       .connect('use_wallet')
       .bundleInteraction({
@@ -32,14 +33,14 @@ export function init(arweave) {
           target: address,
           winstonQty: arweave.ar.arToWinston('.004')
         }
-      })
+      }, { tags })
       .then(res => {
         console.log(res)
         return res
       })
   }
 
-  function unlike(contract = '', address = '') {
+  function unlike(contract = '', address = '', tags = []) {
     if (contract === '') {
       throw new Error('contract can not be empty!')
     }
@@ -54,7 +55,7 @@ export function init(arweave) {
           target: address,
           winstonQty: arweave.ar.arToWinston('.004') //.004 ar
         }
-      })
+      }, { tags })
   }
 
   function likes(contract) {

@@ -114,14 +114,22 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
       .toPromise()
   }
 
-  function like(contract, address) {
+  function like(contract, address, note) {
     if (!contract) { return }
-    return likes.like(contract, address)
+    return likes.like(contract, address, [
+      { name: 'Type', value: 'note-like' },
+      { name: 'Note-Id', value: note.id },
+      { name: 'Note-Title', value: note.title }
+    ])
   }
 
-  function unlike(contract, address) {
+  function unlike(contract, address, note) {
     if (!contract) { return }
-    return likes.unlike(contract, address)
+    return likes.unlike(contract, address, [
+      { name: 'Type', value: 'note-unlike' },
+      { name: 'Note-Id', value: note.id },
+      { name: 'Note-Title', value: note.title }
+    ])
   }
 
   // function getLikes(contract) {
