@@ -227,7 +227,7 @@ query {
       foundPost = result.data.data.transaction.id === txId;
     }
 
-    if (count > 10) {
+    if (count > 2) {
       break; // could not find post
     }
   }

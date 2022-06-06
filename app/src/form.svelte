@@ -13,6 +13,7 @@
   var easymde = null;
   let error = null;
   let submitting = false;
+  let congestion = false;
 
   onMount(() => {
     easymde = new window.EasyMDE({
@@ -52,12 +53,15 @@
       note.owner = $address;
 
       const likes = initLikes(arweave);
-      await notes({ post: postTx, waitfor, likes }).create(note);
-
+      const result = await notes({ post: postTx, waitfor, likes }).create(note);
       submitting = false;
 
-      window.scrollTo(0, 0);
-      router.goto("/notes");
+      if (!result) {
+        congestion = true;
+      } else {
+        window.scrollTo(0, 0);
+        router.goto("/notes");
+      }
     } catch (e) {
       window.scrollTo(0, 0);
       error = e.message;
@@ -168,5 +172,34 @@
       <label for="save-note" class="btn">OK</label>
     </div>
     -->
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="congestion"
+  bind:checked={congestion}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Arweave Gateway Processing</h3>
+    <p class="py-4">
+      Arweave gateway is under heavy load and is taking longer to confirm
+      transactions in cache. Your note will be cached usually less than 10
+      minutes.
+    </p>
+
+    <div class="modal-action">
+      <button
+        for="congestion"
+        class="btn"
+        on:click={() => {
+          congestion = false;
+          window.scrollTo(0, 0);
+          router.goto("/notes");
+        }}>OK</button
+      >
+    </div>
   </div>
 </div>
