@@ -70,6 +70,14 @@ arkb deploy dist --use-bundler https://node2.bundlr.network --wallet ../mywallet
 arkb fund-bundler 0.1 --use-bundler https://node1.bundlr.network --wallet ../mywallet.json
 ```
 
+Deploy with bundlr
+
+```
+npm i -g @bundlr-network/client
+bundlr upload-dir ./dist -c arweave -h https://node2.bundlr.network --index-file index.html --no-confirmation -w ../mywallet.json 
+```
+
+
 next update deploy
 
 https://dash.deno.com/projects/permanotes
