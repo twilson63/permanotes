@@ -292,7 +292,6 @@ query {
     first: 100,
     owners: ["${account}"], 
     tags: [
-      {name: "App-Name", values: ["SmartWeaveAction"]},
       {name: "Type", values: ["note-like", "note-unlike"]}  
     ]) {
       edges {
@@ -313,8 +312,8 @@ function transformToFavorites(nodes) {
   return map(
     compose(
       tags => ({
-        id: find(propEq('name', 'Note-Id'), tags),
-        title: find(propEq('name', 'Note-Title'), tags)
+        id: find(propEq('name', 'Note-Id'), tags).value,
+        title: find(propEq('name', 'Note-Title'), tags).value
       })
       ,
       prop('tags')

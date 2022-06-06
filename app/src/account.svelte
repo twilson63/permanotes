@@ -42,6 +42,7 @@
       {/if}
       <div class="flex space-x-8">
         <a href="/notes" class="btn btn-primary">My Notes</a>
+        <a href="/favorites" class="btn btn-primary">Favorites</a>
         <a href="/notes/new" class="btn">New Note</a>
       </div>
     </div>

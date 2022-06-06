@@ -24,20 +24,12 @@ export function init(arweave) {
     if (address === '') {
       throw new Error('address can not be empty!')
     }
-    console.log(tags)
     return smartweave.contract(contract)
       .connect('use_wallet')
       .bundleInteraction({
-        function: 'like',
-        transfer: {
-          target: address,
-          winstonQty: arweave.ar.arToWinston('.004')
-        }
-      }, { tags })
-      .then(res => {
-        console.log(res)
-        return res
+        function: 'like'
       })
+      .then(addFee(address, tags, '.004'))
   }
 
   function unlike(contract = '', address = '', tags = []) {
@@ -50,12 +42,9 @@ export function init(arweave) {
     return smartweave.contract(contract)
       .connect('use_wallet')
       .bundleInteraction({
-        function: 'unlike',
-        transfer: {
-          target: address,
-          winstonQty: arweave.ar.arToWinston('.004') //.004 ar
-        }
-      }, { tags })
+        function: 'unlike'
+      })
+      .then(addFee(address, tags, '.004'))
   }
 
   function likes(contract) {
@@ -71,6 +60,20 @@ export function init(arweave) {
       .connect('use_wallet')
       .readState()
       .then(({ state }) => state.addresses.includes(address))
+  }
+
+  function addFee(address, tags, price) {
+    return async (res) => {
+      const tx = await arweave.createTransaction({
+        target: address,
+        quantity: arweave.ar.arToWinston(price)
+      })
+      console.log(tx)
+      tags.map(t => tx.addTag(t.name, t.value))
+      await arweave.transactions.sign(tx)
+      await arweave.transactions.post(tx)
+      return res
+    }
   }
 
   return {

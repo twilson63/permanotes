@@ -1,17 +1,13 @@
 <script>
   import { router } from "tinro";
-  import { account } from "./store.js";
+  import { address } from "./store.js";
   import { gql } from "./services/arweave.js";
   import { notes } from "./app.js";
   import Navbar from "./components/navbar.svelte";
 
   const app = notes({ gql });
   function getFavorites() {
-    return app.favorites($account);
-  }
-
-  if (!$account) {
-    router.goto("/connect");
+    return app.favorites($address);
   }
 </script>
 
@@ -26,6 +22,8 @@
         <div class="card">
           <a href="/notes/{favorite.id}">{favorite.title}</a>
         </div>
+      {:else}
+        <div>No Favorites, to create a favorite, just "like" a note!</div>
       {/each}
     {/await}
   </section>

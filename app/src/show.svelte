@@ -12,6 +12,7 @@
   let loading = false;
   let toggleInfo = false;
   let likeModal = false;
+  let needArModal = false;
   let likeContract = "";
 
   const likes = initLikes(arweave);
@@ -29,6 +30,16 @@
       if (!window.arweaveWallet) {
         likeModal = true;
         return;
+      }
+      if (window.arweaveWallet) {
+        const balance = await fetch(
+          `https://arweave.net/wallet/${$address}/balance`
+        ).then((res) => res.text());
+
+        if (Number(balance) < arweave.ar.arToWinston(".004")) {
+          needArModal = true;
+          return;
+        }
       }
       try {
         disableLike = true;
@@ -67,7 +78,7 @@
       loading = true;
 
       const note = await app.get(tx);
-      console.log(note);
+
       likeCount = note.public && note.likes ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
       liked =
@@ -200,7 +211,11 @@
     <p class="py-4">
       Thank you for wanting to like this note! Likes are small tips for the
       content creator, in order to like the note, you must have an AR Wallet,
-      you can download and install an AR Wallet here:
+      you can choose a wallet:
+      <a class="underline" target="_blank" href="https://arweave.app"
+        >https://arweave.app</a
+      >
+      or
       <a class="underline" target="_blank" href="https://arconnect.io"
         >https://arconnect.io</a
       >
@@ -208,6 +223,27 @@
 
     <div class="modal-action">
       <label for="like-note" class="btn">OK</label>
+    </div>
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="needAr-note"
+  bind:checked={needArModal}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Not enough AR in Wallet</h3>
+    <p class="py-4">
+      Thank you for wanting to like this note! Likes are small tips for the
+      content creator, in order to like the note, you must have at least .004
+      AR.
+    </p>
+
+    <div class="modal-action">
+      <label for="needAr-note" class="btn">OK</label>
     </div>
   </div>
 </div>
