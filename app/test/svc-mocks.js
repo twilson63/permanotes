@@ -2,7 +2,8 @@ export const handle = () => Promise.resolve({ profile: { name: 'rakis' } })
 export const account = () => Promise.resolve({ profile: {} })
 export const load = () => Promise.resolve({
   id: '1',
-  public: true
+  public: true,
+  likeContract: '1'
 })
 
 export const likes = {
