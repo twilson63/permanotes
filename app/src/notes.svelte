@@ -21,8 +21,13 @@
       const pending = $cache.filter((n) =>
         find(propEq("id", n.id), results) ? false : true
       );
+
       loading = false;
-      return [...pending, ...results];
+      // rollup by slugs
+      return [...pending, ...results].reduce(
+        (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
+        []
+      );
     } catch (e) {
       loading = false;
       alert(e.message);

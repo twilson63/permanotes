@@ -7,6 +7,8 @@
   import { address, topics } from "./store.js";
   import { gql, topics as _topics } from "./services/arweave.js";
   import { notes } from "./app.js";
+  import propEq from "ramda/src/propEq";
+  import find from "ramda/src/find";
 
   let search = false;
   let loading = true;
@@ -19,7 +21,11 @@
       loading = true;
       const results = await notes({ gql }).byTopic(decodeURI(topic));
       loading = false;
-      return results;
+
+      return results.reduce(
+        (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
+        []
+      );
     } catch (e) {
       loading = false;
       alert(e.message);
@@ -94,6 +100,7 @@
               description={note.description}
               topic={note.topic}
               timestamp={note.timestamp}
+              cached={false}
             />
           {/each}
         {/await}
