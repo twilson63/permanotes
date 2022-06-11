@@ -3,9 +3,11 @@
   import NoteCard from "./components/note-card.svelte";
   import SearchForm from "./components/search-form.svelte";
   import { Jumper } from "svelte-loading-spinners";
-  import { address, notecache } from "./store.js";
+  import { address, cache } from "./store.js";
   import { gql } from "./services/arweave.js";
   import { notes } from "./app.js";
+  import propEq from "ramda/src/propEq";
+  import find from "ramda/src/find";
 
   let search = false;
   let loading = true;
@@ -16,8 +18,11 @@
     try {
       loading = true;
       const results = await notes({ gql }).byOwner($address);
+      const pending = $cache.filter((n) =>
+        find(propEq("id", n.id), results) ? false : true
+      );
       loading = false;
-      return results;
+      return [...pending, ...results];
     } catch (e) {
       loading = false;
       alert(e.message);
@@ -79,6 +84,7 @@
               description={note.description}
               topic={note.topic}
               timestamp={note.timestamp}
+              cached={note.cached || false}
             />
           {/each}
         {/await}

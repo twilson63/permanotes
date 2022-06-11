@@ -227,11 +227,11 @@ query {
       foundPost = result.data.data.transaction.id === txId;
     }
 
-    if (count > 2) {
+    if (count > 1) {
       break; // could not find post
     }
   }
-  return foundPost
+  return { id: txId, foundPost }
 }
 
 function delay(ms) {

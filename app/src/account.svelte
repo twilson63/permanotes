@@ -36,7 +36,7 @@
         <div class="flex space-x-4">
           <label>Topics: </label>
           {#each $topics as topic}
-            <a class="underline" href="/topics/{topic}">{topic}</a>
+            <a class="underline" href="/topics/{topic}">{decodeURI(topic)}</a>
           {/each}
         </div>
       {/if}
