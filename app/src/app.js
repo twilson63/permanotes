@@ -14,6 +14,7 @@ import toLower from 'ramda/src/toLower'
 import replace from 'ramda/src/replace'
 import propEq from 'ramda/src/propEq'
 import find from 'ramda/src/find'
+import concat from 'ramda/src/concat'
 
 /** 
  * Permanotes application 
@@ -27,6 +28,7 @@ import find from 'ramda/src/find'
  * - getProfile
  * - byProfile 
  * - favorites
+ * - search
  * 
  * - get
 */
@@ -155,6 +157,15 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
       .map(pluckNodes)
       .toPromise()
   }
+
+  async function search(criteria) {
+    return Async.of(criteria)
+      .map(basicSearch)
+      .chain(Async.fromPromise(gql))
+      .map(concatResults)
+      .toPromise()
+  }
+
   return {
     create,
     byOwner,
@@ -166,7 +177,8 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
     getProfile,
     byProfile,
     history,
-    favorites
+    favorites,
+    search
   }
 }
 
@@ -321,4 +333,84 @@ function transformToFavorites(nodes) {
     ),
     nodes
   )
+}
+
+function basicSearch(criteria) {
+  return `
+  query {
+    titles: transactions(first: 100, tags: {
+      name: "Note-Title",
+      values: ["${criteria}"]
+    }) {
+      edges {
+        node {
+          id
+          owner {
+            address
+          }
+          tags {
+            name 
+            value
+          }
+        }
+      }
+    }
+    topics: transactions(first: 100, tags: { 
+      name: "Note-Topic",
+      values: ["${criteria}"]
+    }) {
+      edges {
+        node {
+          id
+          owner {
+            address
+          }
+          tags {
+            name 
+            value
+          }
+        }
+      }
+    }
+    description: transactions(first: 100, tags: { 
+      name: "Description",
+      values: ["${criteria}"]
+    }) {
+      edges {
+        node {
+          id
+          owner {
+            address
+          }
+          tags {
+            name 
+            value
+          }
+        }
+      }
+    }
+    ids: transactions(first: 100, ids: ["${criteria}"]) {
+      edges {
+        node {
+          id
+          owner {
+            address
+          }
+          tags {
+            name 
+            value
+          }
+        }
+      }
+    }
+  }  
+  `
+}
+
+function concatResults({ data }) {
+  return pluck('node', concat(
+    data.data.titles.edges,
+    data.data.topics.edges,
+    data.data.description.edges
+  ))
 }
