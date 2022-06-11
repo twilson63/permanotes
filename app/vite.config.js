@@ -4,7 +4,7 @@ import autoprefixer from 'autoprefixer'
 import tailwind from 'tailwindcss'
 import tailwindConfig from './tailwind.config.js'
 
-const [schema, host] = process.env.GITPOD_WORKSPACE_URL.split('://')
+const [schema, host] = process.env.GITPOD_WORKSPACE_URL ? process.env.GITPOD_WORKSPACE_URL.split('://') : [null, null]
 const publicUrl = `3000-${host}`
 
 // https://vitejs.dev/config/
