@@ -17,7 +17,7 @@
   async function listNotes() {
     try {
       loading = true;
-      const results = await notes({ gql }).byTopic(topic);
+      const results = await notes({ gql }).byTopic(decodeURI(topic));
       loading = false;
       return results;
     } catch (e) {

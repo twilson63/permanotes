@@ -1,7 +1,7 @@
 <script>
   import { formatDistance } from "date-fns";
 
-  export let id, title, description, topic, timestamp;
+  export let id, title, description, topic, timestamp, cached;
 </script>
 
 <div class="card bg-base-100 shadow-xl">
@@ -23,7 +23,11 @@
       <p class="mt-4">
         {formatDistance(new Date(timestamp), new Date(), { addSuffix: true })}
       </p>
-      <a class="btn btn-primary" href="/notes/{id}">View</a>
+      {#if cached}
+        <button class="btn" disabled={true}>Minting...</button>
+      {:else}
+        <a class="btn btn-primary" href="/notes/{id}">View</a>
+      {/if}
     </div>
   </div>
 </div>

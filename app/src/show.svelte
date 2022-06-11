@@ -78,7 +78,7 @@
       loading = true;
 
       const note = await app.get(tx);
-
+      console.log(note);
       likeCount = note.public && note.likes ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
       liked =

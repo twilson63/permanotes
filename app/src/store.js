@@ -6,4 +6,4 @@ export const account = writable({})
 
 export const topics = writable([])
 
-export const notecache = writable([])
+export const cache = writable([])

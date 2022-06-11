@@ -5,7 +5,7 @@
   import { init as initLikes } from "./services/likes.js";
   import { Jumper } from "svelte-loading-spinners";
   import { notes } from "./app.js";
-  import { address } from "./store.js";
+  import { address, cache } from "./store.js";
 
   //import EasyMDE from "easymde";
   import { onMount } from "svelte";
@@ -54,10 +54,15 @@
 
       const likes = initLikes(arweave);
       const result = await notes({ post: postTx, waitfor, likes }).create(note);
+      note.id = result.id;
       submitting = false;
 
-      if (!result) {
-        congestion = true;
+      if (!result.foundPost) {
+        note.cached = true;
+        $cache = [note, ...$cache];
+        window.scrollTo(0, 0);
+        router.goto("/notes");
+        //congestion = true;
       } else {
         window.scrollTo(0, 0);
         router.goto("/notes");
