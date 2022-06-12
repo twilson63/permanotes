@@ -15,14 +15,14 @@
   import or from "ramda/src/or";
 
   let loading = false;
-  let q = meta().query.q;
+  let q = decodeURI(meta().query.q || "");
   let search = false;
 
   async function listNotes(searchTxt) {
     q = searchTxt ? searchTxt : q;
     const app = notes({ gql });
     loading = true;
-    let results = await app.search(decodeURI(q));
+    let results = await app.search(q);
     loading = false;
     results = $address
       ? results.filter(
@@ -54,7 +54,7 @@
         <SearchForm on:search={doSearch} />
       {/if}
       <div class="flex w-full">
-        <h1 class="text-2xl flex-1">Notes by Search: #{q}</h1>
+        <h1 class="text-2xl flex-1">Notes by Search: "{q}"</h1>
         <div class="flex-none flex space-x-4">
           <button
             on:click={() => {

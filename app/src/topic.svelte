@@ -23,7 +23,7 @@
       loading = true;
       let results = await notes({ gql }).byTopic(decodeURI(topic));
       loading = false;
-
+      /*
       results = $address
         ? results.filter(
             or(
@@ -32,7 +32,7 @@
             )
           )
         : results.filter(propEq("public", true));
-
+      */
       return results.reduce(
         (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
         []
