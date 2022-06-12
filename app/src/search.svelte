@@ -4,12 +4,15 @@
   import NoteCard from "./components/note-card.svelte";
   import { Jumper } from "svelte-loading-spinners";
   import SearchForm from "./components/search-form.svelte";
+  import { address } from "./store.js";
 
   import { gql } from "./services/arweave.js";
   import { notes } from "./app.js";
 
   import propEq from "ramda/src/propEq";
   import find from "ramda/src/find";
+  import and from "ramda/src/and";
+  import or from "ramda/src/or";
 
   let loading = false;
   let q = meta().query.q;
@@ -19,8 +22,17 @@
     q = searchTxt ? searchTxt : q;
     const app = notes({ gql });
     loading = true;
-    const results = await app.search(decodeURI(q));
+    let results = await app.search(decodeURI(q));
     loading = false;
+    results = $address
+      ? results.filter(
+          or(
+            and(propEq("owner", $address), propEq("public", false)),
+            propEq("public", true)
+          )
+        )
+      : results.filter(propEq("public", true));
+
     return results.reduce(
       (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
       []

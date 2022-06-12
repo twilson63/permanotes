@@ -9,6 +9,8 @@
   import { notes } from "./app.js";
   import propEq from "ramda/src/propEq";
   import find from "ramda/src/find";
+  import and from "ramda/src/and";
+  import or from "ramda/src/or";
 
   let search = false;
   let loading = true;
@@ -19,8 +21,17 @@
   async function listNotes() {
     try {
       loading = true;
-      const results = await notes({ gql }).byTopic(decodeURI(topic));
+      let results = await notes({ gql }).byTopic(decodeURI(topic));
       loading = false;
+
+      results = $address
+        ? results.filter(
+            or(
+              and(propEq("owner", $address), propEq("public", false)),
+              propEq("public", true)
+            )
+          )
+        : results.filter(propEq("public", true));
 
       return results.reduce(
         (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
