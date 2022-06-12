@@ -15,10 +15,11 @@
   let q = meta().query.q;
   let search = false;
 
-  async function listNotes() {
+  async function listNotes(searchTxt) {
+    q = searchTxt ? searchTxt : q;
     const app = notes({ gql });
     loading = true;
-    const results = await app.search(q);
+    const results = await app.search(decodeURI(q));
     loading = false;
     return results.reduce(
       (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
@@ -26,6 +27,11 @@
     );
     //return Promise.resolve([]);
   }
+  function doSearch(e) {
+    search = false;
+    noteResults = listNotes(e.detail.q);
+  }
+  let noteResults = listNotes();
 </script>
 
 <Navbar />
@@ -50,7 +56,7 @@
         </div>
       </div>
       <div class="flex flex-col space-y-4 w-full">
-        {#await listNotes() then notes}
+        {#await noteResults then notes}
           {#each notes as note}
             <NoteCard
               id={note.id}

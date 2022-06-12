@@ -17,6 +17,7 @@ export const note = {
   title: 'New Note',
   description: 'Description',
   content: 'Content',
+  slug: 'new-note',
   public: true,
   timestamp: (new Date()).toISOString()
 }
@@ -39,6 +40,7 @@ export const gql = () => Promise.resolve({
                 { name: 'Note-Topic', value: '' },
                 { name: 'Note-Rev', value: '1' },
                 { name: 'Note-Public', value: 'true' },
+                { name: 'Note-Slug', value: 'title' },
                 {
                   name: 'Note-Title',
                   value: 'Title'

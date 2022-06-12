@@ -55,8 +55,7 @@
   }
 
   function doSearch(e) {
-    console.log(e);
-    router.goto(`/search?q=test`);
+    router.goto(`/search?q=${e.detail.q}`);
   }
 </script>
 

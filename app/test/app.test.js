@@ -8,7 +8,7 @@ test('get notes by topic', async () => {
   const app = notes({ gql })
   const results = await app.byTopic('dev')
   assert.deepEqual(results,
-    [{ id: "1", description: 'Description', title: 'Title', owner: 'owner-address-1', public: true, rev: '1', timestamp: '2022-05-19T00:00:00', topic: '', type: 'note' }]
+    [{ id: "1", description: 'Description', title: 'Title', owner: 'owner-address-1', public: true, rev: '1', slug: 'title', timestamp: '2022-05-19T00:00:00', topic: '', type: 'note' }]
   )
 })
 
@@ -17,7 +17,7 @@ test('get notes by owner', async () => {
   const results = await app.byOwner('owner-address')
   assert.deepEqual(
     results,
-    [{ id: "1", description: 'Description', title: 'Title', owner: 'owner-address-1', public: true, rev: '1', timestamp: '2022-05-19T00:00:00', topic: '', type: 'note' }]
+    [{ id: "1", description: 'Description', title: 'Title', owner: 'owner-address-1', public: true, rev: '1', slug: 'title', timestamp: '2022-05-19T00:00:00', topic: '', type: 'note' }]
   )
 })
 
