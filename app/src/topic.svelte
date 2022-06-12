@@ -16,23 +16,16 @@
   let loading = true;
   let favoriteSetup = false;
   let bytopics = false;
-  let topic = meta().params.topic;
+  let topic = decodeURI(meta().params.topic);
 
   async function listNotes() {
     try {
       loading = true;
-      let results = await notes({ gql }).byTopic(decodeURI(topic));
+      let results = await notes({ gql }).byTopic(topic);
       loading = false;
-      /*
-      results = $address
-        ? results.filter(
-            or(
-              and(propEq("owner", $address), propEq("public", false)),
-              propEq("public", true)
-            )
-          )
-        : results.filter(propEq("public", true));
-      */
+
+      results = results.filter(propEq("public", true));
+
       return results.reduce(
         (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
         []
