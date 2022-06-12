@@ -74,7 +74,7 @@ Deploy with bundlr
 
 ```
 npm i -g @bundlr-network/client
-bundlr upload-dir ./dist -c arweave -h https://node2.bundlr.network --index-file index.html --no-confirmation -w ../mywallet.json 
+bundlr upload-dir ./dist -c arweave -h https://node2.bundlr.network --index-file index.html --no-confirmation -w ../wallet.json 
 ```
 
 
