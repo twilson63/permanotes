@@ -5,6 +5,8 @@
   import { Jumper } from "svelte-loading-spinners";
   import { gql, handle as loadHandle } from "./services/arweave.js";
   import { notes } from "./app.js";
+  import propEq from "ramda/src/propEq";
+  import find from "ramda/src/find";
 
   let loading = true;
   let favoriteSetup = false;
@@ -17,9 +19,14 @@
       const results = await notes({ gql, handle: loadHandle }).byProfile(
         handle
       );
-      console.log({ results });
+
       loading = false;
-      return results;
+      return results
+        .filter(propEq("public", true))
+        .reduce(
+          (acc, v) => (find(propEq("slug", v.slug), acc) ? acc : [...acc, v]),
+          []
+        );
     } catch (e) {
       loading = false;
       alert(e.message);
@@ -61,9 +68,11 @@
             >@{handle}</a
           >
         </h1>
-        <div class="flex-none flex space-x-4">
-          <button class="btn btn-primary">Follow</button>
-        </div>
+        {#if false}
+          <div class="flex-none flex space-x-4">
+            <button class="btn btn-primary">Follow</button>
+          </div>
+        {/if}
       </div>
       <div class="flex flex-col space-y-4 w-full">
         {#await listNotes() then notes}
