@@ -15,6 +15,7 @@
   import ProfileNotes from "./profile-notes.svelte";
   import About from "./about.svelte";
   import Favorites from "./favorites.svelte";
+  import Search from "./search.svelte";
 
   import * as R from "ramda";
 
@@ -33,6 +34,9 @@
     path="/learn"
     redirect="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY"
   />
+  <Route path="/search">
+    <Search />
+  </Route>
   <Route path="/connect">
     {#if not(isEmpty($address))}
       <Home />

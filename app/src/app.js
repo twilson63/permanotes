@@ -163,6 +163,8 @@ export function notes({ post, waitfor, gql, load, account, handle, likes }) {
       .map(basicSearch)
       .chain(Async.fromPromise(gql))
       .map(concatResults)
+      .map(formatNotes)
+      // need to filter out private non owned
       .toPromise()
   }
 

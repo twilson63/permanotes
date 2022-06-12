@@ -1,4 +1,5 @@
 <script>
+  import { router } from "tinro";
   import Navbar from "./components/navbar.svelte";
   import NoteCard from "./components/note-card.svelte";
   import SearchForm from "./components/search-form.svelte";
@@ -52,6 +53,11 @@
     }
     */
   }
+
+  function doSearch(e) {
+    console.log(e);
+    router.goto(`/search?q=test`);
+  }
 </script>
 
 <!--
@@ -64,7 +70,7 @@
   <section class="hero bg-base-200 min-h-screen items-start">
     <div class="hero-content flex-col w-full">
       {#if search}
-        <SearchForm />
+        <SearchForm on:search={doSearch} />
       {/if}
       <div class="flex w-full">
         <h1 class="text-2xl flex-1">Notes</h1>
