@@ -340,10 +340,10 @@ function transformToFavorites(nodes) {
 function basicSearch(criteria) {
   return `
   query {
-    titles: transactions(first: 100, tags: {
-      name: "Note-Title",
-      values: ["${criteria}"]
-    }) {
+    titles: transactions(first: 100, tags: [
+      { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.3"]},
+      { name: "Note-Title", values: ["${criteria}"]}
+    ]) {
       edges {
         node {
           id
@@ -357,10 +357,10 @@ function basicSearch(criteria) {
         }
       }
     }
-    topics: transactions(first: 100, tags: { 
-      name: "Note-Topic",
-      values: ["${criteria}"]
-    }) {
+    topics: transactions(first: 100, tags: [
+      { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.3"]},
+      { name: "Note-Topic", values: ["${criteria}"]}
+     ]) {
       edges {
         node {
           id
@@ -374,10 +374,10 @@ function basicSearch(criteria) {
         }
       }
     }
-    description: transactions(first: 100, tags: { 
-      name: "Description",
-      values: ["${criteria}"]
-    }) {
+    description: transactions(first: 100, tags: [
+      { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.3"]},
+      { name: "Description", values: ["${criteria}"]}
+    ]) {
       edges {
         node {
           id
@@ -391,7 +391,9 @@ function basicSearch(criteria) {
         }
       }
     }
-    ids: transactions(first: 100, ids: ["${criteria}"]) {
+    ids: transactions(first: 100, ids: ["${criteria}"],
+      tags: { name: "Protocol", values: ["PermaNotes-v0.1", "PermaNotes-v0.3"]}
+    ) {
       edges {
         node {
           id
@@ -410,7 +412,6 @@ function basicSearch(criteria) {
 }
 
 function concatResults({ data }) {
-  console.log(data.data.ids)
   return pluck('node', concat(
     concat(data.data.titles.edges,
       data.data.topics.edges),
