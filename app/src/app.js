@@ -410,9 +410,11 @@ function basicSearch(criteria) {
 }
 
 function concatResults({ data }) {
+  console.log(data.data.ids)
   return pluck('node', concat(
-    data.data.titles.edges,
-    data.data.topics.edges,
-    data.data.description.edges
+    concat(data.data.titles.edges,
+      data.data.topics.edges),
+    concat(data.data.description.edges,
+      data.data.ids.edges)
   ))
 }
