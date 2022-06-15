@@ -34,6 +34,7 @@
     "arweave-wallet-connector": "^0.0.26",
     "crocks": "^0.12.4",
     "date-fns": "^2.28.0",
+    "dompurify": "^2.3.8",
     "easymde": "^2.16.1",
     "marked": "^4.0.14",
     "rambda": "^7.0.3",

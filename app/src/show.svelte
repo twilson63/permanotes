@@ -5,6 +5,7 @@
   import { arweave, account, load } from "./services/arweave.js";
   import { notes } from "./app.js";
   import { marked } from "marked";
+  import DOMPUrify from "dompurify";
   import { format } from "date-fns";
   import { address } from "./store.js";
   import { init as initLikes } from "./services/likes.js";
@@ -110,9 +111,19 @@
     {#await getNote(route.params.id) then note}
       <div class="float-right pr-8">
         {#if note.owner === $address}
-          <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
-            >Fork</a
+          <div class="tooltip tooltip-bottom" data-tip="Change or Modify Note">
+            <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
+              >Fork</a
+            >
+          </div>
+          <div
+            class="tooltip tooltip-bottom tooltip-primary"
+            data-tip="Publish Permaweb Page"
           >
+            <button class="btn btn-primary" on:click={() => console.log("TODO")}
+              >Publish</button
+            >
+          </div>
         {/if}
         {#if note.public}
           <div class="flex flex-col">
@@ -139,10 +150,12 @@
       </div>
 
       <div class="">
-        <button
-          class="btn btn-outline"
-          on:click={() => (toggleInfo = !toggleInfo)}>info</button
-        >
+        <div class="tooltip" data-tip="Note Information">
+          <button
+            class="btn btn-outline"
+            on:click={() => (toggleInfo = !toggleInfo)}>info</button
+          >
+        </div>
       </div>
       {#if toggleInfo}
         <div class="card p-4 shadow-xl">
@@ -178,7 +191,7 @@
         </div>
       {/if}
       <div class="mt-16 prose prose-lg bg-base-200">
-        {@html marked.parse(note.content)}
+        {@html DOMPUrify.sanitize(marked.parse(note.content))}
       </div>
     {/await}
   </section>
