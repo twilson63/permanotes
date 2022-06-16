@@ -22,6 +22,11 @@ export const note = {
   timestamp: (new Date()).toISOString()
 }
 
+export const postWebpage = (n) => {
+  console.log(n)
+  return Promise.resolve({ id: 1 })
+}
+
 export const post = (n) => Promise.resolve(n)
 export const waitfor = () => Promise.resolve(true)
 export const gql = () => Promise.resolve({

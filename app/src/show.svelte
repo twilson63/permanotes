@@ -104,7 +104,8 @@
 
   function publishWebpage(note) {
     return async () => {
-      const result = await app.publish();
+      note.html = DOMPUrify.sanitize(marked.parse(note.content));
+      const result = await app.publish(note);
       console.log(result);
     };
   }

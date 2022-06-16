@@ -173,7 +173,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
 
   async function publish(note) {
     return Async.of(note)
-      .map(({ title, description, topic, content }) => htmlTemplate(title, description, topic, content))
+      .map(({ title, description, topic, html }) => htmlTemplate(title, description, topic, html))
       .chain(Async.fromPromise(postWebpage))
       .toPromise()
   }
@@ -445,7 +445,7 @@ function htmlTemplate(title, description, topic, body) {
   </head>
   <body>
     <main class="mt-16 prose prose-lg bg-base-200">
-    ${DOMPUrify.sanitize(marked.parse(body))}
+    ${body}
     </main>
   </body>
 </html>  

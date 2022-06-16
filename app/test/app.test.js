@@ -1,6 +1,6 @@
 import { test, assert } from 'vitest'
 import { notes } from '../src/app'
-import { load, gql, note, post, waitfor, likes } from './svc-mocks'
+import { load, gql, note, post, waitfor, likes, postWebpage } from './svc-mocks'
 
 //test()
 
@@ -33,6 +33,13 @@ test('get note', async () => {
 
   assert.equal(tx.id, '1')
   assert.equal(tx.likes, '2')
+})
+
+test('publish note', async () => {
+  const app = notes({ postWebpage })
+  note.html = '<h1>Hello World</h1>'
+  const tx = await app.publish(note)
+  assert.ok(tx.id)
 })
 
 
