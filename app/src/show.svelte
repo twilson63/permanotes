@@ -2,7 +2,7 @@
   import Navbar from "./components/navbar.svelte";
   import { Jumper } from "svelte-loading-spinners";
   import { router, meta } from "tinro";
-  import { arweave, account, load } from "./services/arweave.js";
+  import { arweave, account, load, postWebpage } from "./services/arweave.js";
   import { notes } from "./app.js";
   import { marked } from "marked";
   import DOMPUrify from "dompurify";
@@ -17,7 +17,7 @@
   let likeContract = "";
 
   const likes = initLikes(arweave);
-  const app = notes({ load, account, likes });
+  const app = notes({ load, account, likes, postWebpage });
   const route = meta();
 
   let likeCount = 0;
@@ -101,6 +101,13 @@
   function encodeText(...args) {
     return encodeURI(args.join(" "));
   }
+
+  function publishWebpage(note) {
+    return async () => {
+      const result = await app.publish();
+      console.log(result);
+    };
+  }
 </script>
 
 <Navbar />
@@ -120,7 +127,7 @@
             class="tooltip tooltip-bottom tooltip-primary"
             data-tip="Publish Permaweb Page"
           >
-            <button class="btn btn-primary" on:click={() => console.log("TODO")}
+            <button class="btn btn-primary" on:click={publishWebpage(note)}
               >Publish</button
             >
           </div>

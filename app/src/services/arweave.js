@@ -104,6 +104,23 @@ query {
 
 }
 
+export const postWebpage = async (data) => {
+  const tx = await arweave.createTransaction({ data })
+  tx.addTag('content-type', 'text/html')
+  try {
+    // try bundlr first
+    result = await arweaveWallet.dispatch(tx)
+
+    return result
+  } catch (e) {
+    // then arweave
+    await arweave.transactions.sign(tx)
+    await arweave.transactions.post(tx)
+  }
+
+  return result
+}
+
 export const postTx = async (note) => {
 
   // encrypt content if private
