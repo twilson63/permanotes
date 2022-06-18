@@ -186,7 +186,13 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
       .map(buildWebpageQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
-      // transform tags to {webpage: , title: }
+      .map(nodes => nodes.reduce((a, v) => {
+        const tag = find(t => t.name === 'Page-Title', v.tags)
+        const title = tag ? tag.value : 'unknown'
+        const webpage = v.id
+        a = [...a, { title, webpage }]
+        return a
+      }, []))
       .toPromise()
 
   }
@@ -471,7 +477,7 @@ function buildWebpageQuery(owner) {
   query {
     transactions(owners: ["${owner}"], tags: [
       {name: "App-Name", values: ["permanotes"]},
-      {name: "Content-Type", values: ["text/html"]}
+      {name: "content-type", values: ["text/html"]}
     ]) {
       edges {
         node {

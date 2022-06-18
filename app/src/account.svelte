@@ -9,8 +9,8 @@
   async function listWebpages() {
     const app = notes({ gql });
     const results = await app.listWebpages($address);
-    console.log("webpages", results);
-    return [];
+    //console.log("webpages", results);
+    return results;
   }
   let webpages = [];
 </script>
@@ -56,8 +56,10 @@
           <div class="flex space-x-4">
             <label>Webpages: </label>
             {#each webpages as webpage}
-              <a class="underline" href="https://arweave.net/{webpage.webpage}"
-                >{webpage.title}</a
+              <a
+                class="underline"
+                target="_blank"
+                href="https://arweave.net/{webpage.webpage}">{webpage.title}</a
               >
             {/each}
           </div>
