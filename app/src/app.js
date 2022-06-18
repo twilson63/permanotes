@@ -186,6 +186,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
       .map(buildWebpageQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
+      // transform tags to {webpage: , title: }
       .toPromise()
 
   }
