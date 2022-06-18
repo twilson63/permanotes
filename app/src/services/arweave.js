@@ -44,64 +44,30 @@ export const handle = async (handle) => {
 }
 
 export const load = async (id) => {
-  // need to get headers
-  const headers = await arweave.api.post('graphql', {
-    query: `
-query {
-  transaction(id: "${id}") {
-    id
-    tags {
-      name
-      value
-    }
-  }
-}
-  `}).then(({ data }) => mergeAll(map(t => ({ [t.name]: t.value }), data.data.transaction.tags)))
-
-  // if protocol v0.2 then get text/markdown and decrypt if necessary
-
-  if (headers.Protocol === 'PermaNotes-v0.2') {
-    //res.data.content = decryptString
-    return {
-      title: headers['Note-Title'],
-      description: headers['Note-Description'],
-      public: Boolean(headers['Note-Public']),
-      likes: [],
-      owner: '',
-      content: 'This Version of permanotes is not supported'
-    }
-  }
-  // if protocol v0.1 then get app/json and decrypt if necessary
-
-  if (['PermaNotes-v0.1', 'PermaNotes-v0.3'].includes(headers.Protocol)) {
-    return arweave.api.get(id, { mode: 'no-cors' })
-      .then(async res => {
-        if (!res.data.public) {
-          if (wallet) {
-            const encryptedData = Object.values(res.data.content)
-            const symmetricKeyBytes = new Uint8Array(encryptedData.slice(0, 512))
-            const contentBytes = new Uint8Array(encryptedData.slice(512))
-            const symmetricKey = await decryptRSA(symmetricKeyBytes)
-            const decryptString = arweave.utils.bufferToString(
-              await arweave.crypto.decrypt(contentBytes, symmetricKey)
-            )
-            res.data.content = decryptString
-          } else {
-            // @ts-ignore
-            // eslint-disable-next-line no-undef
-            res.data.content = await arweaveWallet.decrypt(
-              new Uint8Array(Object.values(res.data.content)),
-              {
-                algorithm: "RSA-OAEP",
-                hash: "SHA-256",
-              }
-            )
-          }
+  const { data } = await arweave.api.get(id)
+  if (!data.public) {
+    if (wallet) {
+      const encryptedData = Object.values(data.content)
+      const symmetricKeyBytes = new Uint8Array(encryptedData.slice(0, 512))
+      const contentBytes = new Uint8Array(encryptedData.slice(512))
+      const symmetricKey = await decryptRSA(symmetricKeyBytes)
+      const decryptString = arweave.utils.bufferToString(
+        await arweave.crypto.decrypt(contentBytes, symmetricKey)
+      )
+      data.content = decryptString
+    } else {
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      data.content = await arweaveWallet.decrypt(
+        new Uint8Array(Object.values(data.content)),
+        {
+          algorithm: "RSA-OAEP",
+          hash: "SHA-256",
         }
-        return res.data
-      })
+      )
+    }
   }
-
+  return data
 }
 
 export const postWebpage = async (data) => {
