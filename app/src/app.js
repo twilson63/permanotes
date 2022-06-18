@@ -185,6 +185,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
     return Async.of(owner)
       .map(buildWebpageQuery)
       .chain(Async.fromPromise(gql))
+      .map(pluckNodes)
       .toPromise()
 
   }
@@ -468,8 +469,8 @@ function buildWebpageQuery(owner) {
   return `
   query {
     transactions(owners: ["${owner}"], tags: [
-      {name: 'App-Name', values: ["permanotes"]},
-      {name: 'Content-Type', values: ['text/html']}
+      {name: "App-Name", values: ["permanotes"]},
+      {name: "Content-Type", values: ["text/html"]}
     ]) {
       edges {
         node {

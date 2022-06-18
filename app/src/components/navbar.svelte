@@ -25,7 +25,7 @@
       {:else}
         <img
           class="bg-base-100"
-          src="note.svg"
+          src="logo.svg"
           alt="menu"
           width="48"
           height="48"

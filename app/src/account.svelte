@@ -9,7 +9,8 @@
   async function listWebpages() {
     const app = notes({ gql });
     const results = await app.listWebpages($address);
-    console.log(results);
+    console.log("webpages", results);
+    return [];
   }
   let webpages = [];
 </script>
@@ -50,16 +51,18 @@
           {/each}
         </div>
       {/if}
-      {#if webpages.length > 0}
-        <div class="flex space-x-4">
-          <label>Webpages: </label>
-          {#each webpages as webpage}
-            <a class="underline" href="https://arweave.net/{webpage.webpage}"
-              >{webpage.title}</a
-            >
-          {/each}
-        </div>
-      {/if}
+      {#await listWebpages() then webpages}
+        {#if webpages.length > 0}
+          <div class="flex space-x-4">
+            <label>Webpages: </label>
+            {#each webpages as webpage}
+              <a class="underline" href="https://arweave.net/{webpage.webpage}"
+                >{webpage.title}</a
+              >
+            {/each}
+          </div>
+        {/if}
+      {/await}
       <div class="flex space-x-8">
         <a href="/notes" class="btn btn-primary">My Notes</a>
         <a href="/favorites" class="btn btn-primary">Favorites</a>
