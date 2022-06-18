@@ -444,7 +444,7 @@ function htmlTemplate(title, description, topic, body) {
     <link rel="stylesheet" href="/hPa7_RrDVP_8xr2eIPN4QpVkcEw32dCHkolFL0spQj4/assets/index.c4f5ff4c.css">
   </head>
   <body>
-    <main class="mt-16 prose prose-lg bg-base-200">
+    <main class="mt-16 prose-lg bg-base-100" style="margin-left: 32px; margin-right: 32px;">
     ${body}
     </main>
   </body>

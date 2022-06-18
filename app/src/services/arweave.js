@@ -105,6 +105,7 @@ query {
 }
 
 export const postWebpage = async (data) => {
+  let result
   const tx = await arweave.createTransaction({ data })
   tx.addTag('content-type', 'text/html')
   try {

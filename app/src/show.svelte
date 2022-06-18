@@ -1,5 +1,6 @@
 <script>
   import Navbar from "./components/navbar.svelte";
+  import Modal from "./components/modal.svelte";
   import { Jumper } from "svelte-loading-spinners";
   import { router, meta } from "tinro";
   import { arweave, account, load, postWebpage } from "./services/arweave.js";
@@ -14,6 +15,8 @@
   let toggleInfo = false;
   let likeModal = false;
   let needArModal = false;
+  let webModal = false;
+  let webpageId = "";
   let likeContract = "";
 
   const likes = initLikes(arweave);
@@ -106,7 +109,8 @@
     return async () => {
       note.html = DOMPUrify.sanitize(marked.parse(note.content));
       const result = await app.publish(note);
-      console.log(result);
+      webpageId = result.id;
+      webModal = true;
     };
   }
 </script>
@@ -220,51 +224,34 @@
   </div>
 </div>
 
-<input
-  type="checkbox"
-  id="like-note"
-  bind:checked={likeModal}
-  class="modal-toggle"
-/>
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Liking a Note</h3>
-    <p class="py-4">
-      Thank you for wanting to like this note! Likes are small tips for the
-      content creator, in order to like the note, you must have an AR Wallet,
-      you can choose a wallet:
-      <a class="underline" target="_blank" href="https://arweave.app"
-        >https://arweave.app</a
-      >
-      or
-      <a class="underline" target="_blank" href="https://arconnect.io"
-        >https://arconnect.io</a
-      >
-    </p>
+<Modal id="like-note" open={likeModal}>
+  <h3 class="font-bold text-lg">Liking a Note</h3>
+  <p class="py-4">
+    Thank you for wanting to like this note! Likes are small tips for the
+    content creator, in order to like the note, you must have an AR Wallet, you
+    can choose a wallet:
+    <a class="underline" target="_blank" href="https://arweave.app"
+      >https://arweave.app</a
+    >
+    or
+    <a class="underline" target="_blank" href="https://arconnect.io"
+      >https://arconnect.io</a
+    >
+  </p>
+</Modal>
 
-    <div class="modal-action">
-      <label for="like-note" class="btn">OK</label>
-    </div>
-  </div>
-</div>
+<Modal id="needAr-note" open={needArModal}>
+  <h3 class="font-bold text-lg">Not enough AR in Wallet</h3>
+  <p class="py-4">
+    Thank you for wanting to like this note! Likes are small tips for the
+    content creator, in order to like the note, you must have at least .004 AR.
+  </p>
+</Modal>
 
-<input
-  type="checkbox"
-  id="needAr-note"
-  bind:checked={needArModal}
-  class="modal-toggle"
-/>
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Not enough AR in Wallet</h3>
-    <p class="py-4">
-      Thank you for wanting to like this note! Likes are small tips for the
-      content creator, in order to like the note, you must have at least .004
-      AR.
-    </p>
-
-    <div class="modal-action">
-      <label for="needAr-note" class="btn">OK</label>
-    </div>
-  </div>
-</div>
+<Modal id="webModal-note" open={webModal}>
+  <h3 class="font-bold text-lg">Published Website</h3>
+  <p class="py-4">You note has been published to a webpage:</p>
+  <a class="btn" target="_blank" href="https://arweave.net/{webpageId}"
+    >https://arweave.net/{webpageId}</a
+  >
+</Modal>
