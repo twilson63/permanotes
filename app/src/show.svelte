@@ -1,10 +1,12 @@
 <script>
   import Navbar from "./components/navbar.svelte";
+  import Modal from "./components/modal.svelte";
   import { Jumper } from "svelte-loading-spinners";
   import { router, meta } from "tinro";
-  import { arweave, account, load } from "./services/arweave.js";
+  import { arweave, account, load, postWebpage } from "./services/arweave.js";
   import { notes } from "./app.js";
   import { marked } from "marked";
+  import DOMPUrify from "dompurify";
   import { format } from "date-fns";
   import { address } from "./store.js";
   import { init as initLikes } from "./services/likes.js";
@@ -13,10 +15,12 @@
   let toggleInfo = false;
   let likeModal = false;
   let needArModal = false;
+  let webModal = false;
+  let webpageId = "";
   let likeContract = "";
 
   const likes = initLikes(arweave);
-  const app = notes({ load, account, likes });
+  const app = notes({ load, account, likes, postWebpage });
   const route = meta();
 
   let likeCount = 0;
@@ -78,7 +82,6 @@
       loading = true;
 
       const note = await app.get(tx);
-      console.log(note);
       likeCount = note.public && note.likes ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
       liked =
@@ -100,6 +103,15 @@
   function encodeText(...args) {
     return encodeURI(args.join(" "));
   }
+
+  function publishWebpage(note) {
+    return async () => {
+      note.html = DOMPUrify.sanitize(marked.parse(note.content));
+      const result = await app.publish(note);
+      webpageId = result.id;
+      webModal = true;
+    };
+  }
 </script>
 
 <Navbar />
@@ -110,9 +122,19 @@
     {#await getNote(route.params.id) then note}
       <div class="float-right pr-8">
         {#if note.owner === $address}
-          <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
-            >Fork</a
+          <div class="tooltip tooltip-bottom" data-tip="Change or Modify Note">
+            <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
+              >Fork</a
+            >
+          </div>
+          <div
+            class="tooltip tooltip-bottom tooltip-primary"
+            data-tip="Publish Permaweb Page"
           >
+            <button class="btn btn-primary" on:click={publishWebpage(note)}
+              >Publish</button
+            >
+          </div>
         {/if}
         {#if note.public}
           <div class="flex flex-col">
@@ -139,10 +161,12 @@
       </div>
 
       <div class="">
-        <button
-          class="btn btn-outline"
-          on:click={() => (toggleInfo = !toggleInfo)}>info</button
-        >
+        <div class="tooltip" data-tip="Note Information">
+          <button
+            class="btn btn-outline"
+            on:click={() => (toggleInfo = !toggleInfo)}>info</button
+          >
+        </div>
       </div>
       {#if toggleInfo}
         <div class="card p-4 shadow-xl">
@@ -178,7 +202,7 @@
         </div>
       {/if}
       <div class="mt-16 prose prose-lg bg-base-200">
-        {@html marked.parse(note.content)}
+        {@html DOMPUrify.sanitize(marked.parse(note.content))}
       </div>
     {/await}
   </section>
@@ -199,51 +223,34 @@
   </div>
 </div>
 
-<input
-  type="checkbox"
-  id="like-note"
-  bind:checked={likeModal}
-  class="modal-toggle"
-/>
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Liking a Note</h3>
-    <p class="py-4">
-      Thank you for wanting to like this note! Likes are small tips for the
-      content creator, in order to like the note, you must have an AR Wallet,
-      you can choose a wallet:
-      <a class="underline" target="_blank" href="https://arweave.app"
-        >https://arweave.app</a
-      >
-      or
-      <a class="underline" target="_blank" href="https://arconnect.io"
-        >https://arconnect.io</a
-      >
-    </p>
+<Modal id="like-note" open={likeModal}>
+  <h3 class="font-bold text-lg">Liking a Note</h3>
+  <p class="py-4">
+    Thank you for wanting to like this note! Likes are small tips for the
+    content creator, in order to like the note, you must have an AR Wallet, you
+    can choose a wallet:
+    <a class="underline" target="_blank" href="https://arweave.app"
+      >https://arweave.app</a
+    >
+    or
+    <a class="underline" target="_blank" href="https://arconnect.io"
+      >https://arconnect.io</a
+    >
+  </p>
+</Modal>
 
-    <div class="modal-action">
-      <label for="like-note" class="btn">OK</label>
-    </div>
-  </div>
-</div>
+<Modal id="needAr-note" open={needArModal}>
+  <h3 class="font-bold text-lg">Not enough AR in Wallet</h3>
+  <p class="py-4">
+    Thank you for wanting to like this note! Likes are small tips for the
+    content creator, in order to like the note, you must have at least .004 AR.
+  </p>
+</Modal>
 
-<input
-  type="checkbox"
-  id="needAr-note"
-  bind:checked={needArModal}
-  class="modal-toggle"
-/>
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Not enough AR in Wallet</h3>
-    <p class="py-4">
-      Thank you for wanting to like this note! Likes are small tips for the
-      content creator, in order to like the note, you must have at least .004
-      AR.
-    </p>
-
-    <div class="modal-action">
-      <label for="needAr-note" class="btn">OK</label>
-    </div>
-  </div>
-</div>
+<Modal id="webModal-note" open={webModal}>
+  <h3 class="font-bold text-lg">Published Website</h3>
+  <p class="py-4">You note has been published to a webpage:</p>
+  <a class="btn" target="_blank" href="https://arweave.net/{webpageId}"
+    >https://arweave.net/{webpageId}</a
+  >
+</Modal>
