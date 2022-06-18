@@ -23,11 +23,7 @@
       <p class="mt-4">
         {formatDistance(new Date(timestamp), new Date(), { addSuffix: true })}
       </p>
-      {#if cached}
-        <button class="btn" disabled={true}>Minting...</button>
-      {:else}
-        <a class="btn btn-primary" href="/notes/{id}">View</a>
-      {/if}
+      <a class="btn btn-primary" href="/notes/{id}">View</a>
     </div>
   </div>
 </div>

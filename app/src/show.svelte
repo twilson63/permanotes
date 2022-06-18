@@ -109,6 +109,7 @@
       note.html = DOMPUrify.sanitize(marked.parse(note.content));
       const result = await app.publish(note);
       webpageId = result.id;
+      //$webpages = [...$webpages, { title: note.title, webpage: result.id }];
       webModal = true;
     };
   }
@@ -251,6 +252,7 @@
   <h3 class="font-bold text-lg">Published Website</h3>
   <p class="py-4">You note has been published to a webpage:</p>
   <a class="btn" target="_blank" href="https://arweave.net/{webpageId}"
-    >https://arweave.net/{webpageId}</a
+    >{webpageId}</a
   >
+  <blockquote>REMEMBER to bookmark the website!</blockquote>
 </Modal>

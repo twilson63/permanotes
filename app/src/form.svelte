@@ -59,7 +59,7 @@
 
       if (!result.foundPost) {
         note.cached = true;
-        $cache = [note, ...$cache];
+        $cache = [note, ...($cache || [])];
         window.scrollTo(0, 0);
         router.goto("/notes");
         //congestion = true;

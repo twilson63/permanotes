@@ -18,10 +18,15 @@
   async function listNotes() {
     try {
       loading = true;
+      console.log($cache);
       const results = await notes({ gql }).byOwner($address);
-      const pending = $cache.filter((n) =>
+      const pending = ($cache || []).filter((n) =>
         find(propEq("id", n.id), results) ? false : true
       );
+      // clean cache if in results
+      $cache = $cache.reduce((acc, v) => {
+        acc = find(propEq("id", v.id), results) ? acc : [...acc, v];
+      }, []);
 
       loading = false;
       // rollup by slugs

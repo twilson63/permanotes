@@ -173,9 +173,20 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
 
   async function publish(note) {
     return Async.of(note)
-      .map(({ title, description, topic, html }) => htmlTemplate(title, description, topic, html))
+      .map(({ title, description, topic, html }) => ({
+        title,
+        html: htmlTemplate(title, description, topic, html)
+      }))
       .chain(Async.fromPromise(postWebpage))
       .toPromise()
+  }
+
+  async function listWebpages(owner) {
+    return Async.of(owner)
+      .map(buildWebpageQuery)
+      .chain(Async.fromPromise(gql))
+      .toPromise()
+
   }
 
   return {
@@ -191,7 +202,8 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
     history,
     favorites,
     search,
-    publish
+    publish,
+    listWebpages
   }
 }
 
@@ -450,4 +462,25 @@ function htmlTemplate(title, description, topic, body) {
   </body>
 </html>  
 `
+}
+
+function buildWebpageQuery(owner) {
+  return `
+  query {
+    transactions(owners: ["${owner}"], tags: [
+      {name: 'App-Name', values: ["permanotes"]},
+      {name: 'Content-Type', values: ['text/html']}
+    ]) {
+      edges {
+        node {
+          id
+          tags {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+  `
 }

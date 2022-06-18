@@ -1,7 +1,17 @@
 <script>
   import { address, account, topics } from "./store.js";
   import Navbar from "./components/navbar.svelte";
+  import { gql } from "./services/arweave.js";
+  import { notes } from "./app.js";
+
   const profile = $account.profile;
+
+  async function listWebpages() {
+    const app = notes({ gql });
+    const results = await app.listWebpages($address);
+    console.log(results);
+  }
+  let webpages = [];
 </script>
 
 <Navbar />
@@ -37,6 +47,16 @@
           <label>Topics: </label>
           {#each $topics as topic}
             <a class="underline" href="/topics/{topic}">{decodeURI(topic)}</a>
+          {/each}
+        </div>
+      {/if}
+      {#if webpages.length > 0}
+        <div class="flex space-x-4">
+          <label>Webpages: </label>
+          {#each webpages as webpage}
+            <a class="underline" href="https://arweave.net/{webpage.webpage}"
+              >{webpage.title}</a
+            >
           {/each}
         </div>
       {/if}

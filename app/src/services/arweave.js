@@ -72,8 +72,10 @@ export const load = async (id) => {
 
 export const postWebpage = async (data) => {
   let result
-  const tx = await arweave.createTransaction({ data })
+  const tx = await arweave.createTransaction({ data: data.html })
   tx.addTag('content-type', 'text/html')
+  tx.addTag('App-Name', 'permanotes')
+  tx.addTag('Page-Title', data.title)
   try {
     // try bundlr first
     result = await arweaveWallet.dispatch(tx)
