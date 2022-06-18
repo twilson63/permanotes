@@ -125,18 +125,6 @@
   dependencies:
     "@types/cli-color" "*"
 
-"@types/codemirror@^5.60.4":
-  version "5.60.5"
-  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-5.60.5.tgz#5b989a3b4bbe657458cf372c92b6bfda6061a2b7"
-  integrity sha512-TiECZmm8St5YxjFUp64LK0c8WU5bxMDt9YaAek1UqUb9swrSCoJhh92fWu1p3mTEqlHjhB5sY7OFBhWroJXZVg==
-  dependencies:
-    "@types/tern" "*"
-
-"@types/estree@*":
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.51.tgz#cfd70924a25a3fd32b218e5e420e6897e1ac4f40"
-  integrity sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==
-
 "@types/inquirer@^7.3.1":
   version "7.3.3"
   resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-7.3.3.tgz#92e6676efb67fa6925c69a2ee638f67a822952ac"
@@ -144,11 +132,6 @@
   dependencies:
     "@types/through" "*"
     rxjs "^6.4.0"
-
-"@types/marked@^4.0.1":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@types/marked/-/marked-4.0.3.tgz#2098f4a77adaba9ce881c9e0b6baf29116e5acc4"
-  integrity sha512-HnMWQkLJEf/PnxZIfbm0yGJRRZYYMhb++O9M36UCTA9z53uPvVoSlAwJr3XOpDEryb7Hwl1qAx/MV6YIW1RXxg==
 
 "@types/node@*":
   version "17.0.25"
@@ -159,13 +142,6 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
-
-"@types/tern@*":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@types/tern/-/tern-0.23.4.tgz#03926eb13dbeaf3ae0d390caf706b2643a0127fb"
-  integrity sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==
-  dependencies:
-    "@types/estree" "*"
 
 "@types/through@*":
   version "0.0.30"
@@ -604,18 +580,6 @@ clui@^0.3.6:
   dependencies:
     cli-color "0.3.2"
 
-codemirror-spell-checker@*, codemirror-spell-checker@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz#1c660f9089483ccb5113b9ba9ca19c3f4993371e"
-  integrity sha1-HGYPkIlIPMtRE7m6nKGcP0mTNx4=
-  dependencies:
-    typo-js "*"
-
-codemirror@*, codemirror@^5.63.1:
-  version "5.65.2"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.65.2.tgz#5799a70cb3d706e10f60e267245e3a75205d3dd9"
-  integrity sha512-SZM4Zq7XEC8Fhroqe3LxbEEX1zUPWH1wMr5zxiBuiUF64iYOUH/JI88v4tBag8MiBS8B8gRv8O1pPXGYXQ4ErA==
-
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -807,17 +771,6 @@ dompurify@^2.3.8:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.3.8.tgz#224fe9ae57d7ebd9a1ae1ac18c1c1ca3f532226f"
   integrity sha512-eVhaWoVibIzqdGYjwsBWodIQIaXFSB+cKDf4cfxLMsK0xiud6SE+/WCVx/Xw/UwQsa4cS3T2eITcdtmTg2UKcw==
-
-easymde@^2.16.1:
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/easymde/-/easymde-2.16.1.tgz#f4c2380312615cb33826f1a1fecfaa4022ff551a"
-  integrity sha512-FihYgjRsKfhGNk89SHSqxKLC4aJ1kfybPWW6iAmtb5GnXu+tnFPSzSaGBmk1RRlCuhFSjhF0SnIMGVPjEzkr6g==
-  dependencies:
-    "@types/codemirror" "^5.60.4"
-    "@types/marked" "^4.0.1"
-    codemirror "^5.63.1"
-    codemirror-spell-checker "1.1.2"
-    marked "^4.0.10"
 
 electron-to-chromium@^1.4.84:
   version "1.4.90"
@@ -1876,11 +1829,6 @@ magic-string@^0.26.1:
   dependencies:
     sourcemap-codec "^1.4.8"
 
-marked@*, marked@^4.0.10:
-  version "4.0.12"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.12.tgz#2262a4e6fd1afd2f13557726238b69a48b982f7d"
-  integrity sha512-hgibXWrEDNBWgGiK18j/4lkS6ihTe9sxtV4Q1OQppb/0zzyPSzoFANBa5MfsG/zgsWklmNnhm0XACZOH/0HBiQ==
-
 marked@^4.0.14:
   version "4.0.14"
   resolved "https://registry.yarnpkg.com/marked/-/marked-4.0.14.tgz#7a3a5fa5c80580bac78c1ed2e3b84d7bd6fc3870"
@@ -2209,11 +2157,6 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
-rambda@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/rambda/-/rambda-7.0.3.tgz#35730cb9ac24943c1231f74e6fddd46ae594d3c0"
-  integrity sha512-vRkFoukpx9PTmYyOjMZ6+anbDI9BrjaAepigsSOVQcgy7dZKMHM26m1/r8BvegeBCM8qBwr1m/+rufgNKRrofw==
-
 ramda@^0.28.0:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.28.0.tgz#acd785690100337e8b063cab3470019be427cc97"
@@ -2397,15 +2340,6 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
-
-simplemde@^1.11.2:
-  version "1.11.2"
-  resolved "https://registry.yarnpkg.com/simplemde/-/simplemde-1.11.2.tgz#a23a35d978d2c40ef07dec008c92f070d8e080e3"
-  integrity sha1-ojo12XjSxA7wfewAjJLwcNjggOM=
-  dependencies:
-    codemirror "*"
-    codemirror-spell-checker "*"
-    marked "*"
 
 smartweave@^0.4.48:
   version "0.4.48"
@@ -2671,11 +2605,6 @@ typescript-is@^0.19.0:
     tsutils "^3.17.1"
   optionalDependencies:
     reflect-metadata ">=0.1.12"
-
-typo-js@*:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/typo-js/-/typo-js-1.2.1.tgz#334a0d8c3f6c56f2f1e15fdf6c31677793cbbe9b"
-  integrity sha512-bTGLjbD3WqZDR3CgEFkyi9Q/SS2oM29ipXrWfDb4M74ea69QwKAECVceYpaBu0GfdnASMg9Qfl67ttB23nePHg==
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
