@@ -5,7 +5,7 @@
   import { handle as loadHandle } from "./services/arweave.js";
   import { notes } from "./app.js";
 
-  const handle = meta().params.handle;
+  const handle = decodeURI(meta().params.handle);
   const app = notes({ handle: loadHandle });
 
   const getHandle = async (h) => {

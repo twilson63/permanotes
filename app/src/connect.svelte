@@ -21,7 +21,7 @@
       const walletAddress = await connectApp().catch((e) => "");
       topics.set(await getTopics.load(walletAddress));
       const a = await getAccount(walletAddress);
-      console.log("account", a);
+
       if (a) {
         account.set(a);
       } else {

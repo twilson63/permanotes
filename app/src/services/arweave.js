@@ -39,7 +39,6 @@ export const connectApp = () => {
 export const account = async (address) => await arweaveAccount.get(address)
 
 export const handle = async (handle) => {
-  console.log(handle)
   return await arweaveAccount.search(handle)
 }
 

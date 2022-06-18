@@ -118,7 +118,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
   async function getHandle(address) {
     return Async.of(address)
       .chain(Async.fromPromise(account))
-      .map(path(['profile', 'name']))
+      .map(path(['profile', 'handle']))
       .toPromise()
   }
 

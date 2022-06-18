@@ -18,7 +18,7 @@
   async function listNotes() {
     try {
       loading = true;
-      console.log($cache);
+
       const results = await notes({ gql }).byOwner($address);
       const pending = ($cache || []).filter((n) =>
         find(propEq("id", n.id), results) ? false : true
