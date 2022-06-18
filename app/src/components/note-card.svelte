@@ -1,7 +1,7 @@
 <script>
   import { formatDistance } from "date-fns";
 
-  export let id, title, description, topic, timestamp, cached;
+  export let id, title, description, topic, timestamp;
 </script>
 
 <div class="card bg-base-100 shadow-xl">

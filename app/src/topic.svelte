@@ -104,7 +104,6 @@
               description={note.description}
               topic={note.topic}
               timestamp={note.timestamp}
-              cached={false}
             />
           {/each}
         {/await}

@@ -67,7 +67,7 @@ arkb deploy dist --use-bundler https://node2.bundlr.network --wallet ../mywallet
 > NOTE: make sure you have a balance in bundler if not.
 
 ```
-arkb fund-bundler 0.1 --use-bundler https://node1.bundlr.network --wallet ../mywallet.json
+arkb fund-bundler 0.1 --use-bundler https://node2.bundlr.network --wallet ../mywallet.json
 ```
 
 Deploy with bundlr
