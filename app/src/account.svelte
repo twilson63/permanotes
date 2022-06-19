@@ -9,7 +9,6 @@
   async function listWebpages() {
     const app = notes({ gql });
     const results = await app.listWebpages($address);
-    //console.log("webpages", results);
     return results;
   }
   let webpages = [];

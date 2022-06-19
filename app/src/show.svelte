@@ -16,6 +16,8 @@
   let likeModal = false;
   let needArModal = false;
   let webModal = false;
+  let errorModal = false;
+  let errorMsg = "";
   let webpageId = "";
   let likeContract = "";
 
@@ -82,6 +84,7 @@
       loading = true;
 
       const note = await app.get(tx);
+
       likeCount = note.public && note.likes ? note.likes.length : 0;
       likeContract = note.public ? note.likeContract : "";
       liked =
@@ -95,7 +98,7 @@
       loading = false;
       return note;
     } catch (e) {
-      console.log(e.message);
+      console.log("ERROR: ", e.message);
       router.goto("/404");
     }
   }
@@ -106,11 +109,16 @@
 
   function publishWebpage(note) {
     return async () => {
-      note.html = DOMPUrify.sanitize(marked.parse(note.content));
-      const result = await app.publish(note);
-      webpageId = result.id;
-      //$webpages = [...$webpages, { title: note.title, webpage: result.id }];
-      webModal = true;
+      try {
+        note.html = DOMPUrify.sanitize(marked.parse(note.content));
+        const result = await app.publish(note);
+        webpageId = result.id;
+        //$webpages = [...$webpages, { title: note.title, webpage: result.id }];
+        webModal = true;
+      } catch (e) {
+        errorMsg = e.message;
+        errorModal = true;
+      }
     };
   }
 </script>
@@ -174,7 +182,7 @@
           <h1 class="text-3xl">{note.title}</h1>
           <p class="">Description: {note.description}</p>
           <p class="">
-            By: <a class="underline" href="/profiles/{note.handle}"
+            By: <a class="underline" href="/profiles/{note.owner}"
               >{note.handle || note.owner}</a
             >
           </p>
@@ -255,4 +263,9 @@
     >{webpageId}</a
   >
   <blockquote>REMEMBER to bookmark the website!</blockquote>
+</Modal>
+
+<Modal id="error-modal" open={errorModal}>
+  <h3 class="font-bold text-lg">Error</h3>
+  <p class="py-4">{errorMsg}</p>
 </Modal>

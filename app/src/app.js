@@ -90,7 +90,6 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
   async function get(id) {
     return Async.of(id)
       .chain(Async.fromPromise(load))
-      //.map(x => (console.log(x), x))
       .chain(getLikes)
       .toPromise()
   }
@@ -98,16 +97,14 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
   async function getProfile(h) {
     return Async.of(h)
       .chain(Async.fromPromise(handle))
-      .map(x => (console.log(x), x))
-      //.map(() => ({ profile: { handle: 'rakis', address: 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI' } }))
-      .map(compose(prop('profile'), head))
+      .map(prop('profile'))
       .toPromise()
   }
 
   async function byProfile(h) {
     return Async.of(h)
       .chain(Async.fromPromise(handle))
-      .map(compose(path(['profile', 'addr']), head))
+      .map(path(['profile', 'addr']))
       .map(buildProfileQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
@@ -186,13 +183,7 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
       .map(buildWebpageQuery)
       .chain(Async.fromPromise(gql))
       .map(pluckNodes)
-      .map(nodes => nodes.reduce((a, v) => {
-        const tag = find(t => t.name === 'Page-Title', v.tags)
-        const title = tag ? tag.value : 'unknown'
-        const webpage = v.id
-        a = [...a, { title, webpage }]
-        return a
-      }, []))
+      .map(transformToWebpageList)
       .toPromise()
 
   }
@@ -213,6 +204,16 @@ export function notes({ post, waitfor, gql, load, account, handle, likes, postWe
     publish,
     listWebpages
   }
+}
+
+function transformToWebpageList(nodes) {
+  return nodes.reduce((a, v) => {
+    const tag = find(t => t.name === 'Page-Title', v.tags)
+    const title = tag ? tag.value : 'unknown'
+    const webpage = v.id
+    a = [...a, { title, webpage }]
+    return a
+  }, [])
 }
 
 function slugify(note) {
@@ -286,7 +287,6 @@ query {
 }
 
 function buildProfileQuery(address) {
-  console.log({ address })
   return `
 query {
   transactions(

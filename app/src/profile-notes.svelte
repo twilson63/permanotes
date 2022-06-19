@@ -12,13 +12,14 @@
   let favoriteSetup = false;
   let bytopics = false;
   let handle = meta().params.handle;
+  let profile = { name: "unknown" };
 
   async function listNotes() {
     try {
       loading = true;
-      const results = await notes({ gql, handle: loadHandle }).byProfile(
-        handle
-      );
+      const app = notes({ gql, handle: loadHandle });
+      profile = await app.getProfile(handle);
+      const results = await app.byProfile(handle);
 
       loading = false;
       return results
@@ -65,7 +66,7 @@
       <div class="flex w-full">
         <h1 class="text-2xl flex-1">
           Notes by User: <a class="underline" href="/profiles/{handle}"
-            >@{handle}</a
+            >@{profile.name}</a
           >
         </h1>
         {#if false}

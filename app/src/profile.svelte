@@ -10,6 +10,7 @@
 
   const getHandle = async (h) => {
     const result = await app.getProfile(h);
+
     return result;
   };
 </script>
@@ -27,7 +28,7 @@
           <h1 class="text-6xl">{profile.name}</h1>
           <p>{profile.bio}</p>
           <div class="flex space-x-8">
-            <a href="/profiles/{profile.name}/notes" class="btn btn-primary"
+            <a href="/profiles/{profile.addr}/notes" class="btn btn-primary"
               >View Notes</a
             >
           </div>
