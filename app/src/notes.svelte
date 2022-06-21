@@ -23,10 +23,11 @@
       const pending = ($cache || []).filter((n) =>
         find(propEq("id", n.id), results) ? false : true
       );
+
       // clean cache if in results
-      $cache = $cache.reduce((acc, v) => {
-        acc = find(propEq("id", v.id), results) ? acc : [...acc, v];
-      }, []);
+      // $cache = ($cache || []).reduce((acc, v) => {
+      //   acc = find(propEq("id", v.id), results) ? acc : [...acc, v];
+      // }, []);
 
       loading = false;
       // rollup by slugs
