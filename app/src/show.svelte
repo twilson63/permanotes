@@ -10,6 +10,7 @@
   import { format } from "date-fns";
   import { address } from "./store.js";
   import { init as initLikes } from "./services/likes.js";
+  import hljs from "highlight.js";
 
   let loading = false;
   let toggleInfo = false;
@@ -121,6 +122,15 @@
       }
     };
   }
+
+  marked.setOptions({
+    highlight: function (code, lang) {
+      if (lang !== "") {
+        return hljs.highlight(lang, code).value;
+      }
+      return hljs.highlightAuto(code).value;
+    },
+  });
 </script>
 
 <Navbar />
@@ -130,12 +140,12 @@
   >
     {#await getNote(route.params.id) then note}
       <div class="float-right pr-8">
+        <div class="tooltip tooltip-bottom" data-tip="Change or Modify Note">
+          <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
+            >Fork</a
+          >
+        </div>
         {#if note.owner === $address}
-          <div class="tooltip tooltip-bottom" data-tip="Change or Modify Note">
-            <a class="btn btn-outline" href="/notes/new?fork={route.params.id}"
-              >Fork</a
-            >
-          </div>
           <div
             class="tooltip tooltip-bottom tooltip-primary"
             data-tip="Publish Permaweb Page"
