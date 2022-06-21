@@ -128,7 +128,7 @@
       if (lang !== "") {
         return hljs.highlight(lang, code).value;
       }
-      return hljs.highlightAuto(code).value;
+      return code;
     },
   });
 </script>
