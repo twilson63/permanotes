@@ -11,6 +11,13 @@
     const results = await app.listWebpages($address);
     return results;
   }
+
+  function disconnect() {
+    if (window.arweaveWallet) window.arweaveWallet.disconnect();
+    address.set("");
+    router.goto("/connect");
+  }
+
   let webpages = [];
 </script>
 
@@ -66,8 +73,11 @@
       {/await}
       <div class="flex space-x-8">
         <a href="/notes" class="btn btn-primary">My Notes</a>
+        <a href="/pages" class="btn btn-primary">My Pages</a>
         <a href="/favorites" class="btn btn-primary">Favorites</a>
-        <a href="/notes/new" class="btn">New Note</a>
+        <button class="btn" on:click|preventDefault={disconnect}
+          >Disconnect</button
+        >
       </div>
     </div>
   </section>

@@ -19,6 +19,18 @@ import { marked } from "marked";
 import DOMPUrify from "dompurify";
 
 
+export function pages({ register }) {
+  async function purchase(page) {
+    console.log(page)
+    return Async.of(page)
+      .chain(Async.fromPromise(register))
+      .toPromise()
+  }
+  return {
+    purchase
+  }
+}
+
 /** 
  * Permanotes application 
  * 

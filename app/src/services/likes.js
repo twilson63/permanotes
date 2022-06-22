@@ -2,13 +2,13 @@
 // eslint-disable-next-line no-unused-vars
 /* global rsdk */
 // @ts-ignore
-const { SmartWeaveWebFactory, LoggerFactory } = window.rsdk
+const { WarpWebFactory, LoggerFactory } = window.warp
 const CONTRACT_SRC = 'Hljxh8rYyXCb45BYULHb6KhUDnRkxc4ZUaUDCUkOP_w'
 
 LoggerFactory.INST.logLevel("fatal");
 
 export function init(arweave) {
-  const smartweave = SmartWeaveWebFactory.memCached(arweave)
+  const smartweave = WarpWebFactory.memCached(arweave)
 
   function create() {
     return smartweave.createContract.deployFromSourceTx({

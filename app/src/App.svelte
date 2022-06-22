@@ -16,6 +16,9 @@
   import About from "./about.svelte";
   import Favorites from "./favorites.svelte";
   import Search from "./search.svelte";
+  import Pages from "./pages/index.svelte";
+  import PageLink from "./pages/link.svelte";
+  import PageForm from "./pages/form.svelte";
 
   import * as R from "ramda";
 
@@ -65,6 +68,21 @@
   </Route>
   <Route path="/notes/:id/edit">
     <p>TODO</p>
+  </Route>
+  <Route path="/pages/*">
+    {#if not(isEmpty($address))}
+      <Route path="/link">
+        <PageLink />
+      </Route>
+      <Route path="/new">
+        <PageForm />
+      </Route>
+      <Route fallback>
+        <Pages />
+      </Route>
+    {:else}
+      <Connect />
+    {/if}
   </Route>
   <Route path="/account">
     {#if not(isEmpty($address))}

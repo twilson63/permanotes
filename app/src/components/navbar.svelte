@@ -4,12 +4,6 @@
   import * as R from "ramda";
 
   let version = __APP_VERSION__.split(".")[2];
-
-  function disconnect() {
-    if (window.arweaveWallet) window.arweaveWallet.disconnect();
-    address.set("");
-    router.goto("/connect");
-  }
 </script>
 
 <div class="navbar bg-base-100 max-w-full">
@@ -43,13 +37,8 @@
         <li><a href="/connect">Connect</a></li>
       {:else}
         <li><a href="/notes">Notes</a></li>
-        <li><a href="/favorites">Favorites</a></li>
+        <li><a href="/pages">Pages</a></li>
         <li><a href="/account">Account</a></li>
-        <li>
-          <button class="btn-link" on:click|preventDefault={disconnect}
-            >Disconnect</button
-          >
-        </li>
       {/if}
     </ul>
   </div>
@@ -66,11 +55,8 @@
         <li><a href="/connect">Connect</a></li>
       {:else}
         <li><a href="/notes">Notes</a></li>
-        <li><a href="/favorites">Favorites</a></li>
+        <li><a href="/pages">Pages</a></li>
         <li><a href="/account">Account</a></li>
-        <li>
-          <button class="btn-link" on:click={disconnect}>Disconnect</button>
-        </li>
       {/if}
     </ul>
   </div>
