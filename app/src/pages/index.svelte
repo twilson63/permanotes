@@ -41,7 +41,7 @@
                       <td>{id}</td>
 
                       <td>
-                        <button class="btn">Fork</button>
+                        <button class="btn">Edit</button>
                       </td>
                     </tr>
                   </tbody>
@@ -54,7 +54,7 @@
           </div>
         </div>
         <div>
-          <h2 class="text-5xl font-bold">Permalinks</h2>
+          <h2 class="text-5xl font-bold">Arweave Name Tokens</h2>
           <div class="overflow-x-auto">
             {#await listANTs(account)}
               Loading...
@@ -78,10 +78,10 @@
                           target="_blank"
                           href={"https://" +
                             ant.name.toLowerCase() +
-                            ".arweave.net"}
+                            ".arweave.dev"}
                           >{"https://" +
                             ant.name.toLowerCase() +
-                            ".arweave.net"}</a
+                            ".arweave.dev"}</a
                         ></td
                       >
                       <td>{ant.records["@"]}</td>
@@ -95,9 +95,11 @@
                 {/each}
               </table>
             {/await}
+            <!--
             <div class="mt-16">
-              <a href="/pages/link" class="btn btn-primary">New Permalink</a>
+              <a href="/pages/link" class="btn btn-primary">New ANT</a>
             </div>
+            -->
           </div>
         </div>
       </div>

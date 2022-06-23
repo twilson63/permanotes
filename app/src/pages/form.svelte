@@ -8,6 +8,8 @@
   import { address, account } from "../store.js";
   import { marked } from "marked";
   import DOMPUrify from "dompurify";
+  import weavemail from "../widgets/weavemail.js";
+  import Mustache from "mustache";
   //import EasyMDE from "easymde";
   import { onMount } from "svelte";
 
@@ -61,10 +63,20 @@
       page.owner = $address;
       page.html = DOMPUrify.sanitize(marked.parse(page.content));
 
+      if (page.weavemail) {
+        page.html = weavemail.script() + "\n" + page.html;
+        page.html =
+          Mustache.render(weavemail.template(), {
+            address: $account.profile.addr,
+          }) +
+          "\n" +
+          page.html;
+      }
+
       if (page.profile) {
         page.html = hero($account.profile) + "\n" + page.html;
       }
-      console.log(page.html);
+
       const result = await pages({
         register,
         post: postPageTx,
@@ -137,6 +149,14 @@
 </div>
     `;
   }
+
+  async function getnfts(wallet) {
+    const results = await fetch(
+      "https://api.opensea.io/api/v1/assets?owner=" + wallet
+    ).then((res) => res.json());
+    console.log(results);
+    return results.assets;
+  }
 </script>
 
 <Navbar />
@@ -207,6 +227,75 @@
               </div>
             </div>
           </div>
+        {/if}
+        <div class="mt-4 form-control">
+          <label for="weavemail" class="label cursor-pointer">
+            <span class="label-text"
+              >WeaveMail - Toggle to on, to add Weavemail form</span
+            >
+            <input
+              type="checkbox"
+              class="toggle toggle-secondary"
+              bind:checked={page.weavemail}
+            />
+          </label>
+        </div>
+        {#if page.weavemail && $account.profile}
+          <div class="card">
+            <h1 class="text-3xl">Write to me!</h1>
+            <input type="hidden" name="to" value={$account.profile.address} />
+            <div class="form-control">
+              <label class="label" for="subject">Subject</label>
+              <input
+                class="input input-bordered"
+                type="text"
+                placeholder="Subject"
+                id="subject"
+              />
+            </div>
+            <div class="form-control">
+              <label class="label" for="content">Mail contents</label>
+              <textarea
+                class="textarea textarea-bordered h-16"
+                id="content"
+                placeholder="Hello there..."
+              />
+            </div>
+            <div class="form-control">
+              <label class="label" for="donate"> (Optional) Send me AR</label>
+              <input
+                class="input input-bordered"
+                type="text"
+                placeholder="0 AR"
+                id="donate"
+              /><br />
+            </div>
+            <button disabled class="btn">Send</button>
+          </div>
+        {/if}
+        <div class="mt-4 form-control">
+          <label for="gallery" class="label cursor-pointer">
+            <span class="label-text"
+              >NFT Gallery - Enter Etherium Wallet Address</span
+            >
+            <input
+              type="input"
+              class="input input-bordered w-1/2"
+              bind:value={page.ethwallet}
+            />
+          </label>
+        </div>
+        {#if page.ethwallet}
+          <h2 class="text-3xl my-8">My NFT Gallery</h2>
+          {#await getnfts(page.ethwallet) then nfts}
+            <div class="carousel rounded-box w-full">
+              {#each nfts as nft}
+                <div class="carosel-item">
+                  <img src={nft.image_url} alt={nft.name} />
+                </div>
+              {/each}
+            </div>
+          {/await}
         {/if}
         <div class="form-control">
           <label for="content" class="label">Page Content(markdown)</label>
@@ -306,7 +395,6 @@
         />
         <small>(max: 50 characters)</small>
       </div>
-
       <div class="modal-action">
         <button for="confirm" class="btn">Submit</button>
       </div>

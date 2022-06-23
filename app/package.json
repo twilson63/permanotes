@@ -37,6 +37,7 @@
     "dompurify": "^2.3.8",
     "highlight.js": "^11.5.1",
     "marked": "^4.0.14",
+    "mustache": "^4.2.0",
     "ramda": "^0.28.0",
     "smartweave": "^0.4.48",
     "zod": "^3.14.2"
