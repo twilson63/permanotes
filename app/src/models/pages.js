@@ -18,6 +18,8 @@ const schema = z.object({
   content: z.string(),
   html: z.string(),
   profile: z.boolean(),
+  weavemail: z.boolean(),
+  ethwallet: z.string().default(''),
   timestamp: z.string(),
 })
 

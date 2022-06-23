@@ -83,12 +83,12 @@ query {
 
 export async function getANT(ANT) {
   const ant = warp.pst(ANT)
-  return await ant.currentState()
+  return { ...(await ant.currentState()), id: ANT }
 }
 
 export async function updateSubDomain(ANT, subDomain, transactionId) {
   const ant = warp.pst(ANT).connect('use_wallet')
-  await ant.bundleInteraction({
+  await ant.writeInteraction({
     function: 'setRecord',
     subDomain,
     transactionId
@@ -98,7 +98,7 @@ export async function updateSubDomain(ANT, subDomain, transactionId) {
 
 export async function removeSubDomain(ANT, subDomain) {
   const ant = warp.pst(ANT).connect('use_wallet')
-  await ant.bundleInteraction({
+  await ant.writeInteraction({
     function: 'removeRecord',
     subDomain
   })

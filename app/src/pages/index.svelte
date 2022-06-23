@@ -41,10 +41,14 @@
 <main>
   <section class="hero bg-base-200 min-h-screen items-start">
     <div class="hero-content flex-col lg:flex-row-reverse w-full">
-      <img src="/permapages.svg" class="max-w-sm rounded-lg shadow-2xl" />
       <div class="flex flex-col space-y-16">
         <div>
-          <h2 class="text-5xl font-bold mb-2">Permapages</h2>
+          <div class="flex">
+            <h2 class="text-2xl mb-2 flex-1">Permapages</h2>
+            <div class="flex-none6">
+              <a href="/pages/new" class="btn btn-primary">New Permapage</a>
+            </div>
+          </div>
           <div class="overflow-x-auto">
             {#await list(account)}
               Loading...
@@ -68,23 +72,20 @@
                       <td>{id}</td>
 
                       <td>
-                        <button class="btn">Edit</button>
+                        <a href="/pages/new?fork={id}" class="btn">Edit</a>
                       </td>
                     </tr>
                   </tbody>
                 {/each}
               </table>
             {/await}
-            <div class="mt-16">
-              <a href="/pages/new" class="btn btn-primary">New Permapage</a>
-            </div>
           </div>
         </div>
         <div>
-          <h2 class="text-5xl font-bold">Arweave Name Tokens</h2>
+          <h2 class="text-2xl">Arweave Name Tokens</h2>
           <div class="overflow-x-auto">
             {#await listANTs(account)}
-              Loading...
+              <div class="w-full">Loading...</div>
             {:then ants}
               <table class="table w-full">
                 <!-- head -->

@@ -21,7 +21,7 @@ import { marked } from "marked";
 import DOMPUrify from "dompurify";
 
 
-export function pages({ register, post, gql, postWebpage }) {
+export function pages({ register, post, gql, postWebpage, load }) {
   const deployPage = post ? Async.fromPromise(post) : () => Async.of(null)
   const registerPage = register ? Async.fromPromise(register) : () => Async.of(null)
 
@@ -76,10 +76,17 @@ export function pages({ register, post, gql, postWebpage }) {
       .toPromise()
   }
 
+  async function get(id) {
+    return Async.of(id)
+      .chain(Async.fromPromise(load))
+      .toPromise()
+  }
+
   return {
     purchase,
     create,
-    list
+    list,
+    get
   }
 }
 

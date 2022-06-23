@@ -1,7 +1,7 @@
 <script>
   import { router, meta } from "tinro";
   import Navbar from "../components/navbar.svelte";
-  import { postPageTx, postWebpage } from "../services/arweave.js";
+  import { postPageTx, postWebpage, loadPage } from "../services/arweave.js";
   import { register } from "../services/registry.js";
   import { Jumper } from "svelte-loading-spinners";
   import { pages } from "../app.js";
@@ -36,21 +36,19 @@
 
   let page = { public: true };
 
-  /*
   if (meta().query.fork) {
     // getNote from meta().query.fork
-    notes({ load })
+    pages({ load: loadPage })
       .get(meta().query.fork)
-      .then((n) => {
-        page.title = n.title;
-        page.description = n.description;
-        easymde.value(n.content);
-        page.content = n.content;
-        page.topic = n.topic;
-        page.public = n.public;
+      .then((p) => {
+        page.title = p.title;
+        page.description = p.description;
+        page.subdomain = p.subdomain;
+        easymde.value(p.content);
+        page.content = p.content;
+        page.profile = p.profile;
       });
   }
-  */
 
   async function submit() {
     confirm = true;

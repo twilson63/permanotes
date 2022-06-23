@@ -40,6 +40,11 @@ export const account = async (address) => await arweaveAccount.get(address)
 
 export const handle = async (handle) => await arweaveAccount.get(handle)
 
+export const loadPage = async (id) => {
+  const { data } = await arweave.api.get(id)
+  return data
+}
+
 export const load = async (id) => {
   const { data } = await arweave.api.get(id)
   if (!data.public) {
