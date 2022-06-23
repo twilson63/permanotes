@@ -86,7 +86,7 @@ export async function getANT(ANT) {
   return await ant.currentState()
 }
 
-export async function upsertSubDomain(ANT, subDomain, transactionId) {
+export async function updateSubDomain(ANT, subDomain, transactionId) {
   const ant = warp.pst(ANT).connect('use_wallet')
   await ant.bundleInteraction({
     function: 'setRecord',

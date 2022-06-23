@@ -1,13 +1,40 @@
 <script>
   import NavBar from "../components/navbar.svelte";
-  import { listANTs } from "../services/registry.js";
+  import { listANTs, updateSubDomain } from "../services/registry.js";
   import { gql } from "../services/arweave.js";
   import { pages } from "../app.js";
   import { address } from "../store.js";
+  import Modal from "../components/modal.svelte";
+
+  let changeDialog = false;
+  let changeData = {};
+  let successDialog = false;
+  let successData = {};
 
   const { list } = pages({ gql });
 
   const account = $address;
+
+  async function handleChange() {
+    const result = await updateSubDomain(
+      changeData.ANT,
+      changeData.subdomain,
+      changeData.transactionId
+    );
+    if (result.ok) {
+      successData = {
+        title: "Success!",
+        description: "Successfully changed transaction id",
+      };
+      successDialog = true;
+    }
+  }
+  function showChangeDialog(ANT, name) {
+    return () => {
+      changeData = { ANT, subdomain: name.toLowerCase() };
+      changeDialog = true;
+    };
+  }
 </script>
 
 <NavBar />
@@ -86,7 +113,10 @@
                       >
                       <td>{ant.records["@"]}</td>
                       <td>
-                        <button class="btn">Change</button>
+                        <button
+                          on:click={showChangeDialog(ant.id, ant.name)}
+                          class="btn">Change</button
+                        >
                         <button class="btn">Transfer</button>
                         <button class="btn">Remove</button>
                       </td>
@@ -106,3 +136,16 @@
     </div>
   </section>
 </main>
+
+<Modal open={changeDialog} on:click={handleChange}>
+  <h3 class="text-3xl">Change Transaction Id</h3>
+  <div class="form-control">
+    <label class="label">TransactionId</label>
+    <input class="input input-bordered" bind:value={changeData.transactionId} />
+  </div>
+</Modal>
+
+<Modal open={successDialog}>
+  <h3 class="text-3xl text-success">{successData.title}</h3>
+  <p class="my-4">{successData.description}</p>
+</Modal>
