@@ -9,6 +9,7 @@
   import { marked } from "marked";
   import DOMPUrify from "dompurify";
   import weavemail from "../widgets/weavemail.js";
+  import opensea from "../widgets/opensea.js";
   import Mustache from "mustache";
   //import EasyMDE from "easymde";
   import { onMount } from "svelte";
@@ -63,6 +64,11 @@
       page.owner = $address;
       page.html = DOMPUrify.sanitize(marked.parse(page.content));
 
+      if (page.ethwallet) {
+        const data = await opensea.code.preRender({ address: page.ethwallet });
+        page.html =
+          Mustache.render(opensea.template(), data) + "\n" + page.html;
+      }
       if (page.weavemail) {
         page.html = weavemail.script() + "\n" + page.html;
         page.html =
@@ -286,12 +292,25 @@
           </label>
         </div>
         {#if page.ethwallet}
-          <h2 class="text-3xl my-8">My NFT Gallery</h2>
+          <h2 class="text-3xl my-8">My NFTs</h2>
           {#await getnfts(page.ethwallet) then nfts}
             <div class="carousel rounded-box w-full">
               {#each nfts as nft}
                 <div class="carosel-item">
-                  <img src={nft.image_url} alt={nft.name} />
+                  <div class="card w-96 h-full">
+                    <figure><img src={nft.image_url} alt={nft.name} /></figure>
+                    <div class="card-body">
+                      <h2 class="card-title">{nft.name}</h2>
+                      <p>{nft.description}</p>
+                      <div class="card-actions justify-end">
+                        <a
+                          href={nft.permalink}
+                          target="_blank"
+                          class="btn btn-primary">View</a
+                        >
+                      </div>
+                    </div>
+                  </div>
                 </div>
               {/each}
             </div>
