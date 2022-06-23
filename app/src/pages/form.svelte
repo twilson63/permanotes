@@ -89,6 +89,37 @@
   }
 
   function hero(profile) {
+    function socialIcons(profile) {
+      return `
+<div class="space-x-8 underline">
+  ${
+    profile.links.twitter
+      ? `<a href="https://twitter.com/${profile.links.twitter}">twitter</a>`
+      : ""
+  }
+  ${
+    profile.links.github
+      ? `<a href="https://github.com/${profile.links.github}">github</a>`
+      : ""
+  }
+  ${
+    profile.links.discord
+      ? `<a href="https://discordapp.com/users/${profile.links.discord}">discord</a>`
+      : ""
+  }
+  ${
+    profile.links.instagram
+      ? `<a href="https://instagram.com/${profile.links.instagram}">instagram</a>`
+      : ""
+  }
+  ${
+    profile.links.facebook
+      ? `<a href="https://facebook.com/${profile.links.facebook}">facebook</a>`
+      : ""
+  }
+</div>
+      `;
+    }
     return `
 <div class="hero">
   <div class="hero-content flex-col text-center">
@@ -101,6 +132,7 @@
     />
     <h1 class="text-6xl">${profile.name}</h1>
     <p class="text-2xl">${profile.bio}</p>
+    ${socialIcons(profile)}
   </div>
 </div>
     `;
@@ -143,6 +175,36 @@
               />
               <h1 class="text-6xl">{$account.profile.name}</h1>
               <p class="text-2xl">{$account.profile.bio}</p>
+              <div class="flex underline space-x-8">
+                {#if $account.profile.links.twitter}
+                  <a href="https://twitter.com/{$account.profile.links.twitter}"
+                    >twitter</a
+                  >
+                {/if}
+                {#if $account.profile.links.github}
+                  <a href="https://github.com/{$account.profile.links.github}"
+                    >github</a
+                  >
+                {/if}
+                {#if $account.profile.links.discord}
+                  <a
+                    href="https://discordapp.com/users/{$account.profile.links
+                      .discord}">discord</a
+                  >
+                {/if}
+                {#if $account.profile.links.instagram}
+                  <a
+                    href="https://www.instagram.com/{$account.profile.links
+                      .instagram}">instagram</a
+                  >
+                {/if}
+                {#if $account.profile.links.facebook}
+                  <a
+                    href="https://facebook.com/{$account.profile.links
+                      .facebook}">facebook</a
+                  >
+                {/if}
+              </div>
             </div>
           </div>
         {/if}
