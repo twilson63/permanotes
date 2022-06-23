@@ -1,7 +1,7 @@
 <script>
   import { router, meta } from "tinro";
   import Navbar from "../components/navbar.svelte";
-  import { postPageTx } from "../services/arweave.js";
+  import { postPageTx, postWebpage } from "../services/arweave.js";
   import { Jumper } from "svelte-loading-spinners";
   import { pages } from "../app.js";
   import { address, cache } from "../store.js";
@@ -57,7 +57,9 @@
       page.content = easymde.value();
       page.owner = $address;
 
-      const result = await pages({ post: postPageTx }).create(page);
+      const result = await pages({ post: postPageTx, postWebpage }).create(
+        page
+      );
       console.log(result);
       page.id = result.id;
       submitting = false;

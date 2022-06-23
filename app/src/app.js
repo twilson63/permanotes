@@ -21,18 +21,35 @@ import { marked } from "marked";
 import DOMPUrify from "dompurify";
 
 
-export function pages({ register, post, gql }) {
+export function pages({ register, post, gql, postWebpage }) {
+  const deployPage = post ? Async.fromPromise(post) : () => Async.of(null)
+
   async function purchase(page) {
     return Async.of(page)
       .chain(Async.fromPromise(register))
       .toPromise()
   }
+
   async function create(page) {
     return Async.of(page)
       .chain(pageModel.validate)
-      .chain(Async.fromPromise(post))
+      .chain(page =>
+        deployPage(page)
+          .map(({ id }) => {
+            page.id = id
+            page.html = marked.parse(page.content)
+            return page
+          })
+          .map(({ title, description, html }) => ({
+            title,
+            html: htmlTemplate(title, description, html)
+          }))
+          .chain(Async.fromPromise(postWebpage))
+          .chain(Async.fromPromise(register))
+      )
       .toPromise()
   }
+
   async function list(account) {
     return Async.of(account)
       .map(buildPermaPageQuery)
@@ -41,6 +58,17 @@ export function pages({ register, post, gql }) {
       .map(formatPages)
       .toPromise()
   }
+
+  async function publish(page) {
+    return Async.of(page)
+      .map(({ title, description, html }) => ({
+        title,
+        html: htmlTemplate(title, description, html)
+      }))
+      .chain(Async.fromPromise(postWebpage))
+      .toPromise()
+  }
+
   return {
     purchase,
     create,
