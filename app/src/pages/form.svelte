@@ -62,7 +62,9 @@
 
       page.content = easymde.value();
       page.owner = $address;
-      page.html = DOMPUrify.sanitize(marked.parse(page.content));
+      page.html = `<div class="markdown-body">${DOMPUrify.sanitize(
+        marked.parse(page.content)
+      )}</div>`;
 
       if (page.ethwallet) {
         const data = await opensea.code.preRender({ address: page.ethwallet });
@@ -291,7 +293,7 @@
             />
           </label>
         </div>
-        {#if page.ethwallet}
+        {#if false}
           <h2 class="text-3xl my-8">My NFTs</h2>
           {#await getnfts(page.ethwallet) then nfts}
             <div class="carousel rounded-box w-full">
