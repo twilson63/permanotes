@@ -145,16 +145,7 @@
             >Fork</a
           >
         </div>
-        {#if note.owner === $address}
-          <div
-            class="tooltip tooltip-bottom tooltip-primary"
-            data-tip="Publish Permaweb Page"
-          >
-            <button class="btn btn-primary" on:click={publishWebpage(note)}
-              >Publish</button
-            >
-          </div>
-        {/if}
+
         {#if note.public}
           <div class="flex flex-col">
             {#if !liked}

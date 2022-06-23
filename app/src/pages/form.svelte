@@ -2,10 +2,12 @@
   import { router, meta } from "tinro";
   import Navbar from "../components/navbar.svelte";
   import { postPageTx, postWebpage } from "../services/arweave.js";
+  import { register } from "../services/registry.js";
   import { Jumper } from "svelte-loading-spinners";
   import { pages } from "../app.js";
-  import { address, cache } from "../store.js";
-
+  import { address, account } from "../store.js";
+  import { marked } from "marked";
+  import DOMPUrify from "dompurify";
   //import EasyMDE from "easymde";
   import { onMount } from "svelte";
 
@@ -26,6 +28,7 @@
       //inputStyle: "contenteditable",
       //forceSync: true,
     });
+    console.log($account);
   });
 
   let page = { public: true };
@@ -56,11 +59,18 @@
 
       page.content = easymde.value();
       page.owner = $address;
+      page.html = DOMPUrify.sanitize(marked.parse(page.content));
 
-      const result = await pages({ post: postPageTx, postWebpage }).create(
-        page
-      );
-      console.log(result);
+      if (page.profile) {
+        page.html = hero($account.profile) + "\n" + page.html;
+      }
+      console.log(page.html);
+      const result = await pages({
+        register,
+        post: postPageTx,
+        postWebpage,
+      }).create(page);
+
       page.id = result.id;
       submitting = false;
 
@@ -77,6 +87,24 @@
       submitting = false;
     }
   }
+
+  function hero(profile) {
+    return `
+<div class="hero">
+  <div class="hero-content flex-col text-center">
+    <img
+      class="mask mask-squircle"
+      src="https://arweave.net/${profile.avatar}"
+      alt="${profile.name}"
+      width="94"
+      height="94"
+    />
+    <h1 class="text-6xl">${profile.name}</h1>
+    <p class="text-2xl">${profile.bio}</p>
+  </div>
+</div>
+    `;
+  }
 </script>
 
 <Navbar />
@@ -90,6 +118,34 @@
       {/if}
       <h1 class="text-2xl md:text-6xl">Create Permapage</h1>
       <form class="w-full" on:submit|preventDefault={submit}>
+        <div class="mt-4 form-control">
+          <label for="profile" class="label cursor-pointer">
+            <span class="label-text"
+              >Profile (if marked the page will insert your account as a header
+              to the page.)</span
+            >
+            <input
+              type="checkbox"
+              class="toggle toggle-secondary"
+              bind:checked={page.profile}
+            />
+          </label>
+        </div>
+        {#if page.profile && $account.profile}
+          <div class="hero">
+            <div class="hero-content flex-col text-center">
+              <img
+                class="mask mask-squircle"
+                src={`https://arweave.net/${$account.profile.avatar}`}
+                alt={$account.profile.name}
+                width="94"
+                height="94"
+              />
+              <h1 class="text-6xl">{$account.profile.name}</h1>
+              <p class="text-2xl">{$account.profile.bio}</p>
+            </div>
+          </div>
+        {/if}
         <div class="form-control">
           <label for="content" class="label">Page Content(markdown)</label>
           <textarea
