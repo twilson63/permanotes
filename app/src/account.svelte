@@ -1,4 +1,5 @@
 <script>
+  import { router } from "tinro";
   import { address, account, topics } from "./store.js";
   import Navbar from "./components/navbar.svelte";
   import { gql } from "./services/arweave.js";

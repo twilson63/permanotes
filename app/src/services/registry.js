@@ -14,8 +14,8 @@ const arweave = Arweave.init({
 LoggerFactory.INST.logLevel("error");
 const warp = WarpWebFactory.memCached(arweave)
 
-const REGISTRY = "Wr27DYc_5cuquhvpMbnhy2idGf_vzOnn0gYHqSgTXNE"
-const ANT_SOURCE = "cNr6JPVu3rEOwIbdnu3lVipz9pwY5Pps9mxHSW7Jdtk"
+const REGISTRY = "bLAgYxAdX2Ry-nt6aH2ixgvJXbpsEYm28NgJgyqfs-U"
+const ANT_SOURCE = "JIIB01pRbNK2-UyNxwQK-6eknrjENMTpTvQmB8ZDzQg"
 
 
 export async function register({ name, owner, transactionId }) {
@@ -44,12 +44,15 @@ export async function register({ name, owner, transactionId }) {
     srcTxId: ANT_SOURCE
   })
 
+
   // buy ArNS
-  await registry.writeInteraction({
+  const res = await registry.writeInteraction({
     function: 'buyRecord',
     name,
     contractTransactionId: ant
   })
+
+
 
   return { ok: true, ant, message: `Successfully registred ${name}.arweave.net` }
 }
@@ -70,13 +73,11 @@ query {
   })
 
   const ids = pluck('id', pluck('node', result.data.data.transactions.edges))
-
   const ants = await Promise.all(
     map(getANT, ids)
   )
 
   return Promise.resolve(ants)
-
 
 }
 

@@ -1,10 +1,9 @@
 <script>
   import { router, meta } from "tinro";
   import Navbar from "../components/navbar.svelte";
-  import { arweave, postTx, waitfor, load } from "../services/arweave.js";
-  import { init as initLikes } from "../services/likes.js";
+  import { postPageTx } from "../services/arweave.js";
   import { Jumper } from "svelte-loading-spinners";
-  import { notes } from "../app.js";
+  import { pages } from "../app.js";
   import { address, cache } from "../store.js";
 
   //import EasyMDE from "easymde";
@@ -58,7 +57,8 @@
       page.content = easymde.value();
       page.owner = $address;
 
-      const result = await notes({ post: postTx }).createPage(page);
+      const result = await pages({ post: postPageTx }).create(page);
+      console.log(result);
       page.id = result.id;
       submitting = false;
 
@@ -146,7 +146,7 @@
 <div class="modal">
   <div class="modal-box w-full">
     <h3 class="font-bold text-lg">Complete Permapage</h3>
-    <form class="w-full space-y-8" on:submit|preventDefault={confirm}>
+    <form class="w-full space-y-8" on:submit|preventDefault={doConfirm}>
       <div class="form-control">
         <label for="title" class="label">SubDomain</label>
         <input

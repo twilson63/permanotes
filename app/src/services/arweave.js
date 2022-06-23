@@ -73,6 +73,7 @@ export const postWebpage = async (data) => {
   tx.addTag('content-type', 'text/html')
   tx.addTag('App-Name', 'permanotes')
   tx.addTag('Page-Title', data.title)
+  tx.addTag('Type', data.type)
   try {
     // try bundlr first
     result = await arweaveWallet.dispatch(tx)
@@ -85,6 +86,39 @@ export const postWebpage = async (data) => {
   }
 
   return result
+}
+
+export const postPageTx = async (page) => {
+  const tx = await arweave.createTransaction({
+    data: JSON.stringify(page),
+    // Free to create notes
+    // target: holder,
+    // quantity: arweave.ar.arToWinston(FEE)
+  })
+
+  tx.addTag('Content-Type', 'application/json')
+  tx.addTag('App-Name', 'PermaNotes')
+  tx.addTag('Protocol', page.protocol)
+  tx.addTag('Page-Title', page.title)
+  tx.addTag('Description', page.description)
+  tx.addTag('Page-Subdomain', page.subdomain)
+  tx.addTag('Timestamp', new Date().toISOString())
+
+  let result = tx
+
+  try {
+    // try bundlr first
+    result = await arweaveWallet.dispatch(tx)
+
+    return result
+  } catch (e) {
+    // then arweave
+    await arweave.transactions.sign(tx)
+    await arweave.transactions.post(tx)
+  }
+
+  return result
+
 }
 
 export const postTx = async (note) => {

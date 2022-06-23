@@ -8,14 +8,29 @@
   import { address } from "../store.js";
 
   let processing = false;
+  let errorDialog = false;
+  let errorMessage = "";
+  let successDialog = false;
+
   const { purchase } = pages({ register });
   async function doPurchase() {
-    processing = true;
-    link.owner = $address;
-    await purchase(link);
-    processing = false;
-    window.scrollTo(0, 0);
-    router.goto("/pages");
+    try {
+      processing = true;
+      link.owner = $address;
+      const result = await purchase(link);
+      processing = false;
+      if (result.ok) {
+        successDialog = true;
+      } else {
+        errorMessage = result.message;
+        link = {};
+        errorDialog = true;
+      }
+    } catch (e) {
+      processing = false;
+      errorMessage = "Something went wrong with your request!";
+      errorDialog = true;
+    }
   }
 
   let link = {};
@@ -93,4 +108,22 @@
   <div class="flex items-center justify-center">
     <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
   </div>
+</Modal>
+<Modal id="errorDialog" open={errorDialog}>
+  <h3 class="font-bold text-lg text-error">Error with Request</h3>
+  <p class="py-8">{errorMessage}</p>
+</Modal>
+<Modal
+  id="successDialog"
+  open={successDialog}
+  on:click={() => {
+    window.scrollTo(0, 0);
+    router.goto("/pages");
+  }}
+>
+  <h3 class="font-bold text-lg text-success">Success!</h3>
+  <p class="py-8">
+    Successfully registered ArNS Subdomain, it will take a few minutes to mint
+    domain.
+  </p>
 </Modal>

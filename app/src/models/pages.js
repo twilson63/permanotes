@@ -8,18 +8,15 @@ import find from 'ramda/src/find'
 
 const schema = z.object({
   id: z.string().optional(),
-  type: z.literal('note').default('note'),
+  type: z.literal('page').default('page'),
   owner: z.string(),
   contentType: z.literal('text/markdown').default('text/markdown'),
-  slug: z.string().max(100),
+  subdomain: z.string().max(20),
   title: z.string().max(20),
   description: z.string().max(50),
-  protocol: z.string().default('PermaNotes-v0.3'),
+  protocol: z.string().default('PermaPages-v0.1'),
   content: z.string(),
-  public: z.boolean().default(false),
-  topic: z.string().optional(),
   timestamp: z.string(),
-  likeContract: z.string().optional()
 })
 
 const getTag = name => compose(
@@ -27,7 +24,7 @@ const getTag = name => compose(
   find(propEq('name', name))
 )
 
-export const createNote = (data) => {
+export const createPage = (data) => {
   data.timestamp = new Date().toISOString()
   const result = schema.safeParse(data)
   if (result.success) {
@@ -37,22 +34,19 @@ export const createNote = (data) => {
   }
 }
 
-export const txToNote = (tx) => {
+export const txToPage = (tx) => {
   const tsValue = getTag('Timestamp')(tx.tags)
   const timestamp = tsValue ? tsValue : new Date().toISOString()
-  const note = {
+  const page = {
     id: tx.id,
     owner: tx.owner.address,
-    type: getTag('Type')(tx.tags),
-    title: getTag('Note-Title')(tx.tags),
+    type: getTag('Type')(tx.tags) || 'page',
+    title: getTag('Page-Title')(tx.tags),
     description: getTag('Description')(tx.tags),
-    topic: getTag('Note-Topic')(tx.tags),
-    rev: getTag('Note-Rev')(tx.tags),
-    public: getTag('Note-Public')(tx.tags) === 'true' ? true : false,
-    slug: getTag('Note-Title')(tx.tags).toLowerCase().replace(' ', '-'),
+    subdomain: getTag('Page-Subdomain')(tx.tags),
     timestamp
   }
-  return note
+  return page
 }
 
 export const validate = (data) => {
