@@ -7,7 +7,7 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Subdomain</th>
+      <th>Description</th>
       <th>TransactionId</th>
       <th>Actions</th>
     </tr>
@@ -21,8 +21,8 @@
         <td>{id}</td>
 
         <td>
-          <a href="https://arweave.net/{id}" class="link">view</a>
-          <a href="/pages/new?fork={id}" class="link">Edit</a>
+          <a href="https://arweave.net/{id}" class="link uppercase">Link</a>
+          <a href="/pages/new?fork={id}" class="link uppercase">Edit</a>
         </td>
       </tr>
     </tbody>

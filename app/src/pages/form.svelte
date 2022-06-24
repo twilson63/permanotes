@@ -4,11 +4,9 @@
   import Modal from "../components/modal.svelte";
   import { postPageTx, postWebpage, loadPage } from "../services/arweave.js";
   import { register } from "../services/registry.js";
-  import { Jumper } from "svelte-loading-spinners";
   import { pages } from "../app.js";
   import { address, account } from "../store.js";
   import { marked } from "marked";
-  import DOMPUrify from "dompurify";
   import weavemail from "../widgets/weavemail.js";
   import opensea from "../widgets/opensea.js";
   import Mustache from "mustache";
@@ -20,6 +18,8 @@
   let submitting = false;
   let confirm = false;
   let step = 0;
+  let frame;
+  let frameDialog = false;
 
   onMount(() => {
     easymde = new window.EasyMDE({
@@ -33,7 +33,10 @@
       //inputStyle: "contenteditable",
       //forceSync: true,
     });
-    console.log($account);
+    // if (!meta().query.fork) {
+    //   easymde.value = "";
+    //   page.content = "";
+    // }
   });
 
   let page = { public: true };
@@ -50,6 +53,7 @@
         page.content = p.content;
         page.profile = p.profile;
       });
+  } else {
   }
 
   async function submit() {
@@ -335,6 +339,7 @@
         </p>
         <div class="mt-8">
           <button type="submit" class="btn btn-primary">Create Page</button>
+          <button type="button" class="btn btn-secondary">Preview</button>
           <a class="btn" href="/pages">Cancel</a>
         </div>
       </form>
@@ -352,19 +357,6 @@
   <div class="modal-box w-full">
     <h3 class="font-bold text-lg">Complete Permapage</h3>
     <form class="w-full space-y-8" on:submit|preventDefault={doConfirm}>
-      <div class="form-control">
-        <label for="title" class="label">SubDomain</label>
-        <input
-          required
-          class="input input-bordered"
-          id="subdomain"
-          name="subdomain"
-          maxlength="20"
-          bind:value={page.subdomain}
-          placeholder="Enter subdomain of your page"
-        />
-        <small>(max: 20 characters no spaces)</small>
-      </div>
       <div class="form-control">
         <label for="title" class="label">Title</label>
         <input
@@ -392,7 +384,7 @@
         <small>(max: 50 characters)</small>
       </div>
       <div class="modal-action">
-        <button for="confirm" class="btn">Submit</button>
+        <button for="confirm" class="btn">Preview</button>
       </div>
     </form>
   </div>
@@ -405,3 +397,22 @@
     <li class="step {step === 3 ? 'step-primary' : ''}">Saving Source</li>
   </ul>
 </Modal>
+{#if frameDialog}
+  <div class="absolute inset-0 p-8 bg-base-100">
+    <div class="flex mb-16">
+      <h3 class="text-lg flex-1">Preview Permapage</h3>
+      <div class="flex-0 flex justify-end space-x-4">
+        <button class="btn btn-primary">Save</button>
+        <button class="btn">Cancel</button>
+      </div>
+    </div>
+
+    <div class="mockup-window border border-base-300">
+      <iframe
+        bind:this={frame}
+        class="min-h-screen w-full"
+        src="https://example.com"
+      />
+    </div>
+  </div>
+{/if}
