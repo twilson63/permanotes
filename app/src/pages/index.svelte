@@ -3,9 +3,11 @@
   import { updateSubDomain } from "../services/registry.js";
   import { gql } from "../services/arweave.js";
   import { pages } from "../app.js";
-  import { address } from "../store.js";
+  import { address, pageCache } from "../store.js";
   import Modal from "../components/modal.svelte";
   import PageTable from "../components/pages.svelte";
+  import find from "ramda/src/find";
+  import propEq from "ramda/src/propEq";
 
   let changeDialog = false;
   let changeData = {};
@@ -29,12 +31,33 @@
       successDialog = true;
     }
   }
+
   function showChangeDialog(ANT, name) {
     return () => {
       changeData = { ANT };
       changeDialog = true;
     };
   }
+
+  async function listPages() {
+    const results = await list(account);
+    const pending = ($pageCache || []).filter((n) =>
+      find(propEq("id", n.id), results) ? false : true
+    );
+
+    // clean cache if in results
+    // $cache = ($cache || []).reduce((acc, v) => {
+    //   acc = find(propEq("id", v.id), results) ? acc : [...acc, v];
+    // }, []);
+
+    // rollup by slugs
+    return [...pending, ...results].reduce(
+      (acc, v) => (find(propEq("title", v.title), acc) ? acc : [...acc, v]),
+      []
+    );
+  }
+
+  const pageList = listPages();
 </script>
 
 <NavBar />
@@ -51,7 +74,7 @@
             </div>
           </div>
           <div class="overflow-x-auto">
-            {#await list(account)}
+            {#await pageList}
               Loading...
             {:then records}
               <PageTable {records} />

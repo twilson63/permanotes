@@ -5,7 +5,7 @@
   import { postPageTx, postWebpage, loadPage } from "../services/arweave.js";
   import { register } from "../services/registry.js";
   import { pages } from "../app.js";
-  import { address, account } from "../store.js";
+  import { address, account, pageCache } from "../store.js";
   import { marked } from "marked";
   import weavemail from "../widgets/weavemail.js";
   import opensea from "../widgets/opensea.js";
@@ -98,6 +98,7 @@
       });
 
       page.id = result.id;
+      $pageCache = [page, ...$pageCache];
       submitting = false;
 
       if (!result.foundPost) {
@@ -325,7 +326,9 @@
   <ul class="steps steps-vertical">
     <li class="step {step === 1 ? 'step-primary' : ''}">Generating Page</li>
     <li class="step {step === 2 ? 'step-primary' : ''}">Publishing Page</li>
+    <!--
     <li class="step {step === 3 ? 'step-primary' : ''}">Saving Source</li>
+    -->
   </ul>
 </Modal>
 {#if frameDialog}

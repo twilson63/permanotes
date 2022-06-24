@@ -14,7 +14,7 @@ const schema = z.object({
   subdomain: z.string().max(20).optional(),
   title: z.string().max(20),
   description: z.string().max(50),
-  protocol: z.string().default('PermaPages-v0.2'),
+  protocol: z.string().default('PermaPages-v0.3'),
   content: z.string(),
   html: z.string(),
   profile: z.boolean().default(false),
@@ -48,7 +48,7 @@ export const txToPage = (tx) => {
     type: getTag('Type')(tx.tags) || 'page',
     title: getTag('Page-Title')(tx.tags),
     description: getTag('Description')(tx.tags),
-    subdomain: getTag('Page-Subdomain')(tx.tags),
+    webpage: getTag('Webpage')(tx.tags),
     timestamp
   }
   return page

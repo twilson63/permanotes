@@ -78,7 +78,7 @@ export const postWebpage = async (data) => {
   tx.addTag('content-type', 'text/html')
   tx.addTag('App-Name', 'permanotes')
   tx.addTag('Page-Title', data.title)
-  tx.addTag('Type', data.type)
+
   try {
     // try bundlr first
     result = await arweaveWallet.dispatch(tx)
@@ -106,7 +106,7 @@ export const postPageTx = async (page) => {
   tx.addTag('Protocol', page.protocol)
   tx.addTag('Page-Title', page.title)
   tx.addTag('Description', page.description)
-  tx.addTag('Page-Subdomain', page.subdomain)
+  tx.addTag('Webpage', page.webpage)
   tx.addTag('Timestamp', new Date().toISOString())
 
   let result = tx

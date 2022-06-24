@@ -31,15 +31,16 @@ export function pages({ register, post, gql, postWebpage, load }) {
   async function create(page, notify) {
     return Async.of(page)
       .chain(pageModel.validate)
-      .map(({ title, description, html }) => ({
-        title,
-        html: htmlTemplate(title, description, html)
-      }))
+      .chain(page =>
+        Async.of(page).map(({ title, description, html }) => ({
+          title,
+          html: htmlTemplate(title, description, html)
+        })).chain(Async.fromPromise(postWebpage))
+          .map(({ id }) => ({ ...page, webpage: id }))
+      )
       .map(_ => (notify({ step: 1, message: 'generating page' }), _))
-      .chain(web => Async.fromPromise(postWebpage)(web).map(({ id }) => ({ ...page, webpage: id })))
-      .map(_ => (notify({ step: 2, message: 'deploying page' }), _))
       .chain(page => deployPage(page).map(({ id }) => ({ ...page, id })))
-      .map(_ => (notify({ step: 3, message: 'saving page source' }), _))
+      .map(_ => (notify({ step: 2, message: 'deploying page' }), _))
       .toPromise()
   }
 
@@ -569,7 +570,7 @@ function buildPermaPageQuery(owner) {
   return `
   query {
     transactions(owners: ["${owner}"], 
-      tags:{name:"Protocol", values:["PermaPages-v0.2"]}) {
+      tags:{name:"Protocol", values:["PermaPages-v0.3"]}) {
       edges {
         node {
           id

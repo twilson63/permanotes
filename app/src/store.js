@@ -11,3 +11,4 @@ export const cache = writable([])
 
 //export const webpages = writable(JSON.parse(localStorage.getItem('webpages') || '[]') || [])
 //webpages.subscribe(data => localStorage.setItem('webpages', JSON.stringify(data)))
+export const pageCache = writable([])
