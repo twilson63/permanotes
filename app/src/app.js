@@ -31,29 +31,25 @@ export function pages({ register, post, gql, postWebpage, load }) {
       .toPromise()
   }
 
-  async function create(page) {
+  //const void = () => null
+
+  async function create(page, notify) {
     return Async.of(page)
       .chain(pageModel.validate)
-      .chain(page =>
-        deployPage(page)
-          .map(({ id }) => {
-            page.id = id
-            return page
-          })
-          .map(({ title, description, html }) => ({
-            title,
-            html: htmlTemplate(title, description, html)
-          }))
-          .map(x => (console.log(x), x))
-          .chain(Async.fromPromise(postWebpage))
-          .chain(webpageTx => {
-            return registerPage({
-              name: page.subdomain.toLowerCase(),
-              owner: page.owner,
-              transactionId: webpageTx.id
-            })
-          })
-      )
+      .map(({ title, description, html }) => ({
+        title,
+        html: htmlTemplate(title, description, html)
+      }))
+      .map(_ => (notify({ step: 1, message: 'generating page' }), _))
+      .chain(web => Async.fromPromise(postWebpage)(web).map(({ id }) => ({ ...page, webpage: id })))
+      .map(_ => (notify({ step: 2, message: 'deploying page' }), _))
+      .chain(page => deployPage(page).map(({ id }) => ({ ...page, id })))
+      .map(_ => (notify({ step: 3, message: 'saving page source' }), _))
+      // .chain(page => registerPage({
+      //   name: page.subdomain.toLowerCase(),
+      //   owner: page.owner,
+      //   transactionId: page.webpage
+      // }).map(_ => page))
       .toPromise()
   }
 

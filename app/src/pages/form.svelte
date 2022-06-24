@@ -1,6 +1,7 @@
 <script>
   import { router, meta } from "tinro";
   import Navbar from "../components/navbar.svelte";
+  import Modal from "../components/modal.svelte";
   import { postPageTx, postWebpage, loadPage } from "../services/arweave.js";
   import { register } from "../services/registry.js";
   import { Jumper } from "svelte-loading-spinners";
@@ -18,6 +19,7 @@
   let error = null;
   let submitting = false;
   let confirm = false;
+  let step = 0;
 
   onMount(() => {
     easymde = new window.EasyMDE({
@@ -85,7 +87,9 @@
         register,
         post: postPageTx,
         postWebpage,
-      }).create(page);
+      }).create(page, (m) => {
+        step = m.step;
+      });
 
       page.id = result.id;
       submitting = false;
@@ -340,31 +344,6 @@
 
 <input
   type="checkbox"
-  id="save-note"
-  bind:checked={submitting}
-  class="modal-toggle"
-/>
-<div class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Saving Note to Arweave</h3>
-    <p class="py-4">
-      This should only take a few seconds to store your note on the Permaweb.
-      Once successfully stored, it will be stored forever.
-    </p>
-    <div class="flex items-center justify-center">
-      <Jumper size="60" color="rebeccapurple" unit="px" duration="2s" />
-    </div>
-
-    <!--
-    <div class="modal-action">
-      <label for="save-note" class="btn">OK</label>
-    </div>
-    -->
-  </div>
-</div>
-
-<input
-  type="checkbox"
   id="confirm"
   bind:checked={confirm}
   class="modal-toggle"
@@ -418,3 +397,11 @@
     </form>
   </div>
 </div>
+<Modal open={submitting}>
+  <h3 class="text-2xl">Creating Webpage!</h3>
+  <ul class="steps steps-vertical">
+    <li class="step {step === 1 ? 'step-primary' : ''}">Generating Page</li>
+    <li class="step {step === 2 ? 'step-primary' : ''}">Publishing Page</li>
+    <li class="step {step === 3 ? 'step-primary' : ''}">Saving Source</li>
+  </ul>
+</Modal>

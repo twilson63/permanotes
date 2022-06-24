@@ -19,6 +19,7 @@
   import Pages from "./pages/index.svelte";
   import PageLink from "./pages/link.svelte";
   import PageForm from "./pages/form.svelte";
+  import Arns from "./arns/index.svelte";
 
   import * as R from "ramda";
 
@@ -68,6 +69,9 @@
   </Route>
   <Route path="/notes/:id/edit">
     <p>TODO</p>
+  </Route>
+  <Route path="/arns">
+    <Arns />
   </Route>
   <Route path="/pages/*">
     {#if not(isEmpty($address))}

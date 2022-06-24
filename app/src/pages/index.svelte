@@ -1,10 +1,11 @@
 <script>
   import NavBar from "../components/navbar.svelte";
-  import { listANTs, updateSubDomain } from "../services/registry.js";
+  import { updateSubDomain } from "../services/registry.js";
   import { gql } from "../services/arweave.js";
   import { pages } from "../app.js";
   import { address } from "../store.js";
   import Modal from "../components/modal.svelte";
+  import PageTable from "../components/pages.svelte";
 
   let changeDialog = false;
   let changeData = {};
@@ -40,92 +41,21 @@
 <main>
   <section class="hero bg-base-200 min-h-screen items-start">
     <div class="hero-content flex-col lg:flex-row-reverse w-full">
-      <div class="flex flex-col space-y-16">
+      <div class="flex flex-col space-y-16 w-full">
         <div>
           <div class="flex">
             <h2 class="text-2xl mb-2 flex-1">Permapages</h2>
             <div class="flex-none6">
               <a href="/pages/new" class="btn btn-primary">New Permapage</a>
+              <a href="/arns" class="btn btn-secondary">Register Subdomain</a>
             </div>
           </div>
           <div class="overflow-x-auto">
             {#await list(account)}
               Loading...
-            {:then pageList}
-              <table class="table w-full">
-                <!-- head -->
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Subdomain</th>
-                    <th>TransactionId</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                {#each pageList as { id, title, subdomain }}
-                  <tbody>
-                    <!-- row 1 -->
-                    <tr>
-                      <td>{title}</td>
-                      <td>{subdomain}</td>
-                      <td>{id}</td>
-
-                      <td>
-                        <a href="/pages/new?fork={id}" class="btn">Edit</a>
-                      </td>
-                    </tr>
-                  </tbody>
-                {/each}
-              </table>
+            {:then records}
+              <PageTable {records} />
             {/await}
-          </div>
-        </div>
-        <div>
-          <h2 class="text-2xl">Arweave Name Tokens</h2>
-          <div class="overflow-x-auto">
-            {#await listANTs(account)}
-              <div class="w-full">Loading...</div>
-            {:then ants}
-              <table class="table w-full">
-                <!-- head -->
-                <thead>
-                  <tr>
-                    <th>Link</th>
-                    <th>TransactionId</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                {#each ants as ant}
-                  <tbody>
-                    <!-- row 1 -->
-                    <tr>
-                      <td
-                        ><a
-                          class="link"
-                          target="_blank"
-                          href={"https://" + ant.subdomain + ".arweave.dev"}
-                          >{"https://" + ant.subdomain + ".arweave.dev"}</a
-                        ></td
-                      >
-                      <td>{ant.records["@"]}</td>
-                      <td>
-                        <button
-                          on:click={showChangeDialog(ant.id, ant.name)}
-                          class="btn">Change</button
-                        >
-                        <button class="btn">Transfer</button>
-                        <button class="btn">Remove</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                {/each}
-              </table>
-            {/await}
-            <!--
-            <div class="mt-16">
-              <a href="/pages/link" class="btn btn-primary">New ANT</a>
-            </div>
-            -->
           </div>
         </div>
       </div>

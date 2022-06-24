@@ -23,7 +23,15 @@ const warp = WarpWebFactory.memCached(arweave)
 const REGISTRY = "bLAgYxAdX2Ry-nt6aH2ixgvJXbpsEYm28NgJgyqfs-U"
 const ANT_SOURCE = "JIIB01pRbNK2-UyNxwQK-6eknrjENMTpTvQmB8ZDzQg"
 
+export async function search(name) {
+  const registry = warp.pst(REGISTRY).connect('use_wallet')
+  const registryState = hydrate(await registry.currentState())
 
+  if (registryState.records[name]) {
+    return { ok: false, message: `This name ${name} is already taken and is not available for purchase` }
+  }
+  return { ok: true }
+}
 export async function register({ name, owner, transactionId }) {
   const registry = warp.pst(REGISTRY).connect('use_wallet')
   const registryState = hydrate(await registry.currentState())

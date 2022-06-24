@@ -17,8 +17,8 @@ const schema = z.object({
   protocol: z.string().default('PermaPages-v0.2'),
   content: z.string(),
   html: z.string(),
-  profile: z.boolean(),
-  weavemail: z.boolean(),
+  profile: z.boolean().default(false),
+  weavemail: z.boolean().default(false),
   ethwallet: z.string().default(''),
   timestamp: z.string(),
 })
