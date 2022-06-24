@@ -20,6 +20,8 @@
   let step = 0;
   let frame;
   let frameDialog = false;
+  let errorDialog = false;
+  let errorMessage = "";
 
   onMount(() => {
     easymde = new window.EasyMDE({
@@ -106,9 +108,10 @@
         router.goto("/pages");
       }
     } catch (e) {
-      window.scrollTo(0, 0);
-      error = e.message;
       submitting = false;
+      errorMessage = e.message;
+      errorDialog = true;
+      window.scrollTo(0, 0);
     }
   }
 
@@ -339,9 +342,15 @@
     <div class="mockup-window border border-base-300">
       <iframe
         bind:this={frame}
-        class="min-h-screen w-full m-8"
+        class="w-full m-8"
+        style="height: 1000px;"
         src="/#/preview"
+        title="preview"
       />
     </div>
   </div>
 {/if}
+<Modal open={errorDialog}>
+  <h3 class="text-2xl text-error">Error</h3>
+  <p class="my-4">{errorMessage}</p>
+</Modal>

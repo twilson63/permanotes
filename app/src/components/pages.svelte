@@ -12,7 +12,7 @@
       <th>Actions</th>
     </tr>
   </thead>
-  {#each records as { id, title, description }}
+  {#each records as { id, title, description, webpage }}
     <tbody>
       <!-- row 1 -->
       <tr>
@@ -21,7 +21,11 @@
         <td>{id}</td>
 
         <td>
-          <a href="https://arweave.net/{id}" class="link uppercase">Link</a>
+          <a
+            target="_blank"
+            href="https://arweave.net/{webpage}"
+            class="link uppercase">Link</a
+          >
           <a href="/pages/new?fork={id}" class="link uppercase">Edit</a>
         </td>
       </tr>

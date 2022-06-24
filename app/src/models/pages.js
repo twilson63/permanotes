@@ -11,7 +11,7 @@ const schema = z.object({
   type: z.literal('page').default('page'),
   owner: z.string(),
   contentType: z.literal('text/markdown').default('text/markdown'),
-  subdomain: z.string().max(20),
+  subdomain: z.string().max(20).optional(),
   title: z.string().max(20),
   description: z.string().max(50),
   protocol: z.string().default('PermaPages-v0.2'),
@@ -20,6 +20,7 @@ const schema = z.object({
   profile: z.boolean().default(false),
   weavemail: z.boolean().default(false),
   ethwallet: z.string().default(''),
+  webpage: z.string().optional(),
   timestamp: z.string(),
 })
 
