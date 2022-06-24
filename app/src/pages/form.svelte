@@ -169,6 +169,32 @@
     console.log(results);
     return results.assets;
   }
+
+  async function preview() {
+    let html = marked.parse(easymde.value());
+    html = `<div class="prose-lg mt-16">${html}</div>`;
+    if (page.ethwallet) {
+      const data = await opensea.code.preRender({ address: page.ethwallet });
+      html = Mustache.render(opensea.template(), data) + "\n" + html;
+    }
+    if (page.weavemail) {
+      html = weavemail.script() + "\n" + html;
+      html =
+        Mustache.render(weavemail.template(), {
+          address: $account.profile.addr,
+        }) +
+        "\n" +
+        html;
+    }
+
+    if (page.profile) {
+      html = hero($account.profile) + "\n" + html;
+    }
+
+    sessionStorage.setItem("html", html);
+    window.scrollTo(0, 0);
+    frameDialog = true;
+  }
 </script>
 
 <Navbar />
@@ -195,51 +221,6 @@
             />
           </label>
         </div>
-        {#if page.profile && $account.profile}
-          <div class="hero">
-            <div class="hero-content flex-col text-center">
-              <img
-                class="mask mask-squircle"
-                src={`https://arweave.net/${$account.profile.avatar}`}
-                alt={$account.profile.name}
-                width="94"
-                height="94"
-              />
-              <h1 class="text-6xl">{$account.profile.name}</h1>
-              <p class="text-2xl">{$account.profile.bio}</p>
-              <div class="flex underline space-x-8">
-                {#if $account.profile.links.twitter}
-                  <a href="https://twitter.com/{$account.profile.links.twitter}"
-                    >twitter</a
-                  >
-                {/if}
-                {#if $account.profile.links.github}
-                  <a href="https://github.com/{$account.profile.links.github}"
-                    >github</a
-                  >
-                {/if}
-                {#if $account.profile.links.discord}
-                  <a
-                    href="https://discordapp.com/users/{$account.profile.links
-                      .discord}">discord</a
-                  >
-                {/if}
-                {#if $account.profile.links.instagram}
-                  <a
-                    href="https://www.instagram.com/{$account.profile.links
-                      .instagram}">instagram</a
-                  >
-                {/if}
-                {#if $account.profile.links.facebook}
-                  <a
-                    href="https://facebook.com/{$account.profile.links
-                      .facebook}">facebook</a
-                  >
-                {/if}
-              </div>
-            </div>
-          </div>
-        {/if}
         <div class="mt-4 form-control">
           <label for="weavemail" class="label cursor-pointer">
             <span class="label-text"
@@ -252,39 +233,6 @@
             />
           </label>
         </div>
-        {#if page.weavemail && $account.profile}
-          <div class="card">
-            <h1 class="text-3xl">Write to me!</h1>
-            <input type="hidden" name="to" value={$account.profile.address} />
-            <div class="form-control">
-              <label class="label" for="subject">Subject</label>
-              <input
-                class="input input-bordered"
-                type="text"
-                placeholder="Subject"
-                id="subject"
-              />
-            </div>
-            <div class="form-control">
-              <label class="label" for="content">Mail contents</label>
-              <textarea
-                class="textarea textarea-bordered h-16"
-                id="content"
-                placeholder="Hello there..."
-              />
-            </div>
-            <div class="form-control">
-              <label class="label" for="donate"> (Optional) Send me AR</label>
-              <input
-                class="input input-bordered"
-                type="text"
-                placeholder="0 AR"
-                id="donate"
-              /><br />
-            </div>
-            <button disabled class="btn">Send</button>
-          </div>
-        {/if}
         <div class="mt-4 form-control">
           <label for="gallery" class="label cursor-pointer">
             <span class="label-text"
@@ -297,31 +245,6 @@
             />
           </label>
         </div>
-        {#if false}
-          <h2 class="text-3xl my-8">My NFTs</h2>
-          {#await getnfts(page.ethwallet) then nfts}
-            <div class="carousel rounded-box w-full">
-              {#each nfts as nft}
-                <div class="carosel-item">
-                  <div class="card w-96 h-full">
-                    <figure><img src={nft.image_url} alt={nft.name} /></figure>
-                    <div class="card-body">
-                      <h2 class="card-title">{nft.name}</h2>
-                      <p>{nft.description}</p>
-                      <div class="card-actions justify-end">
-                        <a
-                          href={nft.permalink}
-                          target="_blank"
-                          class="btn btn-primary">View</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              {/each}
-            </div>
-          {/await}
-        {/if}
         <div class="form-control">
           <label for="content" class="label">Page Content(markdown)</label>
           <textarea
@@ -334,12 +257,14 @@
 
         <p class="mt-4 alert alert-info">
           When you create a page, it will be posted on the permaweb, and can
-          never be removed, the page will be linked to
+          never be removed, once published you register a subdomain on ArNS
           https://[subdomain].arweave.net.
         </p>
         <div class="mt-8">
-          <button type="submit" class="btn btn-primary">Create Page</button>
-          <button type="button" class="btn btn-secondary">Preview</button>
+          <button type="button" class="btn btn-secondary" on:click={preview}
+            >Preview</button
+          >
+          <button type="submit" class="btn btn-primary">Publish</button>
           <a class="btn" href="/pages">Cancel</a>
         </div>
       </form>
@@ -354,7 +279,10 @@
   class="modal-toggle"
 />
 <div class="modal">
-  <div class="modal-box w-full">
+  <div class="modal-box w-full relative">
+    <label for="confirm" class="btn btn-sm btn-circle absolute right-2 top-2"
+      >x</label
+    >
     <h3 class="font-bold text-lg">Complete Permapage</h3>
     <form class="w-full space-y-8" on:submit|preventDefault={doConfirm}>
       <div class="form-control">
@@ -384,7 +312,7 @@
         <small>(max: 50 characters)</small>
       </div>
       <div class="modal-action">
-        <button for="confirm" class="btn">Preview</button>
+        <button for="confirm" class="btn">Submit</button>
       </div>
     </form>
   </div>
@@ -402,16 +330,17 @@
     <div class="flex mb-16">
       <h3 class="text-lg flex-1">Preview Permapage</h3>
       <div class="flex-0 flex justify-end space-x-4">
-        <button class="btn btn-primary">Save</button>
-        <button class="btn">Cancel</button>
+        <button class="btn" on:click={() => (frameDialog = false)}
+          >Close Preview</button
+        >
       </div>
     </div>
 
     <div class="mockup-window border border-base-300">
       <iframe
         bind:this={frame}
-        class="min-h-screen w-full"
-        src="https://example.com"
+        class="min-h-screen w-full m-8"
+        src="/#/preview"
       />
     </div>
   </div>

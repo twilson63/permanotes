@@ -4,7 +4,9 @@
   import Modal from "../components/modal.svelte";
   import { address } from "../store.js";
   import SubdomainTable from "../components/subdomains.svelte";
-  import { search, listANTs } from "../services/registry.js";
+  import { search, listANTs, register } from "../services/registry.js";
+  import { pages } from "../app.js";
+  import { gql } from "../services/arweave.js";
 
   let changeDialog = false;
   let transferDialog = false;
@@ -14,7 +16,10 @@
   let searchText = "";
   let connectDialog = false;
   let registerDialog = false;
-  let register = {};
+  let registerData = {};
+  let successDialog = false;
+  let errorDialog = false;
+  let errorMessage = "";
 
   async function doSearch() {
     const result = await search(searchText);
@@ -38,7 +43,20 @@
       connectDialog = true;
     }
   }
-  async function submitRegistration() {}
+  async function submitRegistration() {
+    registerDialog = false;
+    const result = await pages({ register }).purchase({
+      name: registerData.subdomain,
+      owner: $address,
+      transactionId: registerData.transactionId,
+    });
+    if (result.ok) {
+      successDialog = true;
+    } else {
+      errorMessage = result.message;
+      errorDialog = true;
+    }
+  }
 </script>
 
 <NavBar />
@@ -120,7 +138,7 @@
   <form on:submit|preventDefault={submitRegistration}>
     <div class="form-control">
       <label class="label">Subdomain</label>
-      <input class="input input-bordered" bind:value={register.subdomain} />
+      <input class="input input-bordered" bind:value={registerData.subdomain} />
     </div>
     <div class="form-control">
       <label class="label">Choose reference</label>
@@ -130,7 +148,7 @@
           name="reference"
           class="radio radio-primary"
           value="permapage"
-          bind:group={register.type}
+          bind:group={registerData.type}
         />
         Permapage
       </label>
@@ -139,24 +157,35 @@
           type="radio"
           name="reference"
           class="radio radio-primary"
-          bind:group={register.type}
+          bind:group={registerData.type}
           value="arweave"
         />
         Arweave Transaction
       </label>
     </div>
-    {#if register.type === "permapage"}
+    {#if registerData.type === "permapage"}
       <div class="form-control">
         <label class="label">Select Permapage</label>
-        <select class="select select-bordered">
-          <option class="option">Tom's Page</option>
+        <select
+          class="select select-bordered"
+          bind:value={registerData.transactionId}
+        >
+          <option class="option" value="">Select Permapage</option>
+          {#await pages({ gql }).list($address) then permapages}
+            {#each permapages as p}
+              <option value={p.id}>{p.title}</option>
+            {/each}
+          {/await}
         </select>
       </div>
     {/if}
-    {#if register.type === "arweave"}
+    {#if registerData.type === "arweave"}
       <div class="form-control">
         <label class="label">Arweave Transaction</label>
-        <input class="input input-bordered" />
+        <input
+          class="input input-bordered"
+          bind:value={registerData.transactionId}
+        />
       </div>
     {/if}
     <div class="mt-8 flex space-x-8 justify-right">
@@ -166,4 +195,21 @@
       >
     </div>
   </form>
+</Modal>
+<Modal open={successDialog}>
+  <h3 class="text-3xl text-success">Success!</h3>
+  <p class="my-8">
+    Congrats! You have successfully registered your subdomain {registerData.subdomain}!
+  </p>
+  <p class="my-8">
+    The processing of the gateway does take some time, it will take a few
+    minutes to get your subdomain installed on the gateway.
+  </p>
+</Modal>
+
+<Modal open={errorDialog}>
+  <h3 class="text-3xl text-error">Error!</h3>
+  <p class="my-8">
+    {errorMessage}
+  </p>
 </Modal>

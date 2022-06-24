@@ -25,11 +25,6 @@ export function pages({ register, post, gql, postWebpage, load }) {
   const deployPage = post ? Async.fromPromise(post) : () => Async.of(null)
   const registerPage = register ? Async.fromPromise(register) : () => Async.of(null)
 
-  async function purchase(page) {
-    return Async.of(page)
-      .chain(Async.fromPromise(register))
-      .toPromise()
-  }
 
   //const void = () => null
 
@@ -45,12 +40,11 @@ export function pages({ register, post, gql, postWebpage, load }) {
       .map(_ => (notify({ step: 2, message: 'deploying page' }), _))
       .chain(page => deployPage(page).map(({ id }) => ({ ...page, id })))
       .map(_ => (notify({ step: 3, message: 'saving page source' }), _))
-      // .chain(page => registerPage({
-      //   name: page.subdomain.toLowerCase(),
-      //   owner: page.owner,
-      //   transactionId: page.webpage
-      // }).map(_ => page))
       .toPromise()
+  }
+
+  async function purchase({ name, owner, transactionId }) {
+    return registerPage({ name, owner, transactionId }).toPromise()
   }
 
   async function list(account) {

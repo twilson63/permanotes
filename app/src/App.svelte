@@ -20,6 +20,7 @@
   import PageLink from "./pages/link.svelte";
   import PageForm from "./pages/form.svelte";
   import Arns from "./arns/index.svelte";
+  import Preview from "./pages/show.svelte";
 
   import * as R from "ramda";
 
@@ -109,6 +110,9 @@
   </Route>
   <Route path="/about">
     <About />
+  </Route>
+  <Route path="/preview">
+    <Preview />
   </Route>
   <Route path="/404">
     <Notfound />

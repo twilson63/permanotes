@@ -104,13 +104,17 @@ const getSubdomain = (contract, records) => compose(
 )(records)
 
 export async function getANT(ANT) {
-  const registry = warp.pst(REGISTRY)
-  const ant = warp.pst(ANT)
-  const regState = await registry.currentState()
+  try {
+    const registry = warp.pst(REGISTRY)
+    const ant = warp.pst(ANT)
+    const regState = await registry.currentState()
 
-  const subdomain = getSubdomain(ANT, regState.records)
+    const subdomain = getSubdomain(ANT, regState.records)
 
-  return { ...(await ant.currentState()), id: ANT, subdomain }
+    return { ...(await ant.currentState()), id: ANT, subdomain }
+  } catch (e) {
+    return { id: ANT, subdomain }
+  }
 }
 
 export async function updateSubDomain(ANT, transactionId) {
