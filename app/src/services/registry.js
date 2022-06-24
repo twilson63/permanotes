@@ -2,6 +2,12 @@ import Arweave from 'arweave'
 
 import map from 'ramda/src/map'
 import pluck from 'ramda/src/pluck'
+import head from 'ramda/src/head'
+import filter from 'ramda/src/filter'
+import compose from 'ramda/src/compose'
+import toPairs from 'ramda/src/toPairs'
+import equals from 'ramda/src/equals'
+import propOr from 'ramda/src/propOr'
 
 const { WarpWebFactory, LoggerFactory } = window.warp
 
@@ -77,20 +83,33 @@ query {
     map(getANT, ids)
   )
 
-  return Promise.resolve(ants)
+  return Promise.resolve(ants.filter(rec => rec.subdomain !== null))
 
 }
+
+const valueEquals = v => ([key, value]) => equals(value, v)
+const getSubdomain = (contract, records) => compose(
+  head,
+  propOr([null], 0),
+  filter(valueEquals(contract)),
+  toPairs
+)(records)
 
 export async function getANT(ANT) {
+  const registry = warp.pst(REGISTRY)
   const ant = warp.pst(ANT)
-  return { ...(await ant.currentState()), id: ANT }
+  const regState = await registry.currentState()
+
+  const subdomain = getSubdomain(ANT, regState.records)
+
+  return { ...(await ant.currentState()), id: ANT, subdomain }
 }
 
-export async function updateSubDomain(ANT, subDomain, transactionId) {
+export async function updateSubDomain(ANT, transactionId) {
   const ant = warp.pst(ANT).connect('use_wallet')
   await ant.writeInteraction({
     function: 'setRecord',
-    subDomain,
+    subDomain: '@',
     transactionId
   })
   return { ok: true }

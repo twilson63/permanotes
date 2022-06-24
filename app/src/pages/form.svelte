@@ -60,9 +60,7 @@
 
       page.content = easymde.value();
       page.owner = $address;
-      page.html = `<div class="markdown-body">${DOMPUrify.sanitize(
-        marked.parse(page.content)
-      )}</div>`;
+      page.html = `<div class="prose-lg">${marked.parse(page.content)}</div>`;
 
       if (page.ethwallet) {
         const data = await opensea.code.preRender({ address: page.ethwallet });
@@ -174,7 +172,7 @@
           {error}
         </div>
       {/if}
-      <h1 class="text-2xl md:text-6xl">Create Permapage</h1>
+      <h1 class="text-2xl">Create Permapage</h1>
       <form class="w-full" on:submit|preventDefault={submit}>
         <div class="mt-4 form-control">
           <label for="profile" class="label cursor-pointer">

@@ -4,12 +4,16 @@
   export let id = "1234";
   export let open = false;
   export let ok = true;
+  export let cancel = false;
 
   const dispatch = createEventDispatcher();
 
   function okClick() {
     open = false;
     dispatch("click");
+  }
+  function cancelClick() {
+    dispatch("cancel");
   }
 </script>
 
@@ -20,6 +24,9 @@
     {#if ok}
       <div class="modal-action">
         <button class="btn" on:click={okClick}>OK</button>
+        {#if cancel}
+          <button class="btn btn-outline" on:click={cancelClick}>Cancel</button>
+        {/if}
       </div>
     {/if}
   </div>

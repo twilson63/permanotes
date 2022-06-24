@@ -18,7 +18,6 @@
   async function handleChange() {
     const result = await updateSubDomain(
       changeData.ANT,
-      changeData.subdomain,
       changeData.transactionId
     );
     if (result.ok) {
@@ -31,7 +30,7 @@
   }
   function showChangeDialog(ANT, name) {
     return () => {
-      changeData = { ANT, subdomain: name.toLowerCase() };
+      changeData = { ANT };
       changeDialog = true;
     };
   }
@@ -104,12 +103,8 @@
                         ><a
                           class="link"
                           target="_blank"
-                          href={"https://" +
-                            ant.name.toLowerCase() +
-                            ".arweave.dev"}
-                          >{"https://" +
-                            ant.name.toLowerCase() +
-                            ".arweave.dev"}</a
+                          href={"https://" + ant.subdomain + ".arweave.dev"}
+                          >{"https://" + ant.subdomain + ".arweave.dev"}</a
                         ></td
                       >
                       <td>{ant.records["@"]}</td>
@@ -138,7 +133,12 @@
   </section>
 </main>
 
-<Modal open={changeDialog} on:click={handleChange}>
+<Modal
+  cancel={true}
+  on:cancel={() => (changeDialog = false)}
+  open={changeDialog}
+  on:click={handleChange}
+>
   <h3 class="text-3xl">Change Transaction Id</h3>
   <div class="form-control">
     <label class="label">TransactionId</label>
