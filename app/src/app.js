@@ -536,7 +536,7 @@ function htmlTemplate(title, description, body) {
     <script src="https://unpkg.com/arweave@1.11.4/bundles/web.bundle.min.js"></script>
   </head>
   <body>
-    <main class="mt-16 prose-lg bg-base-100" style="margin-left: 32px; margin-right: 32px;">
+    <main class="bg-base-100">
     ${body}
     </main>
   </body>

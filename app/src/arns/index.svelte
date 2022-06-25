@@ -4,11 +4,21 @@
   import Modal from "../components/modal.svelte";
   import { address } from "../store.js";
   import SubdomainTable from "../components/subdomains.svelte";
-  import { search, listANTs, register } from "../services/registry.js";
+  import find from "ramda/src/find";
+  import propEq from "ramda/src/propEq";
+
+  import {
+    search,
+    listANTs,
+    register,
+    updateSubDomain,
+  } from "../services/registry.js";
   import { pages } from "../app.js";
   import { gql } from "../services/arweave.js";
 
   let changeDialog = false;
+  let changeData = {};
+
   let transferDialog = false;
   let removeDialog = false;
   let searchDialog = false;
@@ -18,6 +28,7 @@
   let registerDialog = false;
   let registerData = {};
   let successDialog = false;
+  let successData = {};
   let errorDialog = false;
   let errorMessage = "";
 
@@ -51,11 +62,43 @@
       transactionId: registerData.transactionId,
     });
     if (result.ok) {
+      successData.message = `You have successfully registered your subdomain ${registerData.subdomain}`;
       successDialog = true;
     } else {
       errorMessage = result.message;
       errorDialog = true;
     }
+  }
+
+  function showChangeDialog(e) {
+    console.log(e.detail.id);
+    changeData = { ANT: e.detail.id };
+    changeDialog = true;
+  }
+
+  async function handleChange(e) {
+    const result = await updateSubDomain(
+      changeData.ANT,
+      changeData.transactionId
+    );
+    if (result.ok) {
+      successData = {
+        message: "Successfully changed transaction id",
+      };
+      successDialog = true;
+    } else {
+      errorMessage = result.message;
+      errorDialog = true;
+    }
+  }
+
+  async function listPermapages() {
+    const ps = await pages({ gql }).list($address);
+
+    return ps.reduce(
+      (acc, v) => (find(propEq("title", v.title), acc) ? acc : [...acc, v]),
+      []
+    );
   }
 </script>
 
@@ -92,7 +135,7 @@
                 <SubdomainTable
                   title="My Records"
                   {records}
-                  on:change={() => (changeDialog = true)}
+                  on:change={showChangeDialog}
                   on:transfer={() => (transferDialog = true)}
                   on:remove={() => (removeDialog = true)}
                 />
@@ -104,8 +147,17 @@
     </div>
   </section>
 </main>
-<Modal open={changeDialog}>
-  <h3 class="text-2xl">🛠 Feature coming soon!</h3>
+<Modal
+  cancel={true}
+  on:cancel={() => (changeDialog = false)}
+  open={changeDialog}
+  on:click={handleChange}
+>
+  <h3 class="text-3xl">Change Transaction Id</h3>
+  <div class="form-control">
+    <label class="label">TransactionId</label>
+    <input class="input input-bordered" bind:value={changeData.transactionId} />
+  </div>
 </Modal>
 <Modal open={transferDialog}>
   <h3 class="text-2xl">🛠 Feature coming soon!</h3>
@@ -171,7 +223,7 @@
           bind:value={registerData.transactionId}
         >
           <option class="option" value="">Select Permapage</option>
-          {#await pages({ gql }).list($address) then permapages}
+          {#await listPermapages() then permapages}
             {#each permapages as p}
               <option value={p.id}>{p.title}</option>
             {/each}
@@ -199,7 +251,7 @@
 <Modal open={successDialog}>
   <h3 class="text-3xl text-success">Success!</h3>
   <p class="my-8">
-    Congrats! You have successfully registered your subdomain {registerData.subdomain}!
+    Congrats! {successData.message}!
   </p>
   <p class="my-8">
     The processing of the gateway does take some time, it will take a few

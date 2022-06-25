@@ -7,7 +7,7 @@
 
   function handle(type, id) {
     return () => {
-      dispatch(type, id);
+      dispatch(type, { id });
     };
   }
 </script>

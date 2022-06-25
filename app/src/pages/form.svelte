@@ -10,7 +10,6 @@
   import weavemail from "../widgets/weavemail.js";
   import opensea from "../widgets/opensea.js";
   import Mustache from "mustache";
-  //import EasyMDE from "easymde";
   import { onMount } from "svelte";
 
   var easymde = null;
@@ -75,18 +74,16 @@
         page.html =
           Mustache.render(opensea.template(), data) + "\n" + page.html;
       }
-      if (page.weavemail) {
-        page.html = weavemail.script() + "\n" + page.html;
-        page.html =
-          Mustache.render(weavemail.template(), {
-            address: $account.profile.addr,
-          }) +
-          "\n" +
-          page.html;
-      }
 
       if (page.profile) {
-        page.html = hero($account.profile) + "\n" + page.html;
+        let profileData = $account.profile;
+        if (page.weavemail) {
+          profileData = { ...profileData, weavemail: profileData.addr };
+        }
+        console.log(profileData);
+        const profileWidget = Mustache.render(profileTemplate(), profileData);
+        console.log(profileWidget);
+        page.html = profileWidget + "\n" + page.html;
       }
 
       const result = await pages({
@@ -116,56 +113,6 @@
     }
   }
 
-  function hero(profile) {
-    function socialIcons(profile) {
-      return `
-<div class="space-x-8 underline">
-  ${
-    profile.links.twitter
-      ? `<a href="https://twitter.com/${profile.links.twitter}">twitter</a>`
-      : ""
-  }
-  ${
-    profile.links.github
-      ? `<a href="https://github.com/${profile.links.github}">github</a>`
-      : ""
-  }
-  ${
-    profile.links.discord
-      ? `<a href="https://discordapp.com/users/${profile.links.discord}">discord</a>`
-      : ""
-  }
-  ${
-    profile.links.instagram
-      ? `<a href="https://instagram.com/${profile.links.instagram}">instagram</a>`
-      : ""
-  }
-  ${
-    profile.links.facebook
-      ? `<a href="https://facebook.com/${profile.links.facebook}">facebook</a>`
-      : ""
-  }
-</div>
-      `;
-    }
-    return `
-<div class="hero">
-  <div class="hero-content flex-col text-center">
-    <img
-      class="mask mask-squircle"
-      src="https://arweave.net/${profile.avatar}"
-      alt="${profile.name}"
-      width="94"
-      height="94"
-    />
-    <h1 class="text-6xl">${profile.name}</h1>
-    <p class="text-2xl">${profile.bio}</p>
-    ${socialIcons(profile)}
-  </div>
-</div>
-    `;
-  }
-
   async function getnfts(wallet) {
     const results = await fetch(
       "https://api.opensea.io/api/v1/assets?owner=" + wallet
@@ -176,28 +123,74 @@
 
   async function preview() {
     let html = marked.parse(easymde.value());
-    html = `<div class="prose-lg mt-16">${html}</div>`;
+    html = `<div class="prose-lg m-16">${html}</div>`;
     if (page.ethwallet) {
       const data = await opensea.code.preRender({ address: page.ethwallet });
       html = Mustache.render(opensea.template(), data) + "\n" + html;
     }
-    if (page.weavemail) {
-      html = weavemail.script() + "\n" + html;
-      html =
-        Mustache.render(weavemail.template(), {
-          address: $account.profile.addr,
-        }) +
-        "\n" +
-        html;
-    }
 
     if (page.profile) {
-      html = hero($account.profile) + "\n" + html;
+      let profileData = $account.profile;
+      if (page.weavemail) {
+        profileData = { ...profileData, weavemail: profileData.addr };
+      }
+      const profileWidget = Mustache.render(profileTemplate(), profileData);
+      console.log(profileWidget);
+      page.html = profileWidget + "\n" + page.html;
     }
 
     sessionStorage.setItem("html", html);
     window.scrollTo(0, 0);
     frameDialog = true;
+  }
+
+  function profileTemplate() {
+    return (
+      `
+<div id="profile" 
+  {{#links.github}}
+    data-github="{{links.github}}" 
+  {{/links.github}}
+  {{#avatar}}
+    data-avatar="https://arweave.net/{{avatar}}" 
+  {{/avatar}}
+  {{#name}}
+    data-name="{{name}}" 
+  {{/name}}
+  {{#bio}}
+    data-bio="{{bio}}"
+  {{/bio}}
+  {{#links.twitter}}
+    data-twitter="{{links.twitter}}"
+  {{/links.twitter}}
+  {{#links.discord}}
+    data-discord="{{links.discord}}"
+  {{/links.discord}}
+  {{#links.instagram}}
+    data-instagram="{{links.instagram}}"
+  {{/links.instagram}}
+  {{#links.facebook}}
+    data-facebook="{{links.facebook}}"
+  {{/links.facebook}}
+  {{#links.linkedin}}
+    data-linkedin="{{links.linkedin}}"
+  {{/links.linkedin}}
+  {{#links.twitch}}
+    data-twitch="{{links.twitch}}"
+  {{/links.twitch}}
+  {{#links.youtube}}
+    data-twitch="{{links.youtube}}"
+  {{/links.youtube}}
+  {{#weavemail}}
+    data-weavemail="{{weavemail}}"
+  {{/weavemail}}
+  
+  data-background="https://lh3.googleusercontent.com/7M_ebzQvBR22BKnV2l7OI3SLfbOtLbvKM0cE2bA_1TEN00klK5lX2jh77wLU_bw06DGb3N48J7Sd_jQKIREgyYh-yJbEHmNU8A0N" 
+  ></div>
+  ` +
+      '<script src="https://arweave.net/Uf0gqcpgks8-v2noGefHyCDIdF9UZeKZZlkgT9JQ6qc">' +
+      "<//script>".replace("/", "")
+    );
   }
 </script>
 

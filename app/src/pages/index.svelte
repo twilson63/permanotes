@@ -1,6 +1,5 @@
 <script>
   import NavBar from "../components/navbar.svelte";
-  import { updateSubDomain } from "../services/registry.js";
   import { gql } from "../services/arweave.js";
   import { pages } from "../app.js";
   import { address, pageCache } from "../store.js";
@@ -9,35 +8,12 @@
   import find from "ramda/src/find";
   import propEq from "ramda/src/propEq";
 
-  let changeDialog = false;
-  let changeData = {};
   let successDialog = false;
   let successData = {};
 
   const { list } = pages({ gql });
 
   const account = $address;
-
-  async function handleChange() {
-    const result = await updateSubDomain(
-      changeData.ANT,
-      changeData.transactionId
-    );
-    if (result.ok) {
-      successData = {
-        title: "Success!",
-        description: "Successfully changed transaction id",
-      };
-      successDialog = true;
-    }
-  }
-
-  function showChangeDialog(ANT, name) {
-    return () => {
-      changeData = { ANT };
-      changeDialog = true;
-    };
-  }
 
   async function listPages() {
     const results = await list(account);
@@ -85,19 +61,6 @@
     </div>
   </section>
 </main>
-
-<Modal
-  cancel={true}
-  on:cancel={() => (changeDialog = false)}
-  open={changeDialog}
-  on:click={handleChange}
->
-  <h3 class="text-3xl">Change Transaction Id</h3>
-  <div class="form-control">
-    <label class="label">TransactionId</label>
-    <input class="input input-bordered" bind:value={changeData.transactionId} />
-  </div>
-</Modal>
 
 <Modal open={successDialog}>
   <h3 class="text-3xl text-success">{successData.title}</h3>
