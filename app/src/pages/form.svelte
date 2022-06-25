@@ -53,6 +53,7 @@
         easymde.value(p.content);
         page.content = p.content;
         page.profile = p.profile;
+        page.weavemail = p.weavemail;
       });
   } else {
   }
@@ -124,22 +125,20 @@
   async function preview() {
     let html = marked.parse(easymde.value());
     html = `<div class="prose-lg m-16">${html}</div>`;
-    if (page.ethwallet) {
-      const data = await opensea.code.preRender({ address: page.ethwallet });
-      html = Mustache.render(opensea.template(), data) + "\n" + html;
-    }
+    // if (page.ethwallet) {
+    //   const data = await opensea.code.preRender({ address: page.ethwallet });
+    //   html = Mustache.render(opensea.template(), data) + "\n" + html;
+    // }
 
-    if (page.profile) {
-      let profileData = $account.profile;
-      if (page.weavemail) {
-        profileData = { ...profileData, weavemail: profileData.addr };
-      }
-      const profileWidget = Mustache.render(profileTemplate(), profileData);
-      console.log(profileWidget);
-      page.html = profileWidget + "\n" + page.html;
-    }
-
-    sessionStorage.setItem("html", html);
+    // if (page.profile) {
+    //   let profileData = $account.profile;
+    //   if (page.weavemail) {
+    //     profileData = { ...profileData, weavemail: profileData.addr };
+    //   }
+    //   const profileWidget = Mustache.render(profileTemplate(), profileData);
+    //   html = profileWidget + "\n" + html;
+    // }
+    localStorage.setItem("html", html);
     window.scrollTo(0, 0);
     frameDialog = true;
   }
@@ -188,7 +187,7 @@
   data-background="https://lh3.googleusercontent.com/7M_ebzQvBR22BKnV2l7OI3SLfbOtLbvKM0cE2bA_1TEN00klK5lX2jh77wLU_bw06DGb3N48J7Sd_jQKIREgyYh-yJbEHmNU8A0N" 
   ></div>
   ` +
-      '<script src="https://arweave.net/Uf0gqcpgks8-v2noGefHyCDIdF9UZeKZZlkgT9JQ6qc">' +
+      '<script src="https://arweave.net/o7LNWBFbtP48EeMz6gWoalvp21NWZIy814CKxSegOGQ">' +
       "<//script>".replace("/", "")
     );
   }
