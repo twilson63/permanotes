@@ -225,7 +225,7 @@
           <option class="option" value="">Select Permapage</option>
           {#await listPermapages() then permapages}
             {#each permapages as p}
-              <option value={p.id}>{p.title}</option>
+              <option value={p.webpage}>{p.title}</option>
             {/each}
           {/await}
         </select>
