@@ -11,6 +11,7 @@
   import { address } from "./store.js";
   import { init as initLikes } from "./services/likes.js";
   import hljs from "highlight.js";
+  import hljs_svelte from 'highlightjs-svelte'
 
   let loading = false;
   let toggleInfo = false;
@@ -32,6 +33,8 @@
   let disableUnlike = false;
   let owner = "";
 
+  hljs_svelte(hljs)
+  
   function like(note) {
     return async (e) => {
       if (!window.arweaveWallet) {
