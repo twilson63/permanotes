@@ -60,7 +60,6 @@
       {/if}
       <div class="flex space-x-8">
         <a href="/notes" class="btn btn-primary">My Notes</a>
-        <a href="/pages" class="btn btn-primary">My Pages</a>
         <a href="/favorites" class="btn btn-primary">Favorites</a>
         <button class="btn" on:click|preventDefault={disconnect}
           >Disconnect</button

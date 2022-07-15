@@ -34,12 +34,9 @@
         <a href="/notes/La7xUTN13SFI58-tVKSFQznRzHKY3QfVblYhV-6J-2A">Learn</a>
       </li>
       {#if R.isEmpty($address)}
-        <li><a href="/arns">ArNS</a></li>
         <li><a href="/connect">Connect</a></li>
       {:else}
         <li><a href="/notes">Notes</a></li>
-        <li><a href="/pages">Pages</a></li>
-        <li><a href="/arns">ArNS</a></li>
         <li><a href="/account">Account</a></li>
       {/if}
     </ul>
@@ -54,12 +51,9 @@
         <a href="/notes/Xx8lQw1q9xOUn1mB7CMagKHgv8XUy9NxsrQLtfqZItY">Learn</a>
       </li>
       {#if R.isEmpty($address)}
-        <li><a href="/arns">ArNS</a></li>
         <li><a href="/connect">Connect</a></li>
       {:else}
         <li><a href="/notes">Notes</a></li>
-        <li><a href="/pages">Pages</a></li>
-        <li><a href="/arns">ArNS</a></li>
         <li><a href="/account">Account</a></li>
       {/if}
     </ul>
