@@ -11,7 +11,7 @@
   import { address } from "./store.js";
   import { init as initLikes } from "./services/likes.js";
   import hljs from "highlight.js";
-  import hljs_svelte from 'highlightjs-svelte'
+  import hljs_svelte from "highlightjs-svelte";
 
   let loading = false;
   let toggleInfo = false;
@@ -33,8 +33,8 @@
   let disableUnlike = false;
   let owner = "";
 
-  hljs_svelte(hljs)
-  
+  hljs_svelte(hljs);
+
   function like(note) {
     return async (e) => {
       if (!window.arweaveWallet) {
@@ -214,7 +214,9 @@
           </p>
         </div>
       {/if}
-      <div class="mt-16 prose prose-lg bg-base-200">
+      <div
+        class="mt-16 prose prose-lg bg-base-200 dark:text-[#D3D7E0] dark:prose-headings:text-[#D3D7E0]"
+      >
         {@html DOMPUrify.sanitize(marked.parse(note.content))}
       </div>
     {/await}
